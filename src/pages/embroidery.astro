@@ -1,0 +1,163 @@
+---
+import ServicePageLayout from '../components/ServicePageLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import { embroideryFaqs } from '../data/faqs';
+import { SITE } from '../data/site';
+
+const canonicalUrl = `${SITE.url}/embroidery`;
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${canonicalUrl}#service`,
+  serviceType: 'Embroidery',
+  name: 'Custom embroidery in Lisbon',
+  provider: { '@id': `${SITE.url}/#organization` },
+  areaServed: [
+    { '@type': 'City', name: 'Lisboa' },
+    { '@type': 'Country', name: 'Portugal' },
+    { '@type': 'Place', name: 'European Union' },
+  ],
+  description: 'Industrial single-head embroidery in Lisbon. From 1 piece. Up to 12 thread colors. Flat and 3D puff. Ready in 3 business days.',
+  offers: {
+    '@type': 'AggregateOffer',
+    lowPrice: '6',
+    highPrice: '22',
+    priceCurrency: 'EUR',
+    priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'piece' },
+    eligibleQuantity: { '@type': 'QuantitativeValue', minValue: 1, unitText: 'pieces' },
+  },
+  hoursAvailable: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '10:00',
+    closes: '19:00',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${canonicalUrl}#faq`,
+  mainEntity: embroideryFaqs.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+<ServicePageLayout
+  sectionNum="01.300"
+  title="EMBROIDERY"
+  subtitle="Custom embroidery in Lisbon, from 1 piece, ready in 3 business days."
+  metaTitle="Custom embroidery in Lisbon — PPC"
+  metaDescription="Single-piece custom embroidery in Lisbon. Flat and 3D puff. Up to 12 thread colors. From 1 piece, ready in 3 business days."
+  ogImage="/og-embroidery.jpg"
+  canonicalUrl={canonicalUrl}
+  schemas={[serviceSchema, faqSchema]}
+  breadcrumbs={[
+    { name: 'PPC', href: '/' },
+    { name: 'Services' },
+    { name: 'Embroidery' },
+  ]}
+>
+
+  <!-- What it is -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">WHAT IT IS</p>
+    <div class="font-baskerville text-lg leading-relaxed max-w-2xl space-y-4">
+      <p>
+        Logo and lettering stitched directly into the
+        fabric using a single-head industrial embroidery
+        machine. Up to 12 thread colors per design.
+      </p>
+      <p>
+        Flat embroidery for clean, durable logos. 3D
+        puff for high-relief lettering with depth.
+      </p>
+      <p>
+        We digitise your design — convert your file
+        into stitch instructions — and run a test panel
+        before production. This is the difference
+        between embroidery that lasts ten years and
+        embroidery that distorts in three months.
+      </p>
+    </div>
+  </div>
+
+  <!-- When to choose -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">WHEN TO CHOOSE THIS</p>
+    <ul class="space-y-2 list-none font-baskerville text-lg">
+      <li>— Premium pieces: hoodies, polos, caps, uniforms</li>
+      <li>— Logos, monograms, lettering</li>
+      <li>— When you want a result that reads as expensive</li>
+      <li>— Any quantity, from 1 piece up</li>
+    </ul>
+  </div>
+
+  <!-- Capacity -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">CAPACITY & MINIMUMS</p>
+    <dl class="space-y-3 font-barlow text-base">
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Minimum order</dt>
+        <dd>1 piece</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Maximum colors</dt>
+        <dd>12 thread colors</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Daily capacity</dt>
+        <dd>100–150 pieces</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Turnaround</dt>
+        <dd>3 business days</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Pricing -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">PRICING</p>
+    <dl class="space-y-3 font-barlow text-base mb-6">
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Initial or name (up to 6 cm)</dt>
+        <dd>€6–8</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Logo (up to 10 cm)</dt>
+        <dd>€8–12</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Large logo (up to 15 cm)</dt>
+        <dd>€12–15</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Extra-large (over 15 cm)</dt>
+        <dd>€15–22</dd>
+      </div>
+    </dl>
+    <p class="font-baskerville text-mute">One-time digitising fee: €10–20 per design. Future reorders of the same design skip this.</p>
+  </div>
+
+  <!-- Process -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">PROCESS</p>
+    <ol class="space-y-3 list-none font-baskerville text-lg">
+      <li><span class="font-barlow text-mute mr-3">1.</span>Send your logo or brief</li>
+      <li><span class="font-barlow text-mute mr-3">2.</span>We respond within 24 hours with thread options and a quote</li>
+      <li><span class="font-barlow text-mute mr-3">3.</span>We digitise and run a test panel</li>
+      <li><span class="font-barlow text-mute mr-3">4.</span>You approve. Production. Ready in 3 days.</li>
+    </ol>
+  </div>
+
+  <!-- FAQ -->
+  <div>
+    <p class="label-text mb-8">FAQ</p>
+    <FAQ items={embroideryFaqs} />
+  </div>
+
+</ServicePageLayout>

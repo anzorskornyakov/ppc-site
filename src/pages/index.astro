@@ -1,0 +1,301 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
+import Section from '../components/Section.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { SITE } from '../data/site';
+import { clients } from '../data/clients';
+
+const workImages = [
+  { src: '/photos/work-01.jpg', alt: 'Screen-printed t-shirts — custom order' },
+  { src: '/photos/work-02.jpg', alt: 'Embroidered hoodie — custom logo' },
+  { src: '/photos/work-03.jpg', alt: 'DTF print on tote bag' },
+  { src: '/photos/work-04.jpg', alt: 'Screen-printed uniform — hospitality client' },
+  { src: '/photos/work-05.jpg', alt: 'Embroidered cap — branded merchandise' },
+  { src: '/photos/work-06.jpg', alt: 'Screen-printed crew sweatshirts' },
+];
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE.url}/#organization`,
+  name: SITE.name,
+  alternateName: ['PPC', 'Printclub Collective'],
+  legalName: SITE.legalName,
+  url: SITE.url,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${SITE.url}/favicon.svg`,
+    width: 512,
+    height: 512,
+  },
+  email: SITE.email,
+  telephone: SITE.phonePlain,
+  vatID: SITE.vatId,
+  taxID: SITE.nipc,
+  foundingDate: SITE.foundingDate,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    postalCode: SITE.address.postal,
+    addressRegion: SITE.address.city,
+    addressCountry: SITE.address.countryCode,
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: SITE.phonePlain,
+    email: SITE.email,
+    contactType: 'customer service',
+    availableLanguage: ['English', 'Portuguese', 'Russian'],
+  },
+  sameAs: [SITE.instagramUrl],
+};
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'ProfessionalService'],
+  '@id': `${SITE.url}/#studio`,
+  name: SITE.name,
+  image: [
+    `${SITE.url}/photos/studio-hero.jpg`,
+    `${SITE.url}/photos/studio-detail-01.jpg`,
+  ],
+  description: SITE.description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    postalCode: SITE.address.postal,
+    addressCountry: SITE.address.countryCode,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.lat,
+    longitude: SITE.geo.lon,
+  },
+  url: SITE.url,
+  telephone: SITE.phonePlain,
+  email: SITE.email,
+  priceRange: '€€',
+  currenciesAccepted: 'EUR',
+  paymentAccepted: 'Bank transfer, MBWay, Card',
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '10:00',
+      closes: '19:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday', 'Sunday'],
+      opens: '00:00',
+      closes: '00:00',
+    },
+  ],
+  areaServed: [
+    { '@type': 'City', name: 'Lisboa' },
+    { '@type': 'City', name: 'Cascais' },
+    { '@type': 'Country', name: 'Portugal' },
+    { '@type': 'Place', name: 'European Union' },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'PPC Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Screen printing', url: `${SITE.url}/screen-printing` } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Embroidery', url: `${SITE.url}/embroidery` } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'DTF printing', url: `${SITE.url}/dtf` } },
+    ],
+  },
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  url: SITE.url,
+  name: SITE.name,
+  description: SITE.description,
+  publisher: { '@id': `${SITE.url}/#organization` },
+  inLanguage: 'en',
+};
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  '@id': `${SITE.url}/#process`,
+  name: 'How to order custom printing in Lisbon',
+  description: 'Three-step process to order custom screen printing, embroidery, or DTF from PPC.',
+  totalTime: 'PT3D',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'EUR', value: '100' },
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Send your logo or brief',
+      text: `Send your logo or project brief via WhatsApp (${SITE.phone}), email (${SITE.email}), or Instagram DM (@ppcspace).`,
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Receive a quote within 24 hours',
+      text: 'We respond within 24 hours with a technique recommendation, blank options, and a precise quote.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Approve and receive in 3 business days',
+      text: 'You approve the proof. Production starts. Order is ready for pickup or delivery in 3 business days.',
+    },
+  ],
+};
+---
+<Base
+  title="PPC — Custom print studio in Lisbon. 3-day turnaround."
+  description="Portugal Print Club. Screen printing, embroidery, DTF printing in Lisbon. From 1 piece. Ready in 3 business days. Studio open for visits in Campolide."
+>
+  <SEO
+    slot="head"
+    title="PPC — Custom print studio in Lisbon. 3-day turnaround."
+    description="Portugal Print Club. Screen printing, embroidery, DTF printing in Lisbon. From 1 piece. Ready in 3 business days. Studio open for visits in Campolide."
+    ogImage="/og-default.jpg"
+    canonicalUrl={SITE.url}
+    schemas={[organizationSchema, localBusinessSchema, websiteSchema, howToSchema]}
+  />
+
+  <Header />
+
+  <main>
+    <!-- 00: Cover -->
+    <section id="cover" class="divider py-24 md:py-32">
+      <div class="container-ppc">
+        <p class="section-num mb-8">00.000</p>
+        <div class="leading-none tracking-tight">
+          <h1 class="font-barlow font-semibold" style="font-size: clamp(3rem,8vw,6rem); line-height:1;">PPC</h1>
+          <p class="font-barlow font-semibold text-mute" style="font-size: clamp(1.5rem,4vw,3rem); margin-top: 0.25em; line-height:1.1;">PORTUGAL PRINT CLUB</p>
+          <p class="font-barlow font-medium text-mute" style="font-size: clamp(1rem,2vw,1.5rem); margin-top: 0.5em; line-height:1.2;">LISBON · 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01: What we do -->
+    <Section id="services" num="01.000" label="WHAT WE DO">
+      <p class="font-baskerville text-lg mb-8 max-w-xl">A custom print studio in Lisbon.</p>
+      <ul class="space-y-3 list-none mb-8">
+        <li>
+          <a href="/screen-printing" class="font-barlow font-medium text-xl uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors">
+            →&nbsp;&nbsp;Screen printing
+          </a>
+        </li>
+        <li>
+          <a href="/embroidery" class="font-barlow font-medium text-xl uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors">
+            →&nbsp;&nbsp;Embroidery
+          </a>
+        </li>
+        <li>
+          <a href="/dtf" class="font-barlow font-medium text-xl uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors">
+            →&nbsp;&nbsp;DTF
+          </a>
+        </li>
+      </ul>
+      <p class="font-baskerville text-mute">Ready in 3 business days.</p>
+    </Section>
+
+    <!-- 02: Blanks -->
+    <Section id="blanks" num="02.000" label="BLANKS">
+      <p class="font-baskerville text-lg max-w-2xl mb-6 leading-relaxed">
+        We work with every brand available through
+        Toptex — Europe's largest blank supplier —
+        plus our own premium selection from WATC Studio
+        and Velour Garments in Barcelona.
+      </p>
+      <p class="font-baskerville text-lg text-mute mb-8">Or supply your own. Same 3-day turnaround.</p>
+      <a href="/catalog" class="font-barlow font-medium uppercase tracking-[0.02em] text-sm hover:text-[var(--color-accent)] transition-colors">
+        →&nbsp;&nbsp;/catalog
+      </a>
+    </Section>
+
+    <!-- 03: Studio -->
+    <Section id="studio-section" num="03.000" label="STUDIO">
+      <p class="font-baskerville text-lg mb-1">{SITE.address.street}</p>
+      <p class="font-baskerville text-lg mb-1">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
+      <p class="font-baskerville text-mute mb-8">By appointment.</p>
+      <a href="/studio" class="font-barlow font-medium uppercase tracking-[0.02em] text-sm hover:text-[var(--color-accent)] transition-colors mb-12 inline-block">
+        →&nbsp;&nbsp;/studio
+      </a>
+      <div class="mt-10 w-full aspect-[16/7] overflow-hidden bg-[rgba(10,10,10,0.06)]">
+        <img
+          src="/photos/studio-hero.jpg"
+          alt="PPC studio interior — Calçada dos Mestres 34, Lisbon"
+          loading="lazy"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <p class="section-num mt-3">Studio · Calçada dos Mestres 34</p>
+    </Section>
+
+    <!-- 04: Work -->
+    <Section id="work" num="04.000" label="WORK">
+      <p class="font-baskerville text-lg max-w-2xl mb-12 leading-relaxed">
+        The newest and most talked-about venues in
+        Lisbon. All came through word of mouth, before
+        we had a brand or a space.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
+        {workImages.map((img) => (
+          <div class="aspect-square overflow-hidden bg-[rgba(10,10,10,0.06)]">
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading="lazy"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      <p class="font-baskerville text-mute text-sm leading-relaxed">
+        {clients.join('  ·  ')}
+      </p>
+    </Section>
+
+    <!-- 05: Contact -->
+    <Section id="contact" num="05.000" label="SEND A BRIEF">
+      <div class="max-w-lg">
+        <ContactForm />
+      </div>
+    </Section>
+
+    <!-- 06: Colophon -->
+    <Section id="colophon" num="06.000" label="COLOPHON">
+      <div class="space-y-6 font-barlow text-sm">
+        <div>
+          <p>{SITE.legalName} · NIPC {SITE.nipc}</p>
+          <p class="text-mute">{SITE.address.city}, {SITE.address.country} · {SITE.foundingDate}</p>
+        </div>
+        <div class="space-y-2">
+          <p>
+            <span class="text-mute" style="display:inline-block;min-width:7rem;">WhatsApp</span>
+            <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a>
+          </p>
+          <p>
+            <span class="text-mute" style="display:inline-block;min-width:7rem;">Email</span>
+            <a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
+          </p>
+          <p>
+            <span class="text-mute" style="display:inline-block;min-width:7rem;">Instagram</span>
+            <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a>
+          </p>
+        </div>
+        <p class="text-mute">Prices exclude 23% VAT.</p>
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</Base>

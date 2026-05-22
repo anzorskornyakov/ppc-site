@@ -1,0 +1,152 @@
+---
+import ServicePageLayout from '../components/ServicePageLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import { screenPrintingFaqs } from '../data/faqs';
+import { SITE } from '../data/site';
+
+const canonicalUrl = `${SITE.url}/screen-printing`;
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${canonicalUrl}#service`,
+  serviceType: 'Screen printing',
+  name: 'Custom screen printing in Lisbon',
+  alternateName: ['Silkscreen printing', 'Serigrafia'],
+  provider: { '@id': `${SITE.url}/#organization` },
+  areaServed: [
+    { '@type': 'City', name: 'Lisboa' },
+    { '@type': 'Country', name: 'Portugal' },
+    { '@type': 'Place', name: 'European Union' },
+  ],
+  description: 'Manual screen printing on a 6-color carousel in Lisbon. From 10 pieces. Water-based and plastisol inks. Ready in 3 business days.',
+  offers: {
+    '@type': 'AggregateOffer',
+    lowPrice: '4',
+    highPrice: '8',
+    priceCurrency: 'EUR',
+    priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'piece' },
+    eligibleQuantity: { '@type': 'QuantitativeValue', minValue: 10, unitText: 'pieces' },
+  },
+  hoursAvailable: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '10:00',
+    closes: '19:00',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${canonicalUrl}#faq`,
+  mainEntity: screenPrintingFaqs.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+<ServicePageLayout
+  sectionNum="01.200"
+  title="SCREEN PRINTING"
+  subtitle="Manual screen printing in Lisbon, on a 6-color carousel, ready in 3 business days."
+  metaTitle="Custom screen printing in Lisbon — PPC"
+  metaDescription="Manual screen printing on a 6-color carousel. From 10 pieces. Water-based and plastisol inks. Ready in 3 business days. Studio in Campolide, Lisbon."
+  ogImage="/og-screen-printing.jpg"
+  canonicalUrl={canonicalUrl}
+  schemas={[serviceSchema, faqSchema]}
+  breadcrumbs={[
+    { name: 'PPC', href: '/' },
+    { name: 'Services' },
+    { name: 'Screen printing' },
+  ]}
+>
+
+  <!-- What it is -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">WHAT IT IS</p>
+    <div class="font-baskerville text-lg leading-relaxed max-w-2xl space-y-4">
+      <p>
+        Ink is pushed through a tensioned mesh stencil
+        onto the textile, one color at a time. The
+        result is a tactile, opaque print with intense
+        color saturation — the kind of finish that
+        survives a hundred washes and looks better
+        with age.
+      </p>
+      <p>
+        We pull screens by hand on a 6-color carousel.
+        Water-based inks for soft hand-feel on light
+        fabrics; plastisol for bold opacity on dark and
+        heavyweight blanks. Specialty options on request:
+        puff, metallic, foil, glow-in-the-dark.
+      </p>
+    </div>
+  </div>
+
+  <!-- When to choose -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">WHEN TO CHOOSE THIS</p>
+    <ul class="space-y-2 list-none font-baskerville text-lg">
+      <li>— Orders of 10 pieces or more</li>
+      <li>— Designs with 1 to 6 spot colors</li>
+      <li>— When you want a tactile, traditional feel</li>
+      <li>— When the print needs to last</li>
+    </ul>
+  </div>
+
+  <!-- Capacity -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">CAPACITY & MINIMUMS</p>
+    <dl class="space-y-3 font-barlow text-base">
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Minimum order</dt>
+        <dd>10 pieces, same design</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Maximum colors</dt>
+        <dd>6 per design</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Daily capacity</dt>
+        <dd>300–400 prints</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Turnaround</dt>
+        <dd>3 business days</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Pricing -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">PRICING</p>
+    <div class="font-baskerville text-lg max-w-2xl space-y-4">
+      <p>
+        Pricing depends on color count, blank quality,
+        and order size. Indicative range for a 2-color
+        print on a t-shirt: from €4 to €8 per piece,
+        exclusive of blank.
+      </p>
+      <p class="text-mute">Send your design for a precise quote.</p>
+    </div>
+  </div>
+
+  <!-- Process -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">PROCESS</p>
+    <ol class="space-y-3 list-none font-baskerville text-lg">
+      <li><span class="font-barlow text-mute mr-3">1.</span>Send your logo or brief</li>
+      <li><span class="font-barlow text-mute mr-3">2.</span>We respond within 24 hours with a technique recommendation, blank options, and a quote</li>
+      <li><span class="font-barlow text-mute mr-3">3.</span>You approve the proof. Production starts. Ready in 3 business days.</li>
+    </ol>
+  </div>
+
+  <!-- FAQ -->
+  <div>
+    <p class="label-text mb-8">FAQ</p>
+    <FAQ items={screenPrintingFaqs} />
+  </div>
+
+</ServicePageLayout>

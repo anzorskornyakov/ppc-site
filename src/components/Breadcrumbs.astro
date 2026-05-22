@@ -1,0 +1,43 @@
+---
+import StructuredData from './StructuredData.astro';
+import { SITE } from '../data/site';
+
+interface BreadcrumbItem {
+  name: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    ...(item.href ? { item: new URL(item.href, SITE.url).toString() } : {}),
+  })),
+};
+---
+<nav aria-label="Breadcrumb" class="container-ppc pt-8 pb-0">
+  <ol class="flex items-center gap-2 list-none section-num">
+    {items.map((item, i) => (
+      <>
+        {i > 0 && <li class="text-mute select-none">/</li>}
+        <li>
+          {item.href
+            ? <a href={item.href} class="hover:text-[var(--color-accent)] transition-colors">{item.name}</a>
+            : <span class="text-mute">{item.name}</span>
+          }
+        </li>
+      </>
+    ))}
+  </ol>
+</nav>
+
+<StructuredData schemas={[schema]} />

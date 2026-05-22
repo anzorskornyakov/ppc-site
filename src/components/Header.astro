@@ -1,0 +1,46 @@
+---
+import { SITE } from '../data/site';
+---
+<header class="sticky top-0 z-50 bg-[var(--color-bg)] border-b border-[var(--color-rule)]">
+  <div class="container-ppc flex items-center justify-between py-4">
+    <a
+      href="/"
+      class="font-barlow font-semibold text-[1.1rem] uppercase tracking-[0.04em] hover:text-[var(--color-accent)] transition-colors"
+    >
+      PPC
+    </a>
+    <nav aria-label="Primary navigation">
+      <ul class="flex items-center gap-6 list-none">
+        <li>
+          <a
+            href="/catalog"
+            class="label-text hover:text-[var(--color-accent)] transition-colors"
+          >
+            Catalog
+          </a>
+        </li>
+        <li class="text-[var(--color-rule)] select-none">·</li>
+        <li>
+          <a
+            href="/studio"
+            class="label-text hover:text-[var(--color-accent)] transition-colors"
+          >
+            Studio
+          </a>
+        </li>
+        <li class="text-[var(--color-rule)] select-none">·</li>
+        <li>
+          <a
+            href={SITE.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="label-text hover:text-[var(--color-accent)] transition-colors"
+            aria-label="PPC on Instagram"
+          >
+            ↗ Instagram
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

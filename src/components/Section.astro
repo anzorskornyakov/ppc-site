@@ -1,0 +1,18 @@
+---
+interface Props {
+  id?: string;
+  num: string;
+  label: string;
+  class?: string;
+}
+const { id, num, label, class: className = '' } = Astro.props;
+---
+<section
+  id={id}
+  class:list={['divider py-20 md:py-24', className]}
+>
+  <div class="container-ppc">
+    <p class="section-num mb-6">{num}&nbsp;&nbsp;&nbsp;{label}</p>
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,227 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../data/site';
+
+const canonicalUrl = `${SITE.url}/studio`;
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'ProfessionalService'],
+  '@id': `${SITE.url}/#studio`,
+  name: SITE.name,
+  image: [
+    `${SITE.url}/photos/studio-hero.jpg`,
+    `${SITE.url}/photos/studio-detail-01.jpg`,
+    `${SITE.url}/photos/studio-detail-02.jpg`,
+    `${SITE.url}/photos/studio-detail-03.jpg`,
+  ],
+  description: SITE.description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    postalCode: SITE.address.postal,
+    addressCountry: SITE.address.countryCode,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.lat,
+    longitude: SITE.geo.lon,
+  },
+  url: SITE.url,
+  telephone: SITE.phonePlain,
+  email: SITE.email,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '10:00',
+      closes: '19:00',
+    },
+  ],
+};
+
+const placeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Place',
+  '@id': `${canonicalUrl}#place`,
+  name: 'PPC Studio',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    postalCode: SITE.address.postal,
+    addressCountry: SITE.address.countryCode,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.lat,
+    longitude: SITE.geo.lon,
+  },
+  hasMap: `https://www.google.com/maps/place/Cal%C3%A7ada+dos+Mestres+34,+Lisboa`,
+  containedInPlace: {
+    '@type': 'AdministrativeArea',
+    name: 'Campolide, Lisboa, Portugal',
+  },
+};
+
+const studioPhotos = [
+  { src: '/photos/studio-detail-01.jpg', alt: '6-color screen printing carousel at PPC studio' },
+  { src: '/photos/studio-detail-02.jpg', alt: 'Single-head industrial embroidery machine at PPC' },
+  { src: '/photos/studio-detail-03.jpg', alt: 'DTF printer at PPC studio' },
+];
+---
+<Base
+  title="Visit the PPC studio — Calçada dos Mestres 34, Lisbon"
+  description="Visit Portugal Print Club in Campolide, Lisbon. See screen printing, embroidery, and DTF in person. By appointment."
+>
+  <SEO
+    slot="head"
+    title="Visit the PPC studio — Calçada dos Mestres 34, Lisbon"
+    description="Visit Portugal Print Club in Campolide, Lisbon. See screen printing, embroidery, and DTF in person. By appointment."
+    ogImage="/og-studio.jpg"
+    canonicalUrl={canonicalUrl}
+    schemas={[localBusinessSchema, placeSchema]}
+  />
+
+  <Header />
+
+  <main>
+    <Breadcrumbs items={[{ name: 'PPC', href: '/' }, { name: 'Studio' }]} />
+
+    <div class="container-ppc pt-12 pb-24">
+      <!-- Title block -->
+      <div class="mb-12 pb-12 border-b border-[var(--color-rule)]">
+        <p class="section-num mb-4">03.000</p>
+        <h1 class="text-h1 mb-4">STUDIO</h1>
+        <p class="font-baskerville text-lg text-mute max-w-2xl">
+          A custom print studio in Lisbon, in Campolide.
+          Open for client visits by appointment.
+        </p>
+      </div>
+
+      <div class="space-y-16">
+
+        <!-- Address -->
+        <div class="pb-12 border-b border-[var(--color-rule)]">
+          <p class="label-text mb-6">ADDRESS</p>
+          <address class="not-italic font-baskerville text-lg space-y-1 mb-4">
+            <p>{SITE.address.street}</p>
+            <p>{SITE.address.postal} {SITE.address.city}, {SITE.address.country}</p>
+            <p>{SITE.address.district}</p>
+          </address>
+          <p class="font-baskerville text-mute">Ground floor. Street entrance, letter A.</p>
+          <p class="font-baskerville text-mute">Five minutes from Marquês de Pombal by foot.</p>
+        </div>
+
+        <!-- About the space -->
+        <div class="pb-12 border-b border-[var(--color-rule)]">
+          <p class="label-text mb-6">ABOUT THE SPACE</p>
+          <div class="font-baskerville text-lg leading-relaxed max-w-2xl space-y-4 mb-10">
+            <p>This is where we work and where we meet clients.</p>
+            <p>
+              Inside: a 6-color screen printing carousel, a
+              single-head embroidery machine, a DTF printer,
+              a heat press, sample fabric racks, and a
+              worktable for design and conversation.
+            </p>
+            <p>
+              We invite clients in. You can see samples,
+              handle blanks, understand what different
+              techniques actually look like in person, and
+              meet the people making your order. Approvals
+              happen with the real thing in hand, not over email.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {studioPhotos.map((photo) => (
+              <div class="aspect-[4/3] overflow-hidden bg-[rgba(10,10,10,0.06)]">
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  loading="lazy"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- How to visit -->
+        <div class="pb-12 border-b border-[var(--color-rule)]">
+          <p class="label-text mb-6">HOW TO VISIT</p>
+          <div class="font-baskerville text-lg leading-relaxed max-w-2xl space-y-4">
+            <p>
+              Studio visits are by appointment. Book ahead
+              via WhatsApp or email. A typical visit is 30
+              to 60 minutes.
+            </p>
+            <p>
+              Bring your brief if you have one. We have
+              samples of every technique, every fabric weight,
+              every blank on file.
+            </p>
+          </div>
+        </div>
+
+        <!-- Hours -->
+        <div class="pb-12 border-b border-[var(--color-rule)]">
+          <p class="label-text mb-6">HOURS</p>
+          <dl class="space-y-3 font-barlow text-base">
+            <div class="flex gap-8">
+              <dt class="text-mute min-w-[14rem]">Monday — Friday</dt>
+              <dd>10:00 — 19:00</dd>
+            </div>
+            <div class="flex gap-8">
+              <dt class="text-mute min-w-[14rem]">Saturday — Sunday</dt>
+              <dd>By appointment</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Contact -->
+        <div class="pb-12 border-b border-[var(--color-rule)]">
+          <p class="label-text mb-6">CONTACT</p>
+          <dl class="space-y-3 font-barlow text-base">
+            <div class="flex gap-8">
+              <dt class="text-mute min-w-[7rem]">WhatsApp</dt>
+              <dd><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a></dd>
+            </div>
+            <div class="flex gap-8">
+              <dt class="text-mute min-w-[7rem]">Email</dt>
+              <dd><a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a></dd>
+            </div>
+            <div class="flex gap-8">
+              <dt class="text-mute min-w-[7rem]">Instagram</dt>
+              <dd><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a></dd>
+            </div>
+          </dl>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-20 pt-12 border-t border-[var(--color-rule)] flex flex-col sm:flex-row gap-6">
+        <a
+          href="/#contact"
+          class="font-barlow font-semibold uppercase tracking-[0.04em] text-sm border border-[var(--color-text)] px-6 py-3 hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors inline-block text-center"
+        >
+          Send a brief →
+        </a>
+        <a
+          href="/"
+          class="font-barlow font-medium uppercase tracking-[0.04em] text-sm text-mute hover:text-[var(--color-accent)] transition-colors flex items-center"
+        >
+          ← Back to PPC
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>

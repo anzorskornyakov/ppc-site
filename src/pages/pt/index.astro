@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import SEO from '../../components/SEO.astro';
+---
+<Base title="PPC — Em construção" description="Em breve.">
+  <SEO
+    slot="head"
+    title="PPC — Em construção"
+    description="Em breve."
+  />
+
+  <Header />
+
+  <main>
+    <div class="container-ppc py-32">
+      <p class="section-num mb-6">00.000</p>
+      <h1 class="font-barlow font-semibold text-4xl uppercase mb-4" lang="pt">Em construção.</h1>
+      <p class="font-baskerville text-mute mb-8" lang="pt">Esta página estará disponível em breve.</p>
+      <a
+        href="/"
+        class="font-barlow font-medium uppercase tracking-[0.04em] text-sm text-mute hover:text-[var(--color-accent)] transition-colors"
+      >
+        ← English
+      </a>
+    </div>
+  </main>
+
+  <Footer />
+</Base>

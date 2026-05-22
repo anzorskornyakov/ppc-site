@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import SEO from './SEO.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+
+interface Props {
+  sectionNum: string;
+  title: string;
+  subtitle: string;
+  metaTitle: string;
+  metaDescription: string;
+  ogImage: string;
+  canonicalUrl: string;
+  schemas: object[];
+  breadcrumbs: { name: string; href?: string }[];
+}
+
+const {
+  sectionNum,
+  title,
+  subtitle,
+  metaTitle,
+  metaDescription,
+  ogImage,
+  canonicalUrl,
+  schemas,
+  breadcrumbs,
+} = Astro.props;
+---
+<Base title={metaTitle} description={metaDescription}>
+  <SEO
+    slot="head"
+    title={metaTitle}
+    description={metaDescription}
+    ogImage={ogImage}
+    canonicalUrl={canonicalUrl}
+    schemas={schemas}
+  />
+
+  <Header />
+
+  <main>
+    <Breadcrumbs items={breadcrumbs} />
+
+    <div class="container-ppc pt-12 pb-24">
+      <!-- Page title block -->
+      <div class="mb-12 pb-12 border-b border-[var(--color-rule)]">
+        <p class="section-num mb-4">{sectionNum}</p>
+        <h1 class="text-h1 mb-4">{title}</h1>
+        <p class="font-baskerville text-lg text-[var(--color-mute)] max-w-2xl">{subtitle}</p>
+      </div>
+
+      <!-- Page content sections -->
+      <div class="service-content space-y-16">
+        <slot />
+      </div>
+
+      <!-- CTA block -->
+      <div class="mt-20 pt-12 border-t border-[var(--color-rule)] flex flex-col sm:flex-row gap-6">
+        <a
+          href="/#contact"
+          class="font-barlow font-semibold uppercase tracking-[0.04em] text-sm border border-[var(--color-text)] px-6 py-3 hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors inline-block text-center"
+        >
+          Send a brief →
+        </a>
+        <a
+          href="/"
+          class="font-barlow font-medium uppercase tracking-[0.04em] text-sm text-mute hover:text-[var(--color-accent)] transition-colors flex items-center"
+        >
+          ← Back to PPC
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>

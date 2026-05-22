@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+import StructuredData from '../components/StructuredData.astro';
+import { brands, tierLabels, tierOrder } from '../data/brands';
+import { SITE } from '../data/site';
+
+const canonicalUrl = `${SITE.url}/catalog`;
+
+const brandsByTier = tierOrder.map((tier) => ({
+  tier,
+  meta: tierLabels[tier],
+  brands: brands.filter((b) => b.tier === tier),
+}));
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${canonicalUrl}#brands`,
+  name: 'Blank brands PPC works with',
+  numberOfItems: brands.length,
+  itemListElement: brands.map((brand, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Brand',
+      name: brand.name,
+      url: brand.url,
+    },
+  })),
+};
+---
+<Base
+  title="Catalog — Blank brands we print on — PPC"
+  description="Every brand from Toptex (Stanley/Stella, AS Colour, Native Spirit, Continental, Gildan, B&C, and 100+ more) plus WATC Studio and Velour Garments."
+>
+  <SEO
+    slot="head"
+    title="Catalog — Blank brands we print on — PPC"
+    description="Every brand from Toptex (Stanley/Stella, AS Colour, Native Spirit, Continental, Gildan, B&C, and 100+ more) plus WATC Studio and Velour Garments."
+    ogImage="/og-catalog.jpg"
+    canonicalUrl={canonicalUrl}
+    schemas={[itemListSchema]}
+  />
+
+  <Header />
+
+  <main>
+    <Breadcrumbs items={[{ name: 'PPC', href: '/' }, { name: 'Catalog' }]} />
+
+    <div class="container-ppc pt-12 pb-24">
+      <!-- Title block -->
+      <div class="mb-12 pb-12 border-b border-[var(--color-rule)]">
+        <p class="section-num mb-4">00.000</p>
+        <h1 class="text-h1 mb-6">CATALOG</h1>
+        <p class="font-baskerville text-lg max-w-2xl leading-relaxed text-mute">
+          We work with every brand available through
+          Toptex — Europe's largest blank supplier —
+          plus a premium selection from WATC Studio
+          and Velour Garments in Barcelona.
+        </p>
+        <p class="font-baskerville text-lg mt-3 text-mute">These are some of the brands we use most often.</p>
+      </div>
+
+      <!-- Brand tiers -->
+      <div class="space-y-16">
+        {brandsByTier.map(({ tier, meta, brands: tierBrands }) => (
+          <div class="pb-16 border-b border-[var(--color-rule)] last:border-0">
+            <div class="mb-8">
+              <p class="section-num">{meta.num}</p>
+              <p class="font-barlow font-semibold text-2xl uppercase tracking-[0.02em] mt-1">{meta.label}</p>
+              {meta.desc && (
+                <p class="font-baskerville text-mute mt-1">{meta.desc}</p>
+              )}
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {tierBrands.map((brand) => (
+                <BrandLogo brand={brand} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Footer note -->
+      <div class="mt-12 pt-8 border-t border-[var(--color-rule)]">
+        <p class="font-baskerville text-mute mb-2">+ 100+ other brands through Toptex.</p>
+        <p class="font-baskerville text-mute mb-6">Or supply your own.</p>
+        <p class="font-baskerville">
+          Need something specific?{' '}
+          <a href="/#contact" class="underline hover:text-[var(--color-accent)] transition-colors">Tell us — we'll find it.</a>
+        </p>
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-16 pt-12 border-t border-[var(--color-rule)] flex flex-col sm:flex-row gap-6">
+        <a
+          href="/#contact"
+          class="font-barlow font-semibold uppercase tracking-[0.04em] text-sm border border-[var(--color-text)] px-6 py-3 hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors inline-block text-center"
+        >
+          Send a brief →
+        </a>
+        <a
+          href="/"
+          class="font-barlow font-medium uppercase tracking-[0.04em] text-sm text-mute hover:text-[var(--color-accent)] transition-colors flex items-center"
+        >
+          ← Back to PPC
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>

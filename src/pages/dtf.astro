@@ -1,0 +1,153 @@
+---
+import ServicePageLayout from '../components/ServicePageLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import { dtfFaqs } from '../data/faqs';
+import { SITE } from '../data/site';
+
+const canonicalUrl = `${SITE.url}/dtf`;
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${canonicalUrl}#service`,
+  serviceType: 'DTF printing',
+  name: 'DTF printing in Lisbon',
+  alternateName: ['Direct-to-Film printing', 'DTF transfer printing'],
+  provider: { '@id': `${SITE.url}/#organization` },
+  areaServed: [
+    { '@type': 'City', name: 'Lisboa' },
+    { '@type': 'Country', name: 'Portugal' },
+    { '@type': 'Place', name: 'European Union' },
+  ],
+  description: 'Full-color DTF transfer printing in Lisbon. From 1 piece, no setup fee. Photo-realistic. Ready in 3 business days.',
+  offers: {
+    '@type': 'AggregateOffer',
+    lowPrice: '5',
+    highPrice: '15',
+    priceCurrency: 'EUR',
+    priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'piece' },
+    eligibleQuantity: { '@type': 'QuantitativeValue', minValue: 1, unitText: 'pieces' },
+  },
+  hoursAvailable: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '10:00',
+    closes: '19:00',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${canonicalUrl}#faq`,
+  mainEntity: dtfFaqs.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+<ServicePageLayout
+  sectionNum="01.400"
+  title="DTF"
+  subtitle="Full-color digital transfer printing in Lisbon, from 1 piece, no setup fee, ready in 3 days."
+  metaTitle="DTF printing in Lisbon — PPC"
+  metaDescription="Full-color DTF transfer printing on apparel. From 1 piece, no setup fee. Photo-realistic. Ready in 3 business days. Lisbon studio."
+  ogImage="/og-dtf.jpg"
+  canonicalUrl={canonicalUrl}
+  schemas={[serviceSchema, faqSchema]}
+  breadcrumbs={[
+    { name: 'PPC', href: '/' },
+    { name: 'Services' },
+    { name: 'DTF' },
+  ]}
+>
+
+  <!-- What it is -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">WHAT IT IS</p>
+    <div class="font-baskerville text-lg leading-relaxed max-w-2xl space-y-4">
+      <p>
+        Direct-to-Film printing. Your artwork is printed
+        in full color onto a transfer film, then heat-pressed
+        onto the garment. The result is a smooth,
+        photo-realistic print with no color limit, no
+        setup cost, and no minimum order.
+      </p>
+    </div>
+  </div>
+
+  <!-- When to choose -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">WHEN TO CHOOSE THIS</p>
+    <ul class="space-y-2 list-none font-baskerville text-lg">
+      <li>— Single-piece orders or small runs</li>
+      <li>— Full-color or photographic artwork</li>
+      <li>— Designs with fine detail, gradients, or many colors</li>
+      <li>— When time is short</li>
+    </ul>
+  </div>
+
+  <!-- Capacity -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">CAPACITY & MINIMUMS</p>
+    <dl class="space-y-3 font-barlow text-base">
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Minimum order</dt>
+        <dd>1 piece</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Setup fee</dt>
+        <dd>None</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Daily capacity</dt>
+        <dd>200–300 pieces</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">Turnaround</dt>
+        <dd>3 business days</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Pricing -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">PRICING</p>
+    <dl class="space-y-3 font-barlow text-base">
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">A6 (10×15 cm)</dt>
+        <dd>€5–7</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">A5 (15×21 cm)</dt>
+        <dd>€7–9</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">A4 (21×30 cm)</dt>
+        <dd>€10–13</dd>
+      </div>
+      <div class="flex gap-8">
+        <dt class="text-mute min-w-[14rem]">A3 (30×42 cm)</dt>
+        <dd>€12–15</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Process -->
+  <div class="pb-12 border-b border-[var(--color-rule)]">
+    <p class="label-text mb-6">PROCESS</p>
+    <ol class="space-y-3 list-none font-baskerville text-lg">
+      <li><span class="font-barlow text-mute mr-3">1.</span>Send your design (PNG, JPG, or PDF at 300 DPI)</li>
+      <li><span class="font-barlow text-mute mr-3">2.</span>We respond within 24 hours with a quote</li>
+      <li><span class="font-barlow text-mute mr-3">3.</span>You approve. Production. Ready in 3 days.</li>
+    </ol>
+  </div>
+
+  <!-- FAQ -->
+  <div>
+    <p class="label-text mb-8">FAQ</p>
+    <FAQ items={dtfFaqs} />
+  </div>
+
+</ServicePageLayout>
