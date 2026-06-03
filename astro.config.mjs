@@ -3,11 +3,15 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   site: 'https://ppc.space',
+
   vite: {
     plugins: [tailwindcss()],
   },
+
   integrations: [
     sitemap({
       changefreq: 'weekly',
@@ -19,6 +23,7 @@ export default defineConfig({
       },
     }),
   ],
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt'],
@@ -26,4 +31,6 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+
+  adapter: cloudflare(),
 });
