@@ -9,10 +9,19 @@ const { id, num, label, class: className = '' } = Astro.props;
 ---
 <section
   id={id}
-  class:list={['divider py-20 md:py-24', className]}
+  class:list={['divider py-16 md:py-20', className]}
 >
   <div class="container-ppc">
-    <p class="section-num mb-6">{num}&nbsp;&nbsp;&nbsp;{label}</p>
-    <slot />
+    <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20">
+      <!-- Left: index label -->
+      <div class="mb-8 md:mb-0 md:pt-1">
+        <p class="section-num">{num}</p>
+        <p class="label-text mt-0.5">{label}</p>
+      </div>
+      <!-- Right: content -->
+      <div>
+        <slot />
+      </div>
+    </div>
   </div>
 </section>

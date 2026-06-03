@@ -171,63 +171,83 @@ const howToSchema = {
 
   <main>
     <!-- 00: Cover -->
-    <section id="cover" class="divider py-24 md:py-32">
+    <section id="cover" class="divider py-20 md:py-28">
       <div class="container-ppc">
-        <p class="section-num mb-8">00.000</p>
-        <div class="leading-none tracking-tight">
-          <h1 class="font-barlow font-semibold" style="font-size: clamp(3rem,8vw,6rem); line-height:1;">PPC</h1>
-          <p class="font-barlow font-semibold text-mute" style="font-size: clamp(1.5rem,4vw,3rem); margin-top: 0.25em; line-height:1.1;">PORTUGAL PRINT CLUB</p>
-          <p class="font-barlow font-medium text-mute" style="font-size: clamp(1rem,2vw,1.5rem); margin-top: 0.5em; line-height:1.2;">LISBON · 2026</p>
+        <p class="section-num mb-10 md:mb-14">00.000</p>
+        <div>
+          <h1 class="font-barlow font-semibold leading-none tracking-tight"
+              style="font-size: clamp(4.5rem, 13vw, 9rem);">PPC</h1>
+          <p class="font-barlow font-semibold text-mute leading-tight tracking-tight"
+             style="font-size: clamp(1.75rem, 5vw, 3.5rem); margin-top: 0.2em;">
+            PORTUGAL PRINT CLUB
+          </p>
+          <p class="font-barlow text-mute"
+             style="font-size: clamp(0.9rem, 1.5vw, 1.1rem); margin-top: 1em; letter-spacing: 0.04em;">
+            LISBON · 2026
+          </p>
         </div>
       </div>
     </section>
 
     <!-- 01: What we do -->
     <Section id="services" num="01.000" label="WHAT WE DO">
-      <p class="font-baskerville text-lg mb-8 max-w-xl">A custom print studio in Lisbon.</p>
-      <ul class="space-y-3 list-none mb-8">
+      <p class="font-baskerville mb-10 max-w-sm leading-relaxed" style="font-size:1rem;">
+        A custom print studio in Lisbon.
+      </p>
+      <ul class="space-y-2 list-none mb-10">
         <li>
-          <a href="/screen-printing" class="font-barlow font-medium text-xl uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors">
-            →&nbsp;&nbsp;Screen printing
+          <a href="/screen-printing"
+             class="font-barlow font-semibold uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors"
+             style="font-size: clamp(1.5rem, 3vw, 2rem);">
+            → Screen printing
           </a>
         </li>
         <li>
-          <a href="/embroidery" class="font-barlow font-medium text-xl uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors">
-            →&nbsp;&nbsp;Embroidery
+          <a href="/embroidery"
+             class="font-barlow font-semibold uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors"
+             style="font-size: clamp(1.5rem, 3vw, 2rem);">
+            → Embroidery
           </a>
         </li>
         <li>
-          <a href="/dtf" class="font-barlow font-medium text-xl uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors">
-            →&nbsp;&nbsp;DTF
+          <a href="/dtf"
+             class="font-barlow font-semibold uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors"
+             style="font-size: clamp(1.5rem, 3vw, 2rem);">
+            → DTF
           </a>
         </li>
       </ul>
-      <p class="font-baskerville text-mute">Ready in 3 business days.</p>
+      <p class="font-baskerville text-mute" style="font-size:0.9rem;">Ready in 3 business days.</p>
     </Section>
 
     <!-- 02: Blanks -->
     <Section id="blanks" num="02.000" label="BLANKS">
-      <p class="font-baskerville text-lg max-w-2xl mb-6 leading-relaxed">
-        We work with every brand available through
-        Toptex — Europe's largest blank supplier —
-        plus our own premium selection from WATC Studio
-        and Velour Garments in Barcelona.
+      <p class="font-baskerville mb-5 max-w-md leading-relaxed" style="font-size:1rem;">
+        We work with every brand available through Toptex — Europe's largest blank
+        supplier — plus our own premium selection from WATC Studio and Velour Garments
+        in Barcelona.
       </p>
-      <p class="font-baskerville text-lg text-mute mb-8">Or supply your own. Same 3-day turnaround.</p>
-      <a href="/catalog" class="font-barlow font-medium uppercase tracking-[0.02em] text-sm hover:text-[var(--color-accent)] transition-colors">
-        →&nbsp;&nbsp;/catalog
+      <p class="font-baskerville text-mute mb-10 max-w-md" style="font-size:1rem;">
+        Or supply your own. Same 3-day turnaround.
+      </p>
+      <a href="/catalog"
+         class="font-barlow font-medium uppercase tracking-[0.04em] text-sm hover:text-[var(--color-accent)] transition-colors">
+        → /catalog
       </a>
     </Section>
 
     <!-- 03: Studio -->
     <Section id="studio-section" num="03.000" label="STUDIO">
-      <p class="font-baskerville text-lg mb-1">{SITE.address.street}</p>
-      <p class="font-baskerville text-lg mb-1">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
-      <p class="font-baskerville text-mute mb-8">By appointment.</p>
-      <a href="/studio" class="font-barlow font-medium uppercase tracking-[0.02em] text-sm hover:text-[var(--color-accent)] transition-colors mb-12 inline-block">
-        →&nbsp;&nbsp;/studio
+      <div class="mb-8">
+        <p class="font-baskerville" style="font-size:1rem;">{SITE.address.street}</p>
+        <p class="font-baskerville" style="font-size:1rem;">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
+        <p class="font-baskerville text-mute mt-1" style="font-size:1rem;">By appointment.</p>
+      </div>
+      <a href="/studio"
+         class="font-barlow font-medium uppercase tracking-[0.04em] text-sm hover:text-[var(--color-accent)] transition-colors">
+        → /studio
       </a>
-      <div class="mt-10 w-full aspect-[16/7] overflow-hidden bg-[rgba(10,10,10,0.06)]">
+      <div class="mt-12 w-full aspect-[16/7] overflow-hidden bg-[rgba(10,10,10,0.06)]">
         <img
           src="/photos/studio-hero.jpg"
           alt="PPC studio interior — Calçada dos Mestres 34, Lisbon"
@@ -240,13 +260,11 @@ const howToSchema = {
 
     <!-- 04: Work -->
     <Section id="work" num="04.000" label="WORK">
-      <p class="font-baskerville text-lg max-w-2xl mb-12 leading-relaxed">
-        The newest and most talked-about venues in
-        Lisbon. All came through word of mouth, before
-        we had a brand or a space.
+      <p class="font-baskerville max-w-sm mb-10 leading-relaxed" style="font-size:1rem;">
+        The newest and most talked-about venues in Lisbon.
+        All came through word of mouth, before we had a brand or a space.
       </p>
-
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-8">
         {workImages.map((img) => (
           <div class="aspect-square overflow-hidden bg-[rgba(10,10,10,0.06)]">
             <img
@@ -258,38 +276,40 @@ const howToSchema = {
           </div>
         ))}
       </div>
-
-      <p class="font-baskerville text-mute text-sm leading-relaxed">
+      <p class="font-barlow text-mute text-sm leading-relaxed tracking-wide">
         {clients.join('  ·  ')}
       </p>
     </Section>
 
     <!-- 05: Contact -->
     <Section id="contact" num="05.000" label="SEND A BRIEF">
-      <div class="max-w-lg">
+      <div class="max-w-md">
         <ContactForm />
       </div>
     </Section>
 
     <!-- 06: Colophon -->
     <Section id="colophon" num="06.000" label="COLOPHON">
-      <div class="space-y-6 font-barlow text-sm">
-        <div>
+      <div class="space-y-8 font-barlow" style="font-size:0.875rem;">
+        <div class="space-y-1">
           <p>{SITE.legalName} · NIPC {SITE.nipc}</p>
           <p class="text-mute">{SITE.address.city}, {SITE.address.country} · {SITE.foundingDate}</p>
         </div>
-        <div class="space-y-2">
-          <p>
-            <span class="text-mute" style="display:inline-block;min-width:7rem;">WhatsApp</span>
-            <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a>
+        <div class="space-y-3">
+          <p class="flex gap-8">
+            <span class="text-mute w-24 shrink-0">WhatsApp</span>
+            <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer"
+               class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a>
           </p>
-          <p>
-            <span class="text-mute" style="display:inline-block;min-width:7rem;">Email</span>
-            <a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
+          <p class="flex gap-8">
+            <span class="text-mute w-24 shrink-0">Email</span>
+            <a href={`mailto:${SITE.email}`}
+               class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
           </p>
-          <p>
-            <span class="text-mute" style="display:inline-block;min-width:7rem;">Instagram</span>
-            <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a>
+          <p class="flex gap-8">
+            <span class="text-mute w-24 shrink-0">Instagram</span>
+            <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer"
+               class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a>
           </p>
         </div>
         <p class="text-mute">Prices exclude 23% VAT.</p>
