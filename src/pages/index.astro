@@ -171,55 +171,52 @@ const howToSchema = {
   <Header />
 
   <main>
-    <!-- 00: Cover / title block -->
-    <section id="cover" class="container-ppc pt-10 md:pt-14 pb-16 md:pb-24">
-      <!-- title-block metadata row -->
-      <div class="flex flex-wrap items-center gap-x-6 gap-y-1 section-num pb-5 mb-10 md:mb-14 border-b border-[var(--color-rule)]">
-        <span>00.000 — Index</span>
-        <span class="text-faint hidden sm:inline">/</span>
-        <span>Lisbon, Portugal</span>
-        <span class="text-faint hidden sm:inline">/</span>
-        <span>Est. {SITE.foundingDate}</span>
-        <span class="ml-auto text-accent">● Open for briefs</span>
-      </div>
+    <!-- 00: Hero -->
+    <section id="cover" class="container-ppc pt-14 md:pt-24 pb-10 md:pb-16">
+      <p class="eyebrow mb-7">Open for briefs · Lisbon</p>
 
-      <h1 class="font-barlow font-bold uppercase leading-[0.86] tracking-[-0.02em]"
-          style="font-size: clamp(4rem, 17vw, 13rem);">
-        Portugal<br />Print Club
+      <h1 class="text-display max-w-[18ch]">
+        Custom print studio in <span class="text-accent">Lisbon</span>.
       </h1>
 
-      <div class="mt-10 md:mt-14 grid md:grid-cols-[1fr_auto] md:items-end gap-8">
-        <p class="lede text-mute">
-          A custom print studio in Lisbon — screen printing,
-          embroidery and DTF. From a single piece, ready in three business days.
+      <div class="mt-8 md:mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <p class="lede">
+          Screen printing, embroidery and DTF. From a single piece,
+          ready in three business days.
         </p>
-        <a href="#contact" class="btn-solid justify-self-start md:justify-self-end">Send a brief →</a>
+        <div class="flex flex-wrap items-center gap-3 shrink-0">
+          <a href="#contact" class="btn-solid">Send a brief</a>
+          <a href="/catalog" class="btn-outline">View the catalog</a>
+        </div>
       </div>
+
+      <!-- Hero image -->
+      <figure class="mt-12 md:mt-16">
+        <div class="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-2xl bg-[var(--color-surface)]">
+          <img src="/photos/studio-hero.jpg" alt="PPC studio in Campolide, Lisbon" class="w-full h-full object-cover" />
+        </div>
+      </figure>
     </section>
 
     <!-- 01: What we do — service index -->
     <Section id="services" num="01.000" label="What we do">
-      <ul class="list-none">
+      <ul class="list-none -mt-2">
         {services.map((s) => (
           <li>
             <a href={s.path} class="group index-row no-underline">
-              <span class="font-barlow font-semibold uppercase tracking-[0.01em] leading-none group-hover:text-[var(--color-accent)] transition-colors"
-                    style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
-                {s.name}
+              <span class="flex items-baseline gap-4">
+                <span class="section-num hidden sm:inline">{s.sectionNum}</span>
+                <span class="text-h2 group-hover:text-[var(--color-accent)] transition-colors">{s.name}</span>
               </span>
-              <span class="flex items-baseline gap-4 shrink-0 text-mute">
-                <span class="font-barlow text-sm uppercase tracking-[0.06em] hidden sm:inline">
-                  from €{s.priceLow}/pc · min {s.minOrder}
-                </span>
-                <span class="font-barlow text-xl group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all">→</span>
+              <span class="flex items-baseline gap-5 shrink-0 text-mute">
+                <span class="font-body text-sm hidden sm:inline">from €{s.priceLow}/pc · min {s.minOrder}</span>
+                <span class="font-body text-xl group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all">→</span>
               </span>
             </a>
           </li>
         ))}
       </ul>
-      <p class="font-baskerville text-mute mt-6" style="font-size:0.9375rem;">
-        Every order ready in {SITE.turnaround}.
-      </p>
+      <p class="font-body text-mute mt-6 text-sm">Every order ready in {SITE.turnaround}.</p>
     </Section>
 
     <!-- 02: Blanks -->
@@ -240,17 +237,17 @@ const howToSchema = {
         <p class="prose-ppc">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
         <p class="prose-ppc text-mute mt-1">Open by appointment.</p>
       </div>
-      <a href="/studio" class="btn-ghost mb-12">Visit the studio →</a>
+      <a href="/studio" class="btn-ghost">Visit the studio →</a>
       <figure class="mt-10">
-        <div class="w-full aspect-[16/8] overflow-hidden bg-[rgba(20,17,14,0.06)]">
+        <div class="w-full aspect-[16/8] overflow-hidden rounded-2xl bg-[var(--color-surface)]">
           <img
-            src="/photos/studio-hero.jpg"
+            src="/photos/studio-detail-01.jpg"
             alt="PPC studio interior — Calçada dos Mestres 34, Lisbon"
             loading="lazy"
             class="w-full h-full object-cover"
           />
         </div>
-        <figcaption class="section-num mt-3">Fig. 01 — Studio, Calçada dos Mestres 34</figcaption>
+        <figcaption class="section-num mt-3">Studio · Calçada dos Mestres 34, Campolide</figcaption>
       </figure>
     </Section>
 
@@ -260,65 +257,69 @@ const howToSchema = {
         The newest and most talked-about venues in Lisbon — all came
         through word of mouth, before we had a brand or a space.
       </p>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-1.5 md:gap-2 mb-8">
-        {workImages.map((img, i) => (
-          <figure class="aspect-square overflow-hidden bg-[rgba(20,17,14,0.06)] relative group">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
+        {workImages.map((img) => (
+          <figure class="aspect-square overflow-hidden rounded-xl bg-[var(--color-surface)] group">
             <img
               src={img.src}
               alt={img.alt}
               loading="lazy"
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
             />
-            <figcaption class="absolute bottom-2 left-2 section-num text-[var(--color-bg)] mix-blend-difference">
-              {String(i + 1).padStart(2, '0')}
-            </figcaption>
           </figure>
         ))}
       </div>
-      <p class="font-barlow text-mute text-sm tracking-[0.04em] leading-relaxed">
-        {clients.join('   ·   ')}
-      </p>
-    </Section>
-
-    <!-- 05: Contact -->
-    <Section id="contact" num="05.000" label="Send a brief">
-      <p class="prose-ppc mb-10">
-        Send your logo or project brief. We respond within 24 hours with a
-        technique recommendation, blank options and a precise quote.
-      </p>
-      <div class="max-w-md">
-        <ContactForm />
+      <div class="flex flex-wrap gap-x-2 gap-y-1 items-center">
+        {clients.map((c, i) => (
+          <>
+            {i > 0 && <span class="text-faint">·</span>}
+            <span class="font-body text-mute text-sm">{c}</span>
+          </>
+        ))}
       </div>
     </Section>
 
-    <!-- 06: Colophon -->
-    <Section id="colophon" num="06.000" label="Colophon">
-      <div class="grid sm:grid-cols-2 gap-x-12 gap-y-10">
+    <!-- 05: Contact -->
+    <!-- 05: Blue CTA band -->
+    <section class="bg-accent text-white mt-8 md:mt-16">
+      <div class="container-ppc py-20 md:py-28">
+        <p class="font-body text-sm font-medium uppercase tracking-[0.14em] text-white/70 mb-6">Let's work together</p>
+        <h2 class="text-h1 text-white max-w-[16ch]">Have a project in mind?</h2>
+        <p class="font-body text-lg text-white/80 max-w-xl mt-6">
+          Send your logo or brief. We reply within 24 hours with a technique
+          recommendation, blank options and a precise quote.
+        </p>
+        <div class="flex flex-wrap items-center gap-3 mt-10">
+          <a href="#contact" class="font-body text-sm font-medium px-6 py-3 rounded-full bg-white text-[var(--color-accent)] hover:bg-white/90 transition-colors">Send a brief</a>
+          <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="font-body text-sm font-medium px-6 py-3 rounded-full border border-white/40 text-white hover:bg-white/10 transition-colors">WhatsApp ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06: Contact -->
+    <Section id="contact" num="05.000" label="Send a brief">
+      <div class="grid md:grid-cols-2 gap-12">
         <div>
-          <p class="label-text mb-3">Contact</p>
-          <ul class="list-none font-barlow text-[0.9375rem] space-y-2">
+          <p class="prose-ppc mb-8">
+            Tell us what you need. We'll get back to you within 24 hours.
+          </p>
+          <ul class="list-none font-body text-[0.9375rem] space-y-3">
             <li class="flex gap-6">
-              <span class="text-mute w-20 shrink-0">WhatsApp</span>
+              <span class="text-mute w-24 shrink-0">WhatsApp</span>
               <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a>
             </li>
             <li class="flex gap-6">
-              <span class="text-mute w-20 shrink-0">Email</span>
+              <span class="text-mute w-24 shrink-0">Email</span>
               <a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
             </li>
             <li class="flex gap-6">
-              <span class="text-mute w-20 shrink-0">Instagram</span>
+              <span class="text-mute w-24 shrink-0">Instagram</span>
               <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a>
             </li>
           </ul>
         </div>
         <div>
-          <p class="label-text mb-3">Legal</p>
-          <ul class="list-none font-barlow text-[0.9375rem] space-y-2 text-mute">
-            <li>{SITE.legalName}</li>
-            <li>NIPC {SITE.nipc}</li>
-            <li>{SITE.address.city}, {SITE.address.country} · Est. {SITE.foundingDate}</li>
-            <li>Prices exclude 23% VAT.</li>
-          </ul>
+          <ContactForm />
         </div>
       </div>
     </Section>

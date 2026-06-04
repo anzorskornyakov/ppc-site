@@ -6,40 +6,18 @@ interface Props {
 }
 const { active = null } = Astro.props;
 ---
-<header class="sticky top-0 z-50 bg-[var(--color-bg)] border-b border-[var(--color-rule)]">
-  <div class="container-ppc flex items-center justify-between h-14">
-    <a
-      href="/"
-      class="font-barlow font-bold text-[1.05rem] uppercase tracking-[0.06em] leading-none hover:text-[var(--color-accent)] transition-colors"
-      aria-label="PPC — home"
-    >
-      PPC<span class="text-faint font-medium ml-2 hidden sm:inline">Portugal Print Club</span>
+<header class="sticky top-0 z-50 bg-[var(--color-bg)]/90 backdrop-blur-md border-b border-[var(--color-rule)]">
+  <div class="container-ppc flex items-center justify-between h-16">
+    <a href="/" aria-label="PPC — home" class="flex items-center gap-3 group">
+      <img src="/logo.svg" alt="PPC" width="64" height="35" class="h-8 w-auto" />
+      <span class="hidden sm:inline font-body text-sm text-mute group-hover:text-[var(--color-text)] transition-colors">Portugal Print Club</span>
     </a>
 
-    <nav aria-label="Primary">
-      <ul class="flex items-center gap-5 sm:gap-7 list-none">
-        <li>
-          <a
-            href="/catalog"
-            class:list={['font-barlow text-[0.8125rem] uppercase tracking-[0.1em] font-medium transition-colors hover:text-[var(--color-accent)]', active === 'catalog' ? 'text-[var(--color-text)]' : 'text-mute']}
-          >Catalog</a>
-        </li>
-        <li>
-          <a
-            href="/studio"
-            class:list={['font-barlow text-[0.8125rem] uppercase tracking-[0.1em] font-medium transition-colors hover:text-[var(--color-accent)]', active === 'studio' ? 'text-[var(--color-text)]' : 'text-mute']}
-          >Studio</a>
-        </li>
-        <li>
-          <a
-            href={SITE.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="font-barlow text-[0.8125rem] uppercase tracking-[0.1em] font-medium text-mute hover:text-[var(--color-accent)] transition-colors"
-            aria-label="PPC on Instagram"
-          >Instagram&nbsp;↗</a>
-        </li>
-      </ul>
+    <nav aria-label="Primary" class="flex items-center gap-6 sm:gap-8">
+      <a href="/catalog" class:list={['hidden sm:inline font-body text-sm transition-colors hover:text-[var(--color-accent)]', active === 'catalog' ? 'text-[var(--color-text)] font-medium' : 'text-mute']}>Catalog</a>
+      <a href="/studio" class:list={['hidden sm:inline font-body text-sm transition-colors hover:text-[var(--color-accent)]', active === 'studio' ? 'text-[var(--color-text)] font-medium' : 'text-mute']}>Studio</a>
+      <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hidden sm:inline font-body text-sm text-mute hover:text-[var(--color-accent)] transition-colors">Instagram&nbsp;↗</a>
+      <a href="/#contact" class="font-body text-sm font-medium px-4 py-2 rounded-full bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-dark)] transition-colors">Send a brief</a>
     </nav>
   </div>
 </header>
