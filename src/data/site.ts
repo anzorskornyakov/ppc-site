@@ -10,6 +10,8 @@ export const SITE = {
   phone: '+351 930 548 775',
   phonePlain: '+351930548775',
   whatsapp: 'https://wa.me/351930548775',
+  telegram: '@Anzors',
+  telegramUrl: 'https://t.me/Anzors',
   instagram: '@ppcspace',
   instagramUrl: 'https://www.instagram.com/ppcspace',
   address: {
