@@ -130,13 +130,12 @@ const copies = [0, 1, 2];
     gallery.querySelectorAll<HTMLElement>('[data-set][aria-hidden="true"] button')
       .forEach((b) => b.setAttribute('tabindex', '-1'));
 
-    const SPEED = 0.85;     // wheel sensitivity
-    const TOUCH = 1.15;     // touch drag sensitivity
-    const KEY_STEP = 320;   // keyboard nudge
-    const EASE = 0.08;      // inertia toward target
+    const WHEEL = 1;        // 1:1 wheel scroll — direct, no inertia
+    const TOUCH = 1;        // finger tracks content 1:1
+    const KEY_STEP = 420;   // keyboard nudge
 
-    let target = 0;
-    let current = 0;
+    let offset = 0;
+    let raf = 0;
 
     function measure() {
       for (const s of streams) {
@@ -150,23 +149,27 @@ const copies = [0, 1, 2];
     const overlayOpen = () => document.body.classList.contains('overlay-open');
     const wrap = (v: number, m: number) => ((v % m) + m) % m;
 
-    function render() {
-      current += (target - current) * EASE;
+    // Apply the current offset directly — one rAF per input frame, no easing,
+    // so the page is still (and crisp) whenever the user isn't scrolling.
+    function apply() {
+      raf = 0;
       for (const s of streams) {
-        // Home each track on its middle copy, then drift by direction.
-        const y = -s.cycle + s.dir * wrap(current, s.cycle);
+        const y = -s.cycle + s.dir * wrap(offset, s.cycle);
         s.track.style.transform = `translate3d(0, ${y}px, 0)`;
       }
-      requestAnimationFrame(render);
     }
-    requestAnimationFrame(render);
+    function schedule() {
+      if (!raf) raf = requestAnimationFrame(apply);
+    }
+    apply();
 
     gallery.addEventListener(
       'wheel',
       (e: WheelEvent) => {
         if (overlayOpen()) return;
         e.preventDefault();
-        target += e.deltaY * SPEED;
+        offset += e.deltaY * WHEEL;
+        schedule();
       },
       { passive: false }
     );
@@ -182,9 +185,10 @@ const copies = [0, 1, 2];
       (e: TouchEvent) => {
         if (overlayOpen()) return;
         const y = e.touches[0].clientY;
-        target += (touchY - y) * TOUCH;
+        offset += (touchY - y) * TOUCH;
         touchY = y;
         e.preventDefault();
+        schedule();
       },
       { passive: false }
     );
@@ -194,16 +198,16 @@ const copies = [0, 1, 2];
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-        target += KEY_STEP; e.preventDefault();
+        offset += KEY_STEP; e.preventDefault(); schedule();
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        target -= KEY_STEP; e.preventDefault();
+        offset -= KEY_STEP; e.preventDefault(); schedule();
       }
     });
 
     let resizeTimer: number | undefined;
     window.addEventListener('resize', () => {
       window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(measure, 150);
+      resizeTimer = window.setTimeout(() => { measure(); apply(); }, 150);
     });
 
     wireClicks(gallery);
