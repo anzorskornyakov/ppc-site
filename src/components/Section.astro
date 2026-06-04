@@ -12,7 +12,7 @@ const { id, label, class: className = '' } = Astro.props;
   class:list={['divider py-16 md:py-20', className]}
 >
   <div class="container-ppc">
-    <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20">
+    <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20" data-reveal>
       <!-- Left: index label -->
       <div class="mb-8 md:mb-0 md:pt-1">
         <p class="label-text">{label}</p>

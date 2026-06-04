@@ -302,3 +302,28 @@
   }
   .brand-logo-cell:hover .brand-name-fallback { color: var(--color-accent); }
 }
+
+/* ============================================================
+   Scroll-reveal animations (branch: feat/animations)
+   Easy rollback: delete this block + the scripts in Base.astro
+   + the data-reveal attributes. Fully gated on motion prefs.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  html.reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.21, 1),
+      transform 0.7s cubic-bezier(0.22, 0.61, 0.21, 1);
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+  }
+  html.reveal-ready [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+  /* Failsafe: if the observer never runs, force everything visible */
+  html.reveal-failsafe [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

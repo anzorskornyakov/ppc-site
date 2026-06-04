@@ -16,8 +16,58 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <slot name="head" />
+    <!-- reveal: arm hidden state before paint (no flash); only if motion allowed -->
+    <script is:inline>
+      (function () {
+        try {
+          var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+          if (mq.matches) return;
+          var root = document.documentElement;
+          root.classList.add('reveal-ready');
+          // failsafe: reveal everything only if the observer never activated
+          setTimeout(function () {
+            if (!root.classList.contains('reveal-active')) {
+              root.classList.add('reveal-failsafe');
+            }
+          }, 1600);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <slot />
+    <!-- reveal: observe and play -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (!root.classList.contains('reveal-ready')) return;
+        var els = document.querySelectorAll('[data-reveal]');
+        if (!('IntersectionObserver' in window) || !els.length) {
+          root.classList.add('reveal-failsafe');
+          return;
+        }
+        root.classList.add('reveal-active');
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach(function (el) { io.observe(el); });
+        // Immediate pass: reveal anything already in view on load
+        requestAnimationFrame(function () {
+          var vh = window.innerHeight || document.documentElement.clientHeight;
+          els.forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.top < vh * 0.95 && r.bottom > 0) {
+              el.classList.add('is-in');
+              io.unobserve(el);
+            }
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
