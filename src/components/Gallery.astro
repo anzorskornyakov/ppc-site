@@ -52,6 +52,17 @@ const copies = [0, 1, 2];
     touch-action: none;
   }
 
+  /* Mobile: a single vertical carousel — the opposing columns read poorly
+     on a narrow screen, and one stream is cheaper to animate. */
+  @media (max-width: 640px) {
+    .gallery {
+      grid-template-columns: 1fr;
+      column-gap: 0;
+      padding: 0 1rem;
+    }
+    .stream--right { display: none; }
+  }
+
   .stream { position: relative; overflow: visible; }
 
   .stream__track {
@@ -106,7 +117,7 @@ const copies = [0, 1, 2];
 </style>
 
 <script>
-  type Stream = { track: HTMLElement; dir: number; cycle: number };
+  type Stream = { track: HTMLElement; dir: number; cycle: number; visible: boolean };
 
   function initGallery() {
     const gallery = document.getElementById('gallery');
@@ -124,6 +135,7 @@ const copies = [0, 1, 2];
       track,
       dir: i === 0 ? -1 : 1, // left moves up, right moves down as offset grows
       cycle: 1,
+      visible: true,
     }));
 
     // Buttons in duplicate sets shouldn't be tab-stops.
@@ -139,8 +151,10 @@ const copies = [0, 1, 2];
 
     function measure() {
       for (const s of streams) {
+        s.visible = s.track.offsetParent !== null; // false when display:none (mobile)
         const firstSet = s.track.querySelector<HTMLElement>('[data-set]');
-        s.cycle = firstSet ? firstSet.getBoundingClientRect().height : 1;
+        const h = firstSet ? firstSet.getBoundingClientRect().height : 0;
+        s.cycle = h > 0 ? h : 1;
       }
     }
     measure();
@@ -154,6 +168,7 @@ const copies = [0, 1, 2];
     function apply() {
       raf = 0;
       for (const s of streams) {
+        if (!s.visible) continue;
         const y = -s.cycle + s.dir * wrap(offset, s.cycle);
         s.track.style.transform = `translate3d(0, ${y}px, 0)`;
       }
