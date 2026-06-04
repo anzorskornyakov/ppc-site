@@ -163,30 +163,59 @@ const copies = [0, 1, 2];
     const overlayOpen = () => document.body.classList.contains('overlay-open');
     const wrap = (v: number, m: number) => ((v % m) + m) % m;
 
-    // Apply the current offset directly — one rAF per input frame, no easing,
-    // so the page is still (and crisp) whenever the user isn't scrolling.
-    function apply() {
-      raf = 0;
+    // Write the current offset to the tracks. render() is pure; apply() is the
+    // scheduled rAF callback; applyNow() forces a synchronous write (drag).
+    function render() {
       for (const s of streams) {
         if (!s.visible) continue;
         const y = -s.cycle + s.dir * wrap(offset, s.cycle);
         s.track.style.transform = `translate3d(0, ${y}px, 0)`;
       }
     }
-    function schedule() {
-      if (!raf) raf = requestAnimationFrame(apply);
-    }
+    function apply() { raf = 0; render(); }
+    function schedule() { if (!raf) raf = requestAnimationFrame(apply); }
     function applyNow() {
       if (raf) { cancelAnimationFrame(raf); raf = 0; }
-      apply();
+      render();
     }
-    apply();
+    render();
+
+    // ---- iOS-style momentum: 1:1 while the finger is down, then glide on
+    // release with decaying velocity. Wheel/trackpad stay direct (the OS
+    // already adds its own momentum to those). ----
+    const FRICTION = 0.95;  // per ~16.7ms frame; higher = longer glide
+    const MIN_V = 0.015;    // px/ms; below this the glide stops
+    const MAX_V = 8;        // px/ms; clamp absurd flings
+    let velocity = 0;       // px/ms, in offset units
+    let momentumRaf = 0;
+    let lastFrameT = 0;
+
+    function stopMomentum() {
+      if (momentumRaf) { cancelAnimationFrame(momentumRaf); momentumRaf = 0; }
+      velocity = 0;
+    }
+    function momentumStep(now: number) {
+      const dt = Math.min(now - lastFrameT, 50);
+      lastFrameT = now;
+      offset += velocity * dt;
+      render();
+      velocity *= Math.pow(FRICTION, dt / 16.67);
+      if (Math.abs(velocity) < MIN_V) { momentumRaf = 0; velocity = 0; return; }
+      momentumRaf = requestAnimationFrame(momentumStep);
+    }
+    function startMomentum() {
+      if (Math.abs(velocity) < MIN_V) return;
+      lastFrameT = performance.now();
+      if (momentumRaf) cancelAnimationFrame(momentumRaf);
+      momentumRaf = requestAnimationFrame(momentumStep);
+    }
 
     gallery.addEventListener(
       'wheel',
       (e: WheelEvent) => {
         if (overlayOpen()) return;
         e.preventDefault();
+        stopMomentum();
         offset += e.deltaY * WHEEL;
         schedule();
       },
@@ -194,10 +223,13 @@ const copies = [0, 1, 2];
     );
 
     let touchY = 0;
+    let lastMoveT = 0;
     gallery.addEventListener(
       'touchstart',
       (e: TouchEvent) => {
+        stopMomentum(); // catch the glide
         touchY = e.touches[0].clientY;
+        lastMoveT = performance.now();
         measure(); // ensure the loop cycle is current at the start of the gesture
       },
       { passive: true }
@@ -207,12 +239,28 @@ const copies = [0, 1, 2];
       (e: TouchEvent) => {
         if (overlayOpen()) return;
         const y = e.touches[0].clientY;
-        offset += (touchY - y) * TOUCH;
+        const now = performance.now();
+        const dy = (touchY - y) * TOUCH;
+        offset += dy;
         touchY = y;
+        const dt = now - lastMoveT;
+        if (dt > 0) {
+          velocity = Math.max(-MAX_V, Math.min(MAX_V, dy / dt)); // most-recent px/ms
+        }
+        lastMoveT = now;
         e.preventDefault();
-        applyNow(); // sync transform to the finger (smoother than rAF on iOS)
+        applyNow(); // sync transform to the finger
       },
       { passive: false }
+    );
+    gallery.addEventListener(
+      'touchend',
+      () => {
+        // Only glide if the finger was still moving at lift-off.
+        if (performance.now() - lastMoveT > 80) velocity = 0;
+        startMomentum();
+      },
+      { passive: true }
     );
 
     window.addEventListener('keydown', (e: KeyboardEvent) => {
@@ -220,9 +268,9 @@ const copies = [0, 1, 2];
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-        offset += KEY_STEP; e.preventDefault(); schedule();
+        stopMomentum(); offset += KEY_STEP; e.preventDefault(); schedule();
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        offset -= KEY_STEP; e.preventDefault(); schedule();
+        stopMomentum(); offset -= KEY_STEP; e.preventDefault(); schedule();
       }
     });
 
