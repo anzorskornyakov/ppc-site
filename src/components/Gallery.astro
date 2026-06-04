@@ -34,7 +34,6 @@ const copies = [0, 1, 2];
     </div>
   </div>
 
-  <p class="gallery__hint" aria-hidden="true">Scroll</p>
 </div>
 
 <style>
@@ -80,23 +79,6 @@ const copies = [0, 1, 2];
     padding-block: clamp(1.25rem, 5vw, 3rem) 0;
   }
 
-  .gallery__hint {
-    position: fixed;
-    left: 50%;
-    bottom: 1.25rem;
-    transform: translateX(-50%);
-    margin: 0;
-    font-size: 0.625rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: var(--color-faint);
-    pointer-events: none;
-    animation: hint-fade 4s ease-in-out 1.5s forwards;
-  }
-  @keyframes hint-fade {
-    to { opacity: 0; }
-  }
-
   /* Reduced motion / no-JS: revert to a calm scrollable grid */
   .gallery.is-reduced {
     position: static;
@@ -108,7 +90,6 @@ const copies = [0, 1, 2];
   }
   .gallery.is-reduced .stream__set[aria-hidden='true'] { display: none; }
   .gallery.is-reduced .stream__track { transform: none !important; }
-  .gallery.is-reduced .gallery__hint { display: none; }
 
   /* Before JS boots, avoid a flash of all three copies stacked */
   .gallery:not(.is-ready):not(.is-reduced) .stream__set:not(:first-child) {

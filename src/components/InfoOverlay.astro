@@ -15,6 +15,9 @@ const links = [
 
 <button type="button" class="index-trigger" data-info-open aria-haspopup="dialog">Index</button>
 
+<!-- Persistent CTA on the gallery — opens the enquiry form -->
+<button type="button" class="cta-fab" data-open-contact>Create new product</button>
+
 <div class="info" id="info" role="dialog" aria-modal="true" aria-label="Index" aria-hidden="true" hidden>
   <button type="button" class="info__close" data-info-close aria-label="Close">
     <span aria-hidden="true">×</span>
@@ -73,6 +76,28 @@ const links = [
     padding: 0.25rem 0;
   }
   .index-trigger:hover { color: var(--color-accent); }
+
+  /* Persistent enquiry CTA, styled like the PPC wordmark (blue oval) */
+  .cta-fab {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(1.25rem, 4vw, 2.5rem);
+    transform: translateX(-50%);
+    z-index: 40;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: var(--color-accent);
+    background: #fff;
+    border: 2.5px solid var(--color-accent);
+    border-radius: 50%;
+    padding: 0.9rem 2.3rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .cta-fab:hover { background: var(--color-accent); color: #fff; }
 
   .info {
     position: fixed;
@@ -174,6 +199,9 @@ const links = [
     }
 
     trigger.addEventListener('click', open);
+    document.querySelector('[data-open-contact]')?.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('ppc:open-contact'));
+    });
     info.querySelector('[data-start-project]')?.addEventListener('click', () => {
       close();
       window.setTimeout(() => document.dispatchEvent(new CustomEvent('ppc:open-contact')), 300);
