@@ -28,7 +28,7 @@ const links = [
       piece, ready in three business days.
     </p>
 
-    <button type="button" class="info__cta" data-start-project>Start a project →</button>
+    <button type="button" class="info__cta" data-start-project>Create new product</button>
 
     <nav class="info__nav" aria-label="Sections">
       <ul>
@@ -113,20 +113,23 @@ const links = [
     color: var(--color-text);
   }
 
+  /* Styled like the PPC wordmark: blue elliptical outline + blue text */
   .info__cta {
     align-self: flex-start;
-    font-size: 0.8125rem;
+    font-family: var(--font-sans);
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    padding: 0.7rem 1.25rem;
-    background: var(--color-text);
-    color: #fff;
-    border: 1px solid var(--color-text);
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: var(--color-accent);
+    background: transparent;
+    border: 2.5px solid var(--color-accent);
+    border-radius: 50%;
+    padding: 0.95rem 2.4rem;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
   }
-  .info__cta:hover { background: #fff; color: var(--color-text); }
+  .info__cta:hover { background: var(--color-accent); color: #fff; }
 
   .info__nav ul { list-style: none; padding: 0; margin: 0; }
   .info__nav li { border-top: 1px solid var(--color-rule); }
