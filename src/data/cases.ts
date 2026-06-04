@@ -7,6 +7,12 @@ export interface Case {
   cover: string;
   gallery?: string[];
   body?: string;
+  /**
+   * Flat-lay garment photo on pure white — the image shown on the tee in the
+   * gallery stream. When omitted the tee renders a quiet placeholder. Drop real
+   * flat-lay photos here to populate the exhibition; no code change needed.
+   */
+  garment?: string;
 }
 
 // NOTE: covers/galleries currently reuse existing studio photos as placeholders.

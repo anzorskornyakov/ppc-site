@@ -1,0 +1,169 @@
+---
+import { SITE } from '../data/site';
+import { services } from '../data/services';
+
+const links = [
+  ...services.map((s) => ({ label: s.name, href: s.path })),
+  { label: 'Studio', href: '/studio' },
+  { label: 'Catalog', href: '/catalog' },
+];
+---
+<!-- Persistent, minimal chrome — no nav bar -->
+<a class="wordmark" href="/" aria-label={`${SITE.name} — home`}>
+  <img src="/logo.svg" alt={SITE.name} width="96" height="24" />
+</a>
+
+<button type="button" class="index-trigger" data-info-open aria-haspopup="dialog">Index</button>
+
+<div class="info" id="info" role="dialog" aria-modal="true" aria-label="Index" aria-hidden="true" hidden>
+  <button type="button" class="info__close" data-info-close aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+
+  <div class="info__inner">
+    <p class="info__statement">
+      Portugal Print Club — a print studio in Lisbon. Every brief is a product
+      question first: what it should be, what it's made of, and whether someone
+      will want to wear it. Screen printing, embroidery and DTF, from a single
+      piece, ready in three business days.
+    </p>
+
+    <nav class="info__nav" aria-label="Sections">
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <ul class="info__contact">
+      <li><span>Studio</span>{SITE.address.full} · {SITE.address.district}</li>
+      <li><span>WhatsApp</span><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">{SITE.phone}</a></li>
+      <li><span>Email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+      <li><span>Instagram</span><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagram}</a></li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .wordmark {
+    position: fixed;
+    top: clamp(1rem, 3vw, 2rem);
+    left: clamp(1rem, 5vw, 5rem);
+    z-index: 40;
+    line-height: 0;
+  }
+  .wordmark img { height: clamp(2.75rem, 5.5vw, 4.5rem); width: auto; }
+
+  .index-trigger {
+    position: fixed;
+    top: clamp(1rem, 3vw, 2rem);
+    right: clamp(1rem, 5vw, 5rem);
+    z-index: 40;
+    border: 0;
+    background: transparent;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 0.25rem 0;
+  }
+  .index-trigger:hover { color: var(--color-accent); }
+
+  .info {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: #fff;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .info.is-open { opacity: 1; }
+  .info[hidden] { display: none; }
+
+  .info__close {
+    position: fixed;
+    top: clamp(1rem, 3vw, 2rem);
+    right: clamp(1rem, 3vw, 2rem);
+    width: 2.75rem; height: 2.75rem;
+    display: flex; align-items: center; justify-content: center;
+    border: 0; background: transparent;
+    font-size: 2rem; line-height: 1;
+    color: var(--color-text); cursor: pointer;
+  }
+  .info__close:hover { color: var(--color-accent); }
+
+  .info__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(5rem, 16vh, 10rem) clamp(1.25rem, 6vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 6vh, 3.5rem);
+  }
+  .info__statement {
+    font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
+    line-height: 1.45;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .info__nav ul { list-style: none; padding: 0; margin: 0; }
+  .info__nav li { border-top: 1px solid var(--color-rule); }
+  .info__nav li:last-child { border-bottom: 1px solid var(--color-rule); }
+  .info__nav a {
+    display: block;
+    padding: 0.7rem 0;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  .info__nav a:hover { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  .info__contact { list-style: none; padding: 0; margin: 0; font-size: 0.9375rem; }
+  .info__contact li { margin-bottom: 0.4rem; color: var(--color-text); }
+  .info__contact span { display: inline-block; width: 6rem; color: var(--color-mute); }
+</style>
+
+<script>
+  function initInfo() {
+    const info = document.getElementById('info');
+    const trigger = document.querySelector<HTMLButtonElement>('[data-info-open]');
+    if (!info || !trigger) return;
+    let lastFocus: HTMLElement | null = null;
+
+    function open() {
+      lastFocus = document.activeElement as HTMLElement;
+      info!.hidden = false;
+      info!.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('overlay-open');
+      requestAnimationFrame(() => info!.classList.add('is-open'));
+      info!.querySelector<HTMLElement>('[data-info-close]')?.focus();
+    }
+    function close() {
+      info!.classList.remove('is-open');
+      document.body.classList.remove('overlay-open');
+      window.setTimeout(() => {
+        info!.hidden = true;
+        info!.setAttribute('aria-hidden', 'true');
+      }, 300);
+      lastFocus?.focus();
+    }
+
+    trigger.addEventListener('click', open);
+    info.querySelector('[data-info-close]')?.addEventListener('click', close);
+    info.addEventListener('click', (e) => { if (e.target === info) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !info.hidden) close();
+    });
+    document.addEventListener('ppc:open-info', open);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initInfo);
+  } else {
+    initInfo();
+  }
+</script>

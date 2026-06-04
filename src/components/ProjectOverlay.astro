@@ -1,0 +1,289 @@
+---
+import ContactForm from './ContactForm.astro';
+import { cases } from '../data/cases';
+import { SITE } from '../data/site';
+
+// Data island the overlay script reads to build project views on demand.
+const projectData = cases.map((c) => ({
+  slug: c.slug,
+  client: c.client,
+  technique: c.technique,
+  item: c.item,
+  quantity: c.quantity ?? '',
+  body: c.body ?? '',
+  images: c.gallery && c.gallery.length ? c.gallery : [c.cover],
+}));
+---
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true" hidden>
+  <button type="button" class="overlay__close" data-close aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+
+  <!-- Project view (populated by script) -->
+  <div class="overlay__inner" data-panel="project" hidden>
+    <div class="overlay__media" data-media></div>
+    <div class="overlay__info">
+      <h2 class="overlay__client" data-client></h2>
+      <p class="overlay__spec" data-spec></p>
+      <p class="overlay__body" data-body></p>
+      <a class="overlay__service" data-service href="#">View the technique →</a>
+    </div>
+  </div>
+
+  <!-- Contact view -->
+  <div class="overlay__inner overlay__inner--contact" data-panel="contact" hidden>
+    <div class="overlay__info overlay__info--contact">
+      <p class="overlay__eyebrow">Your project goes here</p>
+      <h2 class="overlay__client">Send a brief</h2>
+      <p class="overlay__body">
+        Send your logo or brief. We reply within 24 hours with a technique
+        recommendation, blank options and a precise quote.
+      </p>
+      <ul class="overlay__channels">
+        <li><span>WhatsApp</span><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">{SITE.phone}</a></li>
+        <li><span>Email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li><span>Instagram</span><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagram}</a></li>
+      </ul>
+    </div>
+    <div class="overlay__form">
+      <ContactForm />
+    </div>
+  </div>
+</div>
+
+<script id="ppc-projects" type="application/json" set:html={JSON.stringify(projectData)}></script>
+
+<style>
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: #f7f7f7;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  .overlay.is-open { opacity: 1; }
+  .overlay[hidden] { display: none; }
+
+  /* The product grows in; description settles beside it */
+  .overlay__media {
+    transform: scale(0.82);
+    opacity: 0;
+    transform-origin: center center;
+    transition: transform 0.6s cubic-bezier(0.16, 0.84, 0.34, 1), opacity 0.5s ease;
+  }
+  .overlay.is-open .overlay__media {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .overlay__info {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease 0.12s, transform 0.5s ease 0.12s;
+  }
+  .overlay.is-open .overlay__info {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .overlay__media, .overlay__info { transition: none; transform: none; opacity: 1; }
+  }
+
+  .overlay__close {
+    position: fixed;
+    top: clamp(1rem, 3vw, 2rem);
+    right: clamp(1rem, 3vw, 2rem);
+    z-index: 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+  .overlay__close:hover { color: var(--color-accent); }
+
+  .overlay__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(4rem, 12vh, 8rem) clamp(1.25rem, 5vw, 4rem);
+    display: grid;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 820px) {
+    .overlay__inner { grid-template-columns: 1.4fr 1fr; }
+  }
+
+  .overlay__media { display: flex; flex-direction: column; gap: clamp(1rem, 3vw, 2rem); }
+  .overlay__media img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background: var(--color-surface);
+  }
+  .overlay__media .ph {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-faint);
+  }
+
+  .overlay__info { position: sticky; top: clamp(4rem, 12vh, 8rem); }
+  .overlay__eyebrow {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-faint);
+    margin: 0 0 0.5rem;
+  }
+  .overlay__client {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 0.75rem;
+  }
+  .overlay__spec {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-mute);
+    margin: 0 0 1.25rem;
+  }
+  .overlay__body {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    max-width: 40ch;
+    margin: 0 0 1.5rem;
+  }
+  .overlay__service { font-size: 0.875rem; }
+
+  .overlay__inner--contact { align-items: start; }
+  .overlay__channels {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    font-size: 0.9375rem;
+  }
+  .overlay__channels li { margin-bottom: 0.4rem; }
+  .overlay__channels span { display: inline-block; width: 6rem; color: var(--color-mute); }
+</style>
+
+<script>
+  type ProjectView = {
+    slug: string; client: string; technique: string; item: string;
+    quantity: string; body: string; images: string[];
+  };
+
+  const SERVICE_PATH: Record<string, string> = {
+    'Screen printing': '/screen-printing',
+    'Embroidery': '/embroidery',
+    'DTF': '/dtf',
+  };
+
+  function initOverlay() {
+    const overlay = document.getElementById('overlay');
+    const dataEl = document.getElementById('ppc-projects');
+    if (!overlay || !dataEl) return;
+
+    const projects: ProjectView[] = JSON.parse(dataEl.textContent || '[]');
+    const projectPanel = overlay.querySelector<HTMLElement>('[data-panel="project"]')!;
+    const contactPanel = overlay.querySelector<HTMLElement>('[data-panel="contact"]')!;
+    const media = overlay.querySelector<HTMLElement>('[data-media]')!;
+    const clientEl = overlay.querySelector<HTMLElement>('[data-client]')!;
+    const specEl = overlay.querySelector<HTMLElement>('[data-spec]')!;
+    const bodyEl = overlay.querySelector<HTMLElement>('[data-body]')!;
+    const serviceEl = overlay.querySelector<HTMLAnchorElement>('[data-service]')!;
+
+    let lastFocus: HTMLElement | null = null;
+
+    function show(panel: HTMLElement) {
+      projectPanel.hidden = panel !== projectPanel;
+      contactPanel.hidden = panel !== contactPanel;
+      lastFocus = document.activeElement as HTMLElement;
+      overlay!.hidden = false;
+      overlay!.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('overlay-open');
+      requestAnimationFrame(() => overlay!.classList.add('is-open'));
+      overlay!.scrollTop = 0;
+      overlay!.querySelector<HTMLElement>('[data-close]')?.focus();
+    }
+
+    function openProject(slug: string, push = true) {
+      const p = projects.find((x) => x.slug === slug);
+      if (!p) return;
+      media.innerHTML = p.images.length
+        ? p.images.map((src) => `<img src="${src}" alt="${p.client} — ${p.technique}" loading="lazy" />`).join('')
+        : `<div class="ph">Image coming soon</div>`;
+      clientEl.textContent = p.client;
+      const specBits = [p.technique, p.item, p.quantity].filter(Boolean);
+      specEl.textContent = specBits.join(' · ');
+      bodyEl.textContent = p.body;
+      bodyEl.style.display = p.body ? '' : 'none';
+      const path = SERVICE_PATH[p.technique];
+      if (path) { serviceEl.href = path; serviceEl.hidden = false; }
+      else { serviceEl.hidden = true; }
+      show(projectPanel);
+      if (push) history.pushState({ ppc: 'project', slug }, '', `#project/${slug}`);
+    }
+
+    function openContact(push = true) {
+      show(contactPanel);
+      if (push) history.pushState({ ppc: 'contact' }, '', '#contact');
+    }
+
+    function close(pop = true) {
+      overlay!.classList.remove('is-open');
+      document.body.classList.remove('overlay-open');
+      window.setTimeout(() => {
+        overlay!.hidden = true;
+        overlay!.setAttribute('aria-hidden', 'true');
+      }, 300);
+      lastFocus?.focus();
+      if (pop && location.hash) history.pushState('', '', location.pathname);
+    }
+
+    overlay.querySelector('[data-close]')?.addEventListener('click', () => close());
+    overlay.addEventListener('click', (e) => {
+      // Click on the bare backdrop (the overlay itself) closes it.
+      if (e.target === overlay) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !overlay.hidden) close();
+    });
+
+    document.addEventListener('ppc:open-project', (e) => openProject((e as CustomEvent).detail));
+    document.addEventListener('ppc:open-contact', () => openContact());
+
+    // Hash deep-linking + browser Back/Forward.
+    function syncFromHash(push = false) {
+      const h = location.hash.replace(/^#/, '');
+      if (h.startsWith('project/')) openProject(h.slice('project/'.length), push);
+      else if (h === 'contact') openContact(push);
+      else if (!overlay!.hidden) close(false);
+    }
+    window.addEventListener('popstate', () => syncFromHash(false));
+    syncFromHash(false); // open from a shared deep link on load
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initOverlay);
+  } else {
+    initOverlay();
+  }
+</script>

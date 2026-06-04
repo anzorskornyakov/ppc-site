@@ -1,0 +1,168 @@
+---
+import type { Case } from '../data/cases';
+
+interface Props {
+  item?: Case;
+  variant?: 'project' | 'contact';
+}
+
+const { item, variant = 'project' } = Astro.props;
+
+// Shared base garment shown on every tee until a project gets its own flat-lay.
+const BASE_TEE = '/photos/base-tee.png';
+const garment = item?.garment ?? BASE_TEE;
+---
+{variant === 'contact' ? (
+  <button type="button" class="tee tee--contact" data-contact aria-label="Start your project — open the contact form">
+    <span class="tee__frame tee__frame--empty">
+      <span class="tee__empty-label">Your project<br />goes here</span>
+    </span>
+    <span class="tee__caption">
+      <span class="tee__client">Add yours</span>
+      <span class="tee__meta">Send a brief</span>
+    </span>
+  </button>
+) : item && (
+  <button type="button" class="tee" data-project={item.slug} aria-label={`${item.client} — ${item.technique}, ${item.item}`}>
+    <span class="tee__frame">
+      <span class="tee__placeholder">
+        <span class="tee__ph-name">{item.client}</span>
+        <span class="tee__ph-meta">{item.technique}</span>
+      </span>
+      <img src={garment} alt={`${item.client} — ${item.technique} on ${item.item}`} loading="lazy" decoding="async" class="tee__img" onerror="this.style.display='none'" />
+    </span>
+    <span class="tee__caption">
+      <span class="tee__client">{item.client}</span>
+      <span class="tee__meta">{item.technique} · {item.item}</span>
+    </span>
+  </button>
+)}
+
+<style>
+  .tee {
+    display: block;
+    width: 100%;
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tee__frame {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .tee__img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fff;
+    filter: grayscale(100%);
+    opacity: 0.92;
+    transition: filter 0.6s ease, opacity 0.6s ease, transform 0.6s ease;
+  }
+  .tee:hover .tee__img,
+  .tee:focus-visible .tee__img {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.02);
+  }
+
+  /* Placeholder until real flat-lay photos arrive */
+  .tee__placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: var(--color-surface);
+    text-align: center;
+    padding: 1rem;
+  }
+  .tee__ph-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--color-text);
+  }
+  .tee__ph-meta {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    color: var(--color-faint);
+  }
+
+  /* Empty contact tee */
+  .tee__frame--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--color-rule-strong);
+    background: #fff;
+    transition: border-color 0.4s ease, background 0.4s ease;
+  }
+  .tee--contact:hover .tee__frame--empty,
+  .tee--contact:focus-visible .tee__frame--empty {
+    border-color: var(--color-text);
+    background: var(--color-surface);
+  }
+  .tee__empty-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--color-faint);
+    transition: color 0.4s ease;
+  }
+  .tee--contact:hover .tee__empty-label,
+  .tee--contact:focus-visible .tee__empty-label { color: var(--color-text); }
+
+  /* Caption — silent by default, surfaces on interaction */
+  .tee__caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin-top: 0.6rem;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .tee:hover .tee__caption,
+  .tee:focus-visible .tee__caption { opacity: 1; }
+  .tee__client {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+  .tee__meta {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-mute);
+  }
+
+  /* Touch devices: keep captions visible (no hover) */
+  @media (hover: none) {
+    .tee__caption { opacity: 1; }
+    .tee__img { filter: grayscale(0%); opacity: 1; }
+  }
+</style>

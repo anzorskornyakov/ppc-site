@@ -1,14 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import SEO from '../components/SEO.astro';
-import Section from '../components/Section.astro';
-import ContactForm from '../components/ContactForm.astro';
-import CaseCard from '../components/CaseCard.astro';
+import Gallery from '../components/Gallery.astro';
+import ProjectOverlay from '../components/ProjectOverlay.astro';
+import InfoOverlay from '../components/InfoOverlay.astro';
 import { SITE } from '../data/site';
-import { clients } from '../data/clients';
-import { services } from '../data/services';
 import { cases } from '../data/cases';
 
 const organizationSchema = {
@@ -147,6 +143,23 @@ const howToSchema = {
     },
   ],
 };
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${SITE.url}/#work`,
+  name: 'Selected work',
+  itemListElement: cases.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'CreativeWork',
+      name: `${c.client} — ${c.item}`,
+      about: c.technique,
+      url: `${SITE.url}/#project/${c.slug}`,
+    },
+  })),
+};
 ---
 <Base
   title="PPC — Custom print studio in Lisbon. 3-day turnaround."
@@ -158,157 +171,10 @@ const howToSchema = {
     description="Portugal Print Club. Screen printing, embroidery, DTF printing in Lisbon. From 1 piece. Ready in 3 business days. Studio open for visits in Campolide."
     ogImage="/og-default.jpg"
     canonicalUrl={SITE.url}
-    schemas={[organizationSchema, localBusinessSchema, websiteSchema, howToSchema]}
+    schemas={[organizationSchema, localBusinessSchema, websiteSchema, howToSchema, itemListSchema]}
   />
 
-  <Header />
-
-  <main>
-    <!-- Intro -->
-    <section class="container-ppc pt-8 pb-8 text-center">
-      <h1 class="text-display max-w-[20ch] mx-auto">Merch worth keeping.</h1>
-      <p class="lede mx-auto mt-3">
-        We design, source and print apparel at the level of the brands we work
-        with. Screen printing, embroidery and DTF, from a single piece, ready in
-        three business days.
-      </p>
-      <div class="flex flex-wrap justify-center gap-2.5 mt-6">
-        <a href="#contact" class="btn-solid">Send a brief</a>
-        <a href="/catalog" class="btn-outline">View the catalog</a>
-      </div>
-    </section>
-
-    <!-- Lead image -->
-    <section class="container-ppc pb-4">
-      <figure>
-        <img src="/photos/studio-hero.jpg" alt="PPC studio in Campolide, Lisbon"
-          class="w-full aspect-[16/8] object-cover border border-[var(--color-rule)]" />
-        <figcaption class="section-num mt-1.5">PPC studio, Campolide, Lisbon</figcaption>
-      </figure>
-    </section>
-
-    <!-- Selected work -->
-    <Section id="work" label="Selected work">
-      <p class="prose-ppc mb-6">
-        A few of the projects we've made. Most came through word of mouth, before
-        we had a brand or a space. Tap a project to see more.
-      </p>
-      <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-7 items-start">
-        {cases.map((c) => <CaseCard item={c} />)}
-      </div>
-      <p class="mt-8 text-mute text-[0.8125rem]">
-        <span class="label-text">Worked with</span>&nbsp;&nbsp;
-        {clients.join(', ')}.
-      </p>
-    </Section>
-
-    <!-- Techniques -->
-    <Section id="services" label="Techniques">
-      <ul class="list-none">
-        {services.map((s) => (
-          <li class="index-row">
-            <a href={s.path}>{s.name}</a>
-            <span class="text-mute text-[0.8125rem]">from €{s.priceLow}/pc · min {s.minOrder}</span>
-          </li>
-        ))}
-      </ul>
-      <p class="prose-ppc text-mute mt-4">
-        In-house, from one piece. Each technique chosen for the result, not the order size.
-      </p>
-    </Section>
-
-    <!-- How we work -->
-    <Section id="how-we-work" label="How we work">
-      <p class="prose-ppc mb-6">
-        Most studios take your file and put it on a shirt. We start one step
-        earlier. Every brief is a product question first: what should this be,
-        what should it be made of, and will someone actually want to wear it.
-      </p>
-      <div class="grid sm:grid-cols-3 gap-x-8 gap-y-5">
-        <div>
-          <p class="label-text mb-1.5">Design</p>
-          <p class="text-[0.875rem] leading-relaxed text-mute">
-            Arrive with a brief, not necessarily a finished file. We work out the
-            artwork, the placement and the technique with you, and we'll tell you
-            when something will print forgettably, before production, not after.
-          </p>
-        </div>
-        <div>
-          <p class="label-text mb-1.5">Blanks</p>
-          <p class="text-[0.875rem] leading-relaxed text-mute">
-            We pick the right garment for the job from over a thousand brands, or
-            build a custom blank when nothing off the shelf fits. The right base
-            is half the result.
-          </p>
-        </div>
-        <div>
-          <p class="label-text mb-1.5">Production</p>
-          <p class="text-[0.875rem] leading-relaxed text-mute">
-            Screen printing, embroidery and DTF in-house, including complex
-            multi-colour work most studios pass on. Ready in three business days.
-          </p>
-        </div>
-      </div>
-    </Section>
-
-    <!-- Blanks -->
-    <Section id="blanks" label="Blanks">
-      <p class="prose-ppc">
-        The garment matters as much as the print. We work across the full Toptex
-        catalogue, over a thousand brands from economy to premium, and keep our
-        own selection from WATC Studio and Velour Garments in Barcelona for work
-        that needs a better base.
-      </p>
-      <p class="prose-ppc mt-3">
-        When nothing off the shelf is right, we source or build a custom blank.
-        Or bring your own, same three-day turnaround either way.
-        &nbsp;<a href="/catalog">View the catalog</a>.
-      </p>
-    </Section>
-
-    <!-- Studio -->
-    <Section id="studio-section" label="Studio">
-      <div class="grid md:grid-cols-2 gap-6 items-start">
-        <div>
-          <p class="prose-ppc">
-            {SITE.address.street}<br />
-            {SITE.address.postal} {SITE.address.city} · {SITE.address.district}<br />
-            <span class="text-mute">Open by appointment.</span>
-          </p>
-          <p class="prose-ppc mt-3">
-            Come see samples, handle blanks and meet the people making your order.
-            Most local projects start with a studio visit.
-            &nbsp;<a href="/studio">Visit the studio</a>.
-          </p>
-        </div>
-        <figure>
-          <img src="/photos/studio-detail-01.jpg"
-            alt="PPC studio interior — Calçada dos Mestres 34, Lisbon" loading="lazy"
-            class="w-full aspect-[4/3] object-cover border border-[var(--color-rule)]" />
-        </figure>
-      </div>
-    </Section>
-
-    <!-- Contact -->
-    <Section id="contact" label="Send a brief">
-      <div class="grid md:grid-cols-2 gap-10">
-        <div>
-          <p class="prose-ppc mb-5">
-            Send your logo or brief. We reply within 24 hours with a technique
-            recommendation, blank options and a precise quote.
-          </p>
-          <ul class="list-none text-[0.9375rem] space-y-1.5">
-            <li><span class="text-mute inline-block w-24">WhatsApp</span><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">{SITE.phone}</a></li>
-            <li><span class="text-mute inline-block w-24">Email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-            <li><span class="text-mute inline-block w-24">Instagram</span><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagram}</a></li>
-          </ul>
-        </div>
-        <div>
-          <ContactForm />
-        </div>
-      </div>
-    </Section>
-  </main>
-
-  <Footer />
+  <InfoOverlay />
+  <Gallery />
+  <ProjectOverlay />
 </Base>
