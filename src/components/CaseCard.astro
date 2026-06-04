@@ -1,0 +1,61 @@
+---
+import type { Case } from '../data/cases';
+
+interface Props { item: Case }
+const { item } = Astro.props;
+
+const isExpandable = Boolean(item.body) || (item.gallery?.length ?? 0) > 1;
+const gallery = item.gallery && item.gallery.length > 0 ? item.gallery : [item.cover];
+---
+{isExpandable ? (
+  <details class="case-card group">
+    <summary class="case-summary">
+      <div class="aspect-[4/3] overflow-hidden rounded-xl bg-[var(--color-surface)]">
+        <img src={item.cover} alt={`${item.client} — ${item.technique}`} loading="lazy"
+          class="w-full h-full object-cover transition-transform duration-500 group-open:scale-100 group-hover:scale-[1.04]" />
+      </div>
+      <div class="mt-4 flex items-start justify-between gap-3">
+        <div>
+          <p class="font-display text-lg font-semibold leading-tight">{item.client}</p>
+          <p class="font-body text-sm text-mute mt-0.5">{item.technique} · {item.item}</p>
+        </div>
+        <span class="case-toggle font-body text-xl text-mute shrink-0 leading-none mt-0.5" aria-hidden="true">+</span>
+      </div>
+    </summary>
+
+    <div class="case-body pt-5">
+      {gallery.length > 1 && (
+        <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x">
+          {gallery.map((src, i) => (
+            <div class="shrink-0 w-[78%] sm:w-[48%] aspect-[4/3] overflow-hidden rounded-xl bg-[var(--color-surface)] snap-start">
+              <img src={src} alt={`${item.client} — ${i + 1}`} loading="lazy" class="w-full h-full object-cover" />
+            </div>
+          ))}
+        </div>
+      )}
+      {item.body && <p class="prose-ppc mt-4">{item.body}</p>}
+      <p class="font-body text-sm text-mute mt-4">
+        {item.technique} · {item.item}{item.quantity ? ` · ${item.quantity}` : ''}
+      </p>
+    </div>
+  </details>
+) : (
+  <div class="case-card">
+    <div class="aspect-[4/3] overflow-hidden rounded-xl bg-[var(--color-surface)] group">
+      <img src={item.cover} alt={`${item.client} — ${item.technique}`} loading="lazy"
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
+    </div>
+    <div class="mt-4">
+      <p class="font-display text-lg font-semibold leading-tight">{item.client}</p>
+      <p class="font-body text-sm text-mute mt-0.5">{item.technique} · {item.item}</p>
+    </div>
+  </div>
+)}
+
+<style>
+  .case-summary { list-style: none; cursor: pointer; }
+  .case-summary::-webkit-details-marker { display: none; }
+  details[open] .case-toggle { transform: rotate(45deg); }
+  .case-toggle { transition: transform 0.2s ease; display: inline-block; }
+  details[open] .case-summary .case-toggle { color: var(--color-accent); }
+</style>

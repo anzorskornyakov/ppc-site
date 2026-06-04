@@ -35,11 +35,11 @@ export const brands: Brand[] = [
 ];
 
 export const tierLabels: Record<Tier, { num: string; label: string; desc: string }> = {
-  premium:  { num: '01.000', label: 'PREMIUM',          desc: 'Heavyweight, organic, design-forward' },
-  standard: { num: '02.000', label: 'STANDARD',         desc: 'The everyday workhorses' },
-  economy:  { num: '03.000', label: 'ECONOMY',          desc: 'Best price-to-quality' },
-  headwear: { num: '04.000', label: 'HEADWEAR',         desc: 'Caps, beanies, bucket hats' },
-  bags:     { num: '05.000', label: 'BAGS & ACCESSORIES', desc: '' },
+  premium:  { num: '', label: 'Premium',            desc: 'Heavyweight, organic, design-forward' },
+  standard: { num: '', label: 'Standard',           desc: 'The everyday workhorses' },
+  economy:  { num: '', label: 'Economy',            desc: 'Best price-to-quality' },
+  headwear: { num: '', label: 'Headwear',           desc: 'Caps, beanies, bucket hats' },
+  bags:     { num: '', label: 'Bags & accessories', desc: '' },
 };
 
 export const tierOrder: Tier[] = ['premium', 'standard', 'economy', 'headwear', 'bags'];

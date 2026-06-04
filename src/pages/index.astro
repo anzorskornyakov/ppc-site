@@ -5,18 +5,11 @@ import Footer from '../components/Footer.astro';
 import SEO from '../components/SEO.astro';
 import Section from '../components/Section.astro';
 import ContactForm from '../components/ContactForm.astro';
+import CaseCard from '../components/CaseCard.astro';
 import { SITE } from '../data/site';
 import { clients } from '../data/clients';
 import { services } from '../data/services';
-
-const workImages = [
-  { src: '/photos/work-01.jpg', alt: 'Screen-printed t-shirts — custom order' },
-  { src: '/photos/work-02.jpg', alt: 'Embroidered hoodie — custom logo' },
-  { src: '/photos/work-03.jpg', alt: 'DTF print on tote bag' },
-  { src: '/photos/work-04.jpg', alt: 'Screen-printed uniform — hospitality client' },
-  { src: '/photos/work-05.jpg', alt: 'Embroidered cap — branded merchandise' },
-  { src: '/photos/work-06.jpg', alt: 'Screen-printed crew sweatshirts' },
-];
+import { cases } from '../data/cases';
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -175,14 +168,15 @@ const howToSchema = {
     <section id="cover" class="container-ppc pt-14 md:pt-24 pb-10 md:pb-16">
       <p class="eyebrow mb-7">Open for briefs · Lisbon</p>
 
-      <h1 class="text-display max-w-[18ch]">
-        Custom print studio in <span class="text-accent">Lisbon</span>.
+      <h1 class="text-display max-w-[16ch]">
+        Merch worth <span class="text-accent">keeping</span>.
       </h1>
 
       <div class="mt-8 md:mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
         <p class="lede">
-          Screen printing, embroidery and DTF. From a single piece,
-          ready in three business days.
+          We design, source and print apparel at the level of the brands we
+          work with. Screen printing, embroidery and DTF — from a single
+          piece, ready in three business days.
         </p>
         <div class="flex flex-wrap items-center gap-3 shrink-0">
           <a href="#contact" class="btn-solid">Send a brief</a>
@@ -198,45 +192,109 @@ const howToSchema = {
       </figure>
     </section>
 
-    <!-- 01: What we do — service index -->
-    <Section id="services" num="01.000" label="What we do">
+    <!-- How we work -->
+    <Section id="how-we-work" label="How we work">
+      <h2 class="text-h2 max-w-[14ch]">More than print.</h2>
+      <p class="prose-ppc mt-6">
+        Most studios take your file and put it on a shirt. We start one step
+        earlier. Every brief is a product question first: what should this be,
+        what should it be made of, and will someone actually want to wear it.
+      </p>
+
+      <div class="grid sm:grid-cols-3 gap-px bg-[var(--color-rule)] border border-[var(--color-rule)] rounded-xl overflow-hidden mt-12">
+        <div class="bg-[var(--color-bg)] p-6">
+          <p class="label-text mb-3" style="color:var(--color-accent)">Design</p>
+          <p class="font-body text-[0.9375rem] leading-relaxed text-mute">
+            Arrive with a brief, not necessarily a finished file. We work out the
+            artwork, the placement and the technique with you — and we'll tell you
+            when something will print forgettably, before production, not after.
+          </p>
+        </div>
+        <div class="bg-[var(--color-bg)] p-6">
+          <p class="label-text mb-3" style="color:var(--color-accent)">Blanks</p>
+          <p class="font-body text-[0.9375rem] leading-relaxed text-mute">
+            We pick the right garment for the job from over a thousand brands, or
+            build a custom blank when nothing off the shelf fits. The right base
+            is half the result.
+          </p>
+        </div>
+        <div class="bg-[var(--color-bg)] p-6">
+          <p class="label-text mb-3" style="color:var(--color-accent)">Production</p>
+          <p class="font-body text-[0.9375rem] leading-relaxed text-mute">
+            Screen printing, embroidery and DTF in-house — including complex
+            multi-colour work most studios pass on. Ready in three business days.
+          </p>
+        </div>
+      </div>
+    </Section>
+
+    <!-- Techniques -->
+    <Section id="services" label="Techniques">
       <ul class="list-none -mt-2">
         {services.map((s) => (
           <li>
             <a href={s.path} class="group index-row no-underline">
-              <span class="flex items-baseline gap-4">
-                <span class="section-num hidden sm:inline">{s.sectionNum}</span>
-                <span class="text-h2 group-hover:text-[var(--color-accent)] transition-colors">{s.name}</span>
-              </span>
-              <span class="flex items-baseline gap-5 shrink-0 text-mute">
-                <span class="font-body text-sm hidden sm:inline">from €{s.priceLow}/pc · min {s.minOrder}</span>
-                <span class="font-body text-xl group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all">→</span>
-              </span>
+              <span class="text-h2 group-hover:text-[var(--color-accent)] transition-colors">{s.name}</span>
+              <span class="font-body text-xl text-mute group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all">→</span>
             </a>
           </li>
         ))}
       </ul>
-      <p class="font-body text-mute mt-6 text-sm">Every order ready in {SITE.turnaround}.</p>
+      <p class="prose-ppc text-mute mt-6">
+        In-house, from one piece. Each technique chosen for the result, not the order size.
+      </p>
     </Section>
 
-    <!-- 02: Blanks -->
-    <Section id="blanks" num="02.000" label="Blanks">
-      <p class="prose-ppc mb-8">
-        We print on every brand available through Toptex — Europe's largest
-        blank supplier — plus our own premium selection from WATC Studio and
-        Velour Garments in Barcelona. <span class="text-mute">Or supply your own.
-        Same three-day turnaround.</span>
+    <!-- Blanks -->
+    <Section id="blanks" label="Blanks">
+      <p class="prose-ppc">
+        The garment matters as much as the print. We work across the full Toptex
+        catalogue — over a thousand brands, from economy to premium — and keep our
+        own selection from WATC Studio and Velour Garments in Barcelona for work
+        that needs a better base.
+      </p>
+      <p class="prose-ppc mt-5 mb-8">
+        When nothing off the shelf is right, we source or build a custom blank.
+        Or bring your own — same three-day turnaround either way.
       </p>
       <a href="/catalog" class="btn-ghost">View the catalog →</a>
     </Section>
 
-    <!-- 03: Studio -->
-    <Section id="studio-section" num="03.000" label="Studio">
-      <div class="mb-8">
+    <!-- Selected work / Cases -->
+    <Section id="work" label="Selected work">
+      <p class="prose-ppc mb-12">
+        A few of the projects we've made. Most came through word of mouth,
+        before we had a brand or a space.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-10 items-start">
+        {cases.map((c) => <CaseCard item={c} />)}
+      </div>
+
+      <!-- Worked with -->
+      <div class="mt-16 pt-8 border-t border-[var(--color-rule)]">
+        <p class="label-text mb-4">Worked with</p>
+        <div class="flex flex-wrap gap-x-2 gap-y-1 items-center">
+          {clients.map((c, i) => (
+            <>
+              {i > 0 && <span class="text-faint">·</span>}
+              <span class="font-body text-mute text-sm">{c}</span>
+            </>
+          ))}
+        </div>
+      </div>
+    </Section>
+
+    <!-- Studio -->
+    <Section id="studio-section" label="Studio">
+      <div class="mb-6">
         <p class="prose-ppc">{SITE.address.street}</p>
         <p class="prose-ppc">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
         <p class="prose-ppc text-mute mt-1">Open by appointment.</p>
       </div>
+      <p class="prose-ppc mb-8">
+        Come see samples, handle blanks and meet the people making your order.
+        Most local projects start with a studio visit.
+      </p>
       <a href="/studio" class="btn-ghost">Visit the studio →</a>
       <figure class="mt-10">
         <div class="w-full aspect-[16/8] overflow-hidden rounded-2xl bg-[var(--color-surface)]">
@@ -251,43 +309,14 @@ const howToSchema = {
       </figure>
     </Section>
 
-    <!-- 04: Work -->
-    <Section id="work" num="04.000" label="Selected work">
-      <p class="prose-ppc mb-10">
-        The newest and most talked-about venues in Lisbon — all came
-        through word of mouth, before we had a brand or a space.
-      </p>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
-        {workImages.map((img) => (
-          <figure class="aspect-square overflow-hidden rounded-xl bg-[var(--color-surface)] group">
-            <img
-              src={img.src}
-              alt={img.alt}
-              loading="lazy"
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
-            />
-          </figure>
-        ))}
-      </div>
-      <div class="flex flex-wrap gap-x-2 gap-y-1 items-center">
-        {clients.map((c, i) => (
-          <>
-            {i > 0 && <span class="text-faint">·</span>}
-            <span class="font-body text-mute text-sm">{c}</span>
-          </>
-        ))}
-      </div>
-    </Section>
-
-    <!-- 05: Contact -->
-    <!-- 05: Blue CTA band -->
+    <!-- Blue CTA band -->
     <section class="bg-accent text-white mt-8 md:mt-16">
       <div class="container-ppc py-20 md:py-28">
         <p class="font-body text-sm font-medium uppercase tracking-[0.14em] text-white/70 mb-6">Let's work together</p>
         <h2 class="text-h1 text-white max-w-[16ch]">Have a project in mind?</h2>
         <p class="font-body text-lg text-white/80 max-w-xl mt-6">
-          Send your logo or brief. We reply within 24 hours with a technique
-          recommendation, blank options and a precise quote.
+          Tell us what you're making. We'll come back with the right technique,
+          the right blank and a precise quote.
         </p>
         <div class="flex flex-wrap items-center gap-3 mt-10">
           <a href="#contact" class="font-body text-sm font-medium px-6 py-3 rounded-full bg-white text-[var(--color-accent)] hover:bg-white/90 transition-colors">Send a brief</a>
@@ -296,12 +325,13 @@ const howToSchema = {
       </div>
     </section>
 
-    <!-- 06: Contact -->
-    <Section id="contact" num="05.000" label="Send a brief">
+    <!-- Contact -->
+    <Section id="contact" label="Send a brief">
       <div class="grid md:grid-cols-2 gap-12">
         <div>
           <p class="prose-ppc mb-8">
-            Tell us what you need. We'll get back to you within 24 hours.
+            Send your logo or brief. We reply within 24 hours with a technique
+            recommendation, blank options and a precise quote.
           </p>
           <ul class="list-none font-body text-[0.9375rem] space-y-3">
             <li class="flex gap-6">

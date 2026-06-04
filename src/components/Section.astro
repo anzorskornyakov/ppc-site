@@ -1,11 +1,11 @@
 ---
 interface Props {
   id?: string;
-  num: string;
+  num?: string;
   label: string;
   class?: string;
 }
-const { id, num, label, class: className = '' } = Astro.props;
+const { id, label, class: className = '' } = Astro.props;
 ---
 <section
   id={id}
@@ -15,8 +15,7 @@ const { id, num, label, class: className = '' } = Astro.props;
     <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20">
       <!-- Left: index label -->
       <div class="mb-8 md:mb-0 md:pt-1">
-        <p class="section-num">{num}</p>
-        <p class="label-text mt-0.5">{label}</p>
+        <p class="label-text">{label}</p>
       </div>
       <!-- Right: content -->
       <div>
