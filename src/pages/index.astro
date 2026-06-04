@@ -177,4 +177,19 @@ const itemListSchema = {
   <InfoOverlay />
   <Gallery />
   <ProjectOverlay />
+
+  <!-- Lock the document on the gallery page so iOS can't rubber-band /
+       pull-to-refresh and fight the gallery's own scroll. Homepage only. -->
+  <style is:global>
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+    body {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+    }
+  </style>
 </Base>
