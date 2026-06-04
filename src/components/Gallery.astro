@@ -42,7 +42,7 @@ const copies = [0, 1, 2];
     position: fixed;
     inset: 0;
     height: 100vh;
-    height: 100dvh;
+    height: 100svh; /* stable across iOS toolbar show/hide — no reflow jump */
     overflow: hidden;
     background: #fff;
     display: grid;
@@ -76,8 +76,8 @@ const copies = [0, 1, 2];
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(1.25rem, 4vh, 3rem);
-    padding-block: clamp(1.25rem, 4vh, 3rem) 0;
+    gap: clamp(1.25rem, 5vw, 3rem);
+    padding-block: clamp(1.25rem, 5vw, 3rem) 0;
   }
 
   .gallery__hint {
@@ -176,6 +176,10 @@ const copies = [0, 1, 2];
     function schedule() {
       if (!raf) raf = requestAnimationFrame(apply);
     }
+    function applyNow() {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      apply();
+    }
     apply();
 
     gallery.addEventListener(
@@ -192,7 +196,10 @@ const copies = [0, 1, 2];
     let touchY = 0;
     gallery.addEventListener(
       'touchstart',
-      (e: TouchEvent) => { touchY = e.touches[0].clientY; },
+      (e: TouchEvent) => {
+        touchY = e.touches[0].clientY;
+        measure(); // ensure the loop cycle is current at the start of the gesture
+      },
       { passive: true }
     );
     gallery.addEventListener(
@@ -203,7 +210,7 @@ const copies = [0, 1, 2];
         offset += (touchY - y) * TOUCH;
         touchY = y;
         e.preventDefault();
-        schedule();
+        applyNow(); // sync transform to the finger (smoother than rAF on iOS)
       },
       { passive: false }
     );
