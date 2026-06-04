@@ -4,31 +4,28 @@ export interface Case {
   technique: string;
   item: string;
   quantity?: string;
-  cover: string;
-  gallery?: string[];
-  body?: string;
   /**
-   * Flat-lay garment photo on pure white — the image shown on the tee in the
-   * gallery stream. When omitted the tee renders a quiet placeholder. Drop real
-   * flat-lay photos here to populate the exhibition; no code change needed.
+   * Flat-lay garment photo on transparent/white — shown on the tee in the
+   * gallery stream and as the first (enlarged) image in the project overlay.
+   * When omitted the shared base tee is used.
    */
   garment?: string;
+  /** Additional case images, shown after the tee in the overlay. */
+  media?: string[];
+  /** Description shown beside the images in the overlay. */
+  body?: string;
 }
 
-// NOTE: covers/galleries currently reuse existing studio photos as placeholders.
-// Body copy is provisional — replace with real project details.
+// To add a project: drop raw photos in a folder, then run
+//   node scripts/optimize-case.mjs <sourceDir> <slug>
+// It compresses them to /public/photos/cases/<slug>/ and prints the paths to
+// paste below as `garment` (the tee) and `media` (the rest).
 export const cases: Case[] = [
   {
     slug: 'ulu',
     client: '.ulu',
     technique: 'Screen printing',
     item: 'crew t-shirts',
-    cover: '/photos/cases/ulu-01.jpg',
-    gallery: [
-      '/photos/cases/ulu-01.jpg',
-      '/photos/cases/ulu-02.jpg',
-      '/photos/cases/ulu-03.jpg',
-    ],
     body: 'ulu needed a small run of crew tees that felt closer to a clothing drop than staff merch. We moved them onto a heavier organic blank with a softer hand, then printed a two-colour design with a water-based ink that sits in the fabric rather than on top of it.',
   },
   {
@@ -36,11 +33,6 @@ export const cases: Case[] = [
     client: 'Pils',
     technique: 'Embroidery',
     item: 'staff merch',
-    cover: '/photos/cases/pils-01.jpg',
-    gallery: [
-      '/photos/cases/pils-01.jpg',
-      '/photos/cases/pils-02.jpg',
-    ],
     body: 'Staff pieces that had to survive daily wear and washing. We chose a mid-weight blank that holds its shape and stitched the mark in flat embroidery, keeping the logo crisp at small sizes where a print would have blurred.',
   },
   {
@@ -48,25 +40,18 @@ export const cases: Case[] = [
     client: 'Cyberpulse Detailing',
     technique: 'DTF',
     item: 'workwear',
-    cover: '/photos/cases/cyberpulse-01.jpg',
   },
   {
     slug: 'health-samurai',
     client: 'Health Samurai',
     technique: 'Screen printing',
     item: 'team hoodies',
-    cover: '/photos/cases/health-samurai-01.jpg',
   },
   {
     slug: 'ceejays',
     client: 'CeeJays Couture',
     technique: 'DTF',
     item: 'apparel drop',
-    cover: '/photos/cases/ceejays-01.jpg',
-    gallery: [
-      '/photos/cases/ceejays-01.jpg',
-      '/photos/cases/ceejays-02.jpg',
-    ],
     body: 'A full-colour apparel drop with photographic artwork that no single print technique handles cleanly at small volume. We used DTF for exact colour and fine detail with no setup cost, on blanks selected to keep the transfer flexible.',
   },
   {
@@ -74,6 +59,5 @@ export const cases: Case[] = [
     client: 'Joom',
     technique: 'Embroidery',
     item: 'corporate merch',
-    cover: '/photos/cases/joom-01.jpg',
   },
 ];

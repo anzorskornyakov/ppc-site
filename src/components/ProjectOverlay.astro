@@ -1,9 +1,11 @@
 ---
 import ContactForm from './ContactForm.astro';
 import { cases } from '../data/cases';
+import { caseImages } from '../data/media';
 import { SITE } from '../data/site';
 
 // Data island the overlay script reads to build project views on demand.
+// images[0] is the enlarged tee itself; the rest is additional case media.
 const projectData = cases.map((c) => ({
   slug: c.slug,
   client: c.client,
@@ -11,7 +13,7 @@ const projectData = cases.map((c) => ({
   item: c.item,
   quantity: c.quantity ?? '',
   body: c.body ?? '',
-  images: c.gallery && c.gallery.length ? c.gallery : [c.cover],
+  images: caseImages(c),
 }));
 ---
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true" hidden>
@@ -127,7 +129,7 @@ const projectData = cases.map((c) => ({
     width: 100%;
     height: auto;
     object-fit: contain;
-    background: var(--color-surface);
+    background: transparent;
   }
   .overlay__media .ph {
     width: 100%;

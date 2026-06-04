@@ -1,5 +1,6 @@
 ---
 import type { Case } from '../data/cases';
+import { BASE_TEE } from '../data/media';
 
 interface Props {
   item?: Case;
@@ -7,9 +8,6 @@ interface Props {
 }
 
 const { item, variant = 'project' } = Astro.props;
-
-// Shared base garment shown on every tee until a project gets its own flat-lay.
-const BASE_TEE = '/photos/base-tee.png';
 const garment = item?.garment ?? BASE_TEE;
 ---
 {variant === 'contact' ? (
