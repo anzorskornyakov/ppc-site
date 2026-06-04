@@ -68,15 +68,15 @@ const garment = item?.garment ?? BASE_TEE;
     height: 100%;
     object-fit: contain;
     background: #fff;
-    filter: grayscale(100%);
-    opacity: 0.92;
-    transition: filter 0.6s ease, opacity 0.6s ease, transform 0.6s ease;
+    transition: transform 0.5s ease;
   }
-  .tee:hover .tee__img,
-  .tee:focus-visible .tee__img {
-    filter: grayscale(0%);
-    opacity: 1;
-    transform: scale(1.02);
+  /* Hover lift only on devices that actually hover (not touch) — keeps the
+     mobile scroll cheap to composite (no per-frame filter/opacity repaint). */
+  @media (hover: hover) {
+    .tee:hover .tee__img,
+    .tee:focus-visible .tee__img {
+      transform: scale(1.02);
+    }
   }
 
   /* Placeholder until real flat-lay photos arrive */
@@ -161,6 +161,5 @@ const garment = item?.garment ?? BASE_TEE;
   /* Touch devices: keep captions visible (no hover) */
   @media (hover: none) {
     .tee__caption { opacity: 1; }
-    .tee__img { filter: grayscale(0%); opacity: 1; }
   }
 </style>

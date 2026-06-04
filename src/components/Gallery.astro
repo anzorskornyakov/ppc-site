@@ -54,7 +54,12 @@ const copies = [0, 1, 2];
 
   .stream { position: relative; overflow: visible; }
 
-  .stream__track { will-change: transform; }
+  .stream__track {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: layout paint;
+  }
 
   .stream__set {
     display: flex;
