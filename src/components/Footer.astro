@@ -1,22 +1,49 @@
 ---
+import { SITE } from '../data/site';
+const year = new Date().getFullYear();
 ---
 <footer class="border-t border-[var(--color-rule)] mt-24">
-  <div class="container-ppc py-12">
-    <nav aria-label="Footer navigation">
-      <p class="section-num mb-3">Pages</p>
-      <ul class="flex flex-wrap gap-x-4 gap-y-1 list-none font-barlow text-sm">
-        <li><a href="/" class="hover:text-[var(--color-accent)] transition-colors">/</a></li>
-        <li class="text-mute">·</li>
-        <li><a href="/catalog" class="hover:text-[var(--color-accent)] transition-colors">/catalog</a></li>
-        <li class="text-mute">·</li>
-        <li><a href="/screen-printing" class="hover:text-[var(--color-accent)] transition-colors">/screen-printing</a></li>
-        <li class="text-mute">·</li>
-        <li><a href="/embroidery" class="hover:text-[var(--color-accent)] transition-colors">/embroidery</a></li>
-        <li class="text-mute">·</li>
-        <li><a href="/dtf" class="hover:text-[var(--color-accent)] transition-colors">/dtf</a></li>
-        <li class="text-mute">·</li>
-        <li><a href="/studio" class="hover:text-[var(--color-accent)] transition-colors">/studio</a></li>
-      </ul>
-    </nav>
+  <div class="container-ppc py-14">
+    <div class="grid gap-12 md:grid-cols-[1fr_auto_auto]">
+      <!-- Wordmark + tagline -->
+      <div>
+        <a href="/" class="font-barlow font-bold text-[1.75rem] uppercase tracking-[0.04em] leading-none hover:text-[var(--color-accent)] transition-colors">
+          PPC
+        </a>
+        <p class="font-baskerville text-mute text-sm mt-3 max-w-xs leading-relaxed">
+          Custom print studio in Lisbon. Screen printing, embroidery and DTF,
+          ready in {SITE.turnaround}.
+        </p>
+      </div>
+
+      <!-- Pages -->
+      <nav aria-label="Footer navigation">
+        <p class="section-num mb-3">Pages</p>
+        <ul class="list-none font-barlow text-sm space-y-1.5">
+          <li><a href="/" class="hover:text-[var(--color-accent)] transition-colors">Index</a></li>
+          <li><a href="/catalog" class="hover:text-[var(--color-accent)] transition-colors">Catalog</a></li>
+          <li><a href="/screen-printing" class="hover:text-[var(--color-accent)] transition-colors">Screen printing</a></li>
+          <li><a href="/embroidery" class="hover:text-[var(--color-accent)] transition-colors">Embroidery</a></li>
+          <li><a href="/dtf" class="hover:text-[var(--color-accent)] transition-colors">DTF</a></li>
+          <li><a href="/studio" class="hover:text-[var(--color-accent)] transition-colors">Studio</a></li>
+        </ul>
+      </nav>
+
+      <!-- Contact -->
+      <div>
+        <p class="section-num mb-3">Contact</p>
+        <ul class="list-none font-barlow text-sm space-y-1.5">
+          <li><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">WhatsApp</a></li>
+          <li><a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a></li>
+          <li><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">Instagram ↗</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-12 pt-6 border-t border-[var(--color-rule)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 section-num">
+      <span>© {year} {SITE.legalName} · NIPC {SITE.nipc}</span>
+      <span>{SITE.address.city}, {SITE.address.country} — Prices exclude 23% VAT</span>
+    </div>
   </div>
 </footer>

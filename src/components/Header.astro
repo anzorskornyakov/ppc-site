@@ -1,44 +1,43 @@
 ---
 import { SITE } from '../data/site';
+
+interface Props {
+  active?: 'catalog' | 'studio' | null;
+}
+const { active = null } = Astro.props;
 ---
 <header class="sticky top-0 z-50 bg-[var(--color-bg)] border-b border-[var(--color-rule)]">
-  <div class="container-ppc flex items-center justify-between py-4">
+  <div class="container-ppc flex items-center justify-between h-14">
     <a
       href="/"
-      class="font-barlow font-semibold text-[1.1rem] uppercase tracking-[0.04em] hover:text-[var(--color-accent)] transition-colors"
+      class="font-barlow font-bold text-[1.05rem] uppercase tracking-[0.06em] leading-none hover:text-[var(--color-accent)] transition-colors"
+      aria-label="PPC — home"
     >
-      PPC
+      PPC<span class="text-faint font-medium ml-2 hidden sm:inline">Portugal Print Club</span>
     </a>
-    <nav aria-label="Primary navigation">
-      <ul class="flex items-center gap-6 list-none">
+
+    <nav aria-label="Primary">
+      <ul class="flex items-center gap-5 sm:gap-7 list-none">
         <li>
           <a
             href="/catalog"
-            class="label-text hover:text-[var(--color-accent)] transition-colors"
-          >
-            Catalog
-          </a>
+            class:list={['font-barlow text-[0.8125rem] uppercase tracking-[0.1em] font-medium transition-colors hover:text-[var(--color-accent)]', active === 'catalog' ? 'text-[var(--color-text)]' : 'text-mute']}
+          >Catalog</a>
         </li>
-        <li class="text-[var(--color-rule)] select-none">·</li>
         <li>
           <a
             href="/studio"
-            class="label-text hover:text-[var(--color-accent)] transition-colors"
-          >
-            Studio
-          </a>
+            class:list={['font-barlow text-[0.8125rem] uppercase tracking-[0.1em] font-medium transition-colors hover:text-[var(--color-accent)]', active === 'studio' ? 'text-[var(--color-text)]' : 'text-mute']}
+          >Studio</a>
         </li>
-        <li class="text-[var(--color-rule)] select-none">·</li>
         <li>
           <a
             href={SITE.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="label-text hover:text-[var(--color-accent)] transition-colors"
+            class="font-barlow text-[0.8125rem] uppercase tracking-[0.1em] font-medium text-mute hover:text-[var(--color-accent)] transition-colors"
             aria-label="PPC on Instagram"
-          >
-            ↗ Instagram
-          </a>
+          >Instagram&nbsp;↗</a>
         </li>
       </ul>
     </nav>

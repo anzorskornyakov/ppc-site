@@ -2,188 +2,277 @@
 @import '@fontsource/barlow-condensed/400.css';
 @import '@fontsource/barlow-condensed/500.css';
 @import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/700.css';
 @import '@fontsource/libre-baskerville/400.css';
 @import '@fontsource/libre-baskerville/400-italic.css';
 
 @theme {
   --font-barlow: 'Barlow Condensed', sans-serif;
   --font-baskerville: 'Libre Baskerville', serif;
-  --color-bg: #F5F2EC;
-  --color-text: #0A0A0A;
-  --color-mute: #6B6864;
+
+  --color-bg: #F4F1EA;
+  --color-text: #14110E;
+  --color-mute: #6B6660;
+  --color-faint: #9C968E;
   --color-accent: #D4380D;
-  --color-rule: rgba(10, 10, 10, 0.12);
+  --color-rule: rgba(20, 17, 14, 0.14);
+  --color-rule-strong: rgba(20, 17, 14, 0.32);
 
-  --text-display: 4rem;
-  --text-h1: 3rem;
-  --text-h2: 2rem;
-  --text-h3: 1.375rem;
-  --text-section-num: 0.8125rem;
-  --text-label: 0.875rem;
-  --text-body: 1.125rem;
-  --text-small: 0.875rem;
-
-  --leading-tight: 1.3;
-  --leading-normal: 1.6;
+  --leading-tight: 1.12;
+  --leading-snug: 1.32;
+  --leading-normal: 1.65;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body { margin: 0; }
+
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-baskerville);
+    font-size: 1rem;
+    line-height: var(--leading-normal);
+    background-color: var(--color-bg);
+    font-feature-settings: "kern";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-barlow);
+    line-height: var(--leading-tight);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
 }
 
-html {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-}
-
-body {
-  font-family: var(--font-baskerville);
-  font-size: 1rem;
-  line-height: var(--leading-normal);
-  background-color: var(--color-bg);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-barlow);
-  line-height: var(--leading-tight);
-  font-weight: 600;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-
-a:hover {
-  color: var(--color-accent);
-}
-
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
 }
 
 @layer utilities {
-  .font-barlow {
-    font-family: var(--font-barlow);
+  .font-barlow { font-family: var(--font-barlow); }
+  .font-baskerville { font-family: var(--font-baskerville); }
+
+  .text-mute { color: var(--color-mute); }
+  .text-faint { color: var(--color-faint); }
+  .text-accent { color: var(--color-accent); }
+  .bg-ppc { background-color: var(--color-bg); }
+  .border-rule { border-color: var(--color-rule); }
+
+  /* ---- Layout container ---- */
+  .container-ppc {
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .container-ppc { padding-inline: 2.5rem; }
+  }
+  @media (min-width: 1280px) {
+    .container-ppc { padding-inline: 3.5rem; }
   }
 
-  .font-baskerville {
-    font-family: var(--font-baskerville);
-  }
-
-  .text-mute {
-    color: var(--color-mute);
-  }
-
-  .text-accent {
-    color: var(--color-accent);
-  }
-
-  .bg-ppc {
-    background-color: var(--color-bg);
-  }
-
-  .border-rule {
-    border-color: var(--color-rule);
-  }
-
+  /* ---- Structural type ---- */
   .section-num {
     font-family: var(--font-barlow);
-    font-size: var(--text-section-num);
+    font-size: 0.75rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
-    color: var(--color-mute);
-    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--color-faint);
+    font-variant-numeric: tabular-nums;
   }
 
   .label-text {
     font-family: var(--font-barlow);
-    font-size: var(--text-label);
+    font-size: 0.8125rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
   }
 
+  .prose-ppc {
+    font-family: var(--font-baskerville);
+    font-size: 1.0625rem;
+    line-height: var(--leading-normal);
+    max-width: 38rem;
+  }
+  .prose-ppc p + p { margin-top: 1.1em; }
+  .prose-ppc a {
+    border-bottom: 1px solid var(--color-rule-strong);
+  }
+  .prose-ppc a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .lede {
+    font-family: var(--font-baskerville);
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    line-height: 1.5;
+    max-width: 34rem;
+  }
+
+  /* ---- Display / heading scale ---- */
   .text-display {
     font-family: var(--font-barlow);
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 600;
-    line-height: var(--leading-tight);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(2.75rem, 7vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
   }
-
   .text-h1 {
     font-family: var(--font-barlow);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 600;
-    line-height: var(--leading-tight);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
   }
-
   .text-h2 {
     font-family: var(--font-barlow);
-    font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 600;
-    line-height: var(--leading-tight);
+    text-transform: uppercase;
+    font-size: clamp(1.5rem, 3vw, 2.125rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
   }
-
   .text-h3 {
     font-family: var(--font-barlow);
-    font-size: clamp(1.25rem, 2vw, 1.375rem);
     font-weight: 600;
-    line-height: var(--leading-tight);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.15;
   }
 
-  .container-ppc {
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
+  a:hover { color: var(--color-accent); }
 
-  @media (min-width: 768px) {
-    .container-ppc {
-      padding-left: 3rem;
-      padding-right: 3rem;
-    }
-  }
+  /* ---- Rules ---- */
+  .divider { border-top: 1px solid var(--color-rule); }
+  .hairline { border-top: 1px solid var(--color-rule); }
+  .hairline-strong { border-top: 1px solid var(--color-rule-strong); }
 
-  .divider {
+  /* ---- Spec / index rows (the editorial table look) ---- */
+  .index-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
     border-top: 1px solid var(--color-rule);
   }
+  .index-row:last-child { border-bottom: 1px solid var(--color-rule); }
 
-  .link-arrow::before {
-    content: '→  ';
+  .spec-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.15rem 2rem;
+    padding-block: 0.85rem;
+    border-top: 1px solid var(--color-rule);
+  }
+  .spec-row:last-child { border-bottom: 1px solid var(--color-rule); }
+  @media (min-width: 640px) {
+    .spec-row { grid-template-columns: 13rem 1fr; }
+  }
+  .spec-key {
     font-family: var(--font-barlow);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-mute);
+    padding-top: 0.15rem;
+  }
+  .spec-val {
+    font-family: var(--font-baskerville);
+    font-size: 1rem;
   }
 
-  .brand-logo-cell img {
-    filter: grayscale(100%);
-    transition: filter 0.2s ease;
-  }
-
-  .brand-logo-cell:hover img {
-    filter: grayscale(0%);
-  }
-
-  .brand-logo-cell .brand-name-fallback {
+  /* ---- Buttons ---- */
+  .btn-solid {
     font-family: var(--font-barlow);
-    font-size: var(--text-label);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8125rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: 1px solid var(--color-text);
+  }
+  .btn-solid:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .btn-ghost {
+    font-family: var(--font-barlow);
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.08em;
+    font-size: 0.8125rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-mute);
+  }
+  .btn-ghost:hover { color: var(--color-accent); }
+
+  /* ---- Brand logo cells ---- */
+  .brand-logo-cell img {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+  .brand-logo-cell:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+  .brand-logo-cell .brand-name-fallback {
+    font-family: var(--font-barlow);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     color: var(--color-mute);
     transition: color 0.2s ease;
   }
-
   .brand-logo-cell:hover .brand-name-fallback {
     color: var(--color-text);
   }

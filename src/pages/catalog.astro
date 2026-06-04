@@ -52,32 +52,30 @@ const itemListSchema = {
   <main>
     <Breadcrumbs items={[{ name: 'PPC', href: '/' }, { name: 'Catalog' }]} />
 
-    <div class="container-ppc pt-12 pb-24">
+    <div class="container-ppc pt-10 pb-24">
       <!-- Title block -->
-      <div class="mb-12 pb-12 border-b border-[var(--color-rule)]">
-        <p class="section-num mb-4">00.000</p>
-        <h1 class="text-h1 mb-6">CATALOG</h1>
-        <p class="font-baskerville text-lg max-w-2xl leading-relaxed text-mute">
-          We work with every brand available through
-          Toptex — Europe's largest blank supplier —
-          plus a premium selection from WATC Studio
-          and Velour Garments in Barcelona.
+      <div class="mb-14 pb-10 border-b border-[var(--color-rule)]">
+        <p class="section-num mb-5">02.100 — Blanks</p>
+        <h1 class="text-display mb-6">Catalog</h1>
+        <p class="lede text-mute">
+          Every brand available through Toptex — Europe's largest blank
+          supplier — plus a premium selection from WATC Studio and Velour
+          Garments in Barcelona. These are the brands we reach for most.
         </p>
-        <p class="font-baskerville text-lg mt-3 text-mute">These are some of the brands we use most often.</p>
       </div>
 
       <!-- Brand tiers -->
       <div class="space-y-16">
         {brandsByTier.map(({ tier, meta, brands: tierBrands }) => (
-          <div class="pb-16 border-b border-[var(--color-rule)] last:border-0">
-            <div class="mb-8">
+          <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 pb-16 border-b border-[var(--color-rule)] last:border-0">
+            <div class="mb-8 md:mb-0">
               <p class="section-num">{meta.num}</p>
-              <p class="font-barlow font-semibold text-2xl uppercase tracking-[0.02em] mt-1">{meta.label}</p>
+              <p class="text-h3 uppercase mt-1">{meta.label}</p>
               {meta.desc && (
-                <p class="font-baskerville text-mute mt-1">{meta.desc}</p>
+                <p class="font-baskerville text-mute text-sm mt-2 leading-relaxed">{meta.desc}</p>
               )}
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-l border-t border-[var(--color-rule)]">
               {tierBrands.map((brand) => (
                 <BrandLogo brand={brand} />
               ))}
@@ -87,29 +85,21 @@ const itemListSchema = {
       </div>
 
       <!-- Footer note -->
-      <div class="mt-12 pt-8 border-t border-[var(--color-rule)]">
-        <p class="font-baskerville text-mute mb-2">+ 100+ other brands through Toptex.</p>
-        <p class="font-baskerville text-mute mb-6">Or supply your own.</p>
-        <p class="font-baskerville">
-          Need something specific?{' '}
-          <a href="/#contact" class="underline hover:text-[var(--color-accent)] transition-colors">Tell us — we'll find it.</a>
-        </p>
+      <div class="mt-14 md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20">
+        <p class="section-num mb-4 md:mb-0">Notes</p>
+        <div class="prose-ppc">
+          <p class="text-mute">+ 100 more brands available through Toptex. Or supply your own.</p>
+          <p>
+            Need something specific?{' '}
+            <a href="/#contact">Tell us — we'll find it.</a>
+          </p>
+        </div>
       </div>
 
       <!-- CTA -->
-      <div class="mt-16 pt-12 border-t border-[var(--color-rule)] flex flex-col sm:flex-row gap-6">
-        <a
-          href="/#contact"
-          class="font-barlow font-semibold uppercase tracking-[0.04em] text-sm border border-[var(--color-text)] px-6 py-3 hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors inline-block text-center"
-        >
-          Send a brief →
-        </a>
-        <a
-          href="/"
-          class="font-barlow font-medium uppercase tracking-[0.04em] text-sm text-mute hover:text-[var(--color-accent)] transition-colors flex items-center"
-        >
-          ← Back to PPC
-        </a>
+      <div class="mt-16 pt-10 border-t border-[var(--color-rule)] flex flex-col sm:flex-row sm:items-center gap-6">
+        <a href="/#contact" class="btn-solid">Send a brief →</a>
+        <a href="/" class="btn-ghost">← Back to PPC</a>
       </div>
     </div>
   </main>

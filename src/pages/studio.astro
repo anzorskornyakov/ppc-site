@@ -93,112 +93,114 @@ const studioPhotos = [
   <main>
     <Breadcrumbs items={[{ name: 'PPC', href: '/' }, { name: 'Studio' }]} />
 
-    <div class="container-ppc pt-12 pb-24">
+    <div class="container-ppc pt-10 pb-24">
       <!-- Title block -->
-      <div class="mb-12 pb-12 border-b border-[var(--color-rule)]">
-        <p class="section-num mb-4">03.000</p>
-        <h1 class="text-h1 mb-4">STUDIO</h1>
-        <p class="font-baskerville text-lg text-mute max-w-2xl">
-          A custom print studio in Lisbon, in Campolide.
-          Open for client visits by appointment.
+      <div class="mb-14 pb-10 border-b border-[var(--color-rule)]">
+        <p class="section-num mb-5">03.000 — Studio</p>
+        <h1 class="text-display mb-6">Studio</h1>
+        <p class="lede text-mute">
+          A custom print studio in Campolide, Lisbon. Open for client
+          visits by appointment.
         </p>
       </div>
 
-      <div class="space-y-16">
+      <!-- Hero photo -->
+      <figure class="mb-16">
+        <div class="w-full aspect-[16/8] overflow-hidden bg-[rgba(20,17,14,0.06)]">
+          <img src="/photos/studio-hero.jpg" alt="PPC studio interior — Calçada dos Mestres 34, Lisbon" loading="lazy" class="w-full h-full object-cover" />
+        </div>
+        <figcaption class="section-num mt-3">Fig. 01 — The studio floor, Calçada dos Mestres 34</figcaption>
+      </figure>
+
+      <div class="divide-y divide-[var(--color-rule)] border-t border-[var(--color-rule)]">
 
         <!-- Address -->
-        <div class="pb-12 border-b border-[var(--color-rule)]">
-          <p class="label-text mb-6">ADDRESS</p>
-          <address class="not-italic font-baskerville text-lg space-y-1 mb-4">
-            <p>{SITE.address.street}</p>
-            <p>{SITE.address.postal} {SITE.address.city}, {SITE.address.country}</p>
-            <p>{SITE.address.district}</p>
-          </address>
-          <p class="font-baskerville text-mute">Ground floor. Street entrance, letter A.</p>
-          <p class="font-baskerville text-mute">Five minutes from Marquês de Pombal by foot.</p>
+        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
+          <p class="label-text mb-4 md:mb-0">Address</p>
+          <div>
+            <address class="not-italic prose-ppc mb-3">
+              <span class="block">{SITE.address.street}</span>
+              <span class="block">{SITE.address.postal} {SITE.address.city}, {SITE.address.country}</span>
+              <span class="block">{SITE.address.district}</span>
+            </address>
+            <p class="prose-ppc text-mute text-sm">Ground floor. Street entrance, letter A. Five minutes from Marquês de Pombal on foot.</p>
+          </div>
         </div>
 
         <!-- About the space -->
-        <div class="pb-12 border-b border-[var(--color-rule)]">
-          <p class="label-text mb-6">ABOUT THE SPACE</p>
-          <div class="font-baskerville text-lg leading-relaxed max-w-2xl space-y-4 mb-10">
-            <p>This is where we work and where we meet clients.</p>
-            <p>
-              Inside: a 6-color screen printing carousel, a
-              single-head embroidery machine, a DTF printer,
-              a heat press, sample fabric racks, and a
-              worktable for design and conversation.
-            </p>
-            <p>
-              We invite clients in. You can see samples,
-              handle blanks, understand what different
-              techniques actually look like in person, and
-              meet the people making your order. Approvals
-              happen with the real thing in hand, not over email.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {studioPhotos.map((photo) => (
-              <div class="aspect-[4/3] overflow-hidden bg-[rgba(10,10,10,0.06)]">
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-            ))}
+        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
+          <p class="label-text mb-4 md:mb-0">About the space</p>
+          <div>
+            <div class="prose-ppc mb-8">
+              <p>This is where we work and where we meet clients.</p>
+              <p>
+                Inside: a 6-colour screen printing carousel, a single-head
+                embroidery machine, a DTF printer, a heat press, sample fabric
+                racks, and a worktable for design and conversation.
+              </p>
+              <p>
+                We invite clients in. See samples, handle blanks, understand
+                what each technique actually looks like in person, and meet
+                the people making your order. Approvals happen with the real
+                thing in hand — not over email.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {studioPhotos.map((photo, i) => (
+                <figure class="aspect-[4/3] overflow-hidden bg-[rgba(20,17,14,0.06)] relative group">
+                  <img src={photo.src} alt={photo.alt} loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
+                  <figcaption class="absolute bottom-2 left-2 section-num text-[var(--color-bg)] mix-blend-difference">{String(i + 2).padStart(2, '0')}</figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </div>
 
         <!-- How to visit -->
-        <div class="pb-12 border-b border-[var(--color-rule)]">
-          <p class="label-text mb-6">HOW TO VISIT</p>
-          <div class="font-baskerville text-lg leading-relaxed max-w-2xl space-y-4">
+        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
+          <p class="label-text mb-4 md:mb-0">How to visit</p>
+          <div class="prose-ppc">
             <p>
-              Studio visits are by appointment. Book ahead
-              via WhatsApp or email. A typical visit is 30
-              to 60 minutes.
+              Studio visits are by appointment. Book ahead via WhatsApp or
+              email — a typical visit is 30 to 60 minutes.
             </p>
             <p>
-              Bring your brief if you have one. We have
-              samples of every technique, every fabric weight,
-              every blank on file.
+              Bring your brief if you have one. We keep samples of every
+              technique, fabric weight and blank on file.
             </p>
           </div>
         </div>
 
         <!-- Hours -->
-        <div class="pb-12 border-b border-[var(--color-rule)]">
-          <p class="label-text mb-6">HOURS</p>
-          <dl class="space-y-3 font-barlow text-base">
-            <div class="flex gap-8">
-              <dt class="text-mute min-w-[14rem]">Monday — Friday</dt>
-              <dd>10:00 — 19:00</dd>
+        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
+          <p class="label-text mb-4 md:mb-0">Hours</p>
+          <dl>
+            <div class="spec-row">
+              <dt class="spec-key">Monday — Friday</dt>
+              <dd class="spec-val">10:00 — 19:00</dd>
             </div>
-            <div class="flex gap-8">
-              <dt class="text-mute min-w-[14rem]">Saturday — Sunday</dt>
-              <dd>By appointment</dd>
+            <div class="spec-row">
+              <dt class="spec-key">Saturday — Sunday</dt>
+              <dd class="spec-val">By appointment</dd>
             </div>
           </dl>
         </div>
 
         <!-- Contact -->
-        <div class="pb-12 border-b border-[var(--color-rule)]">
-          <p class="label-text mb-6">CONTACT</p>
-          <dl class="space-y-3 font-barlow text-base">
-            <div class="flex gap-8">
-              <dt class="text-mute min-w-[7rem]">WhatsApp</dt>
-              <dd><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a></dd>
+        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
+          <p class="label-text mb-4 md:mb-0">Contact</p>
+          <dl>
+            <div class="spec-row">
+              <dt class="spec-key">WhatsApp</dt>
+              <dd class="spec-val"><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a></dd>
             </div>
-            <div class="flex gap-8">
-              <dt class="text-mute min-w-[7rem]">Email</dt>
-              <dd><a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a></dd>
+            <div class="spec-row">
+              <dt class="spec-key">Email</dt>
+              <dd class="spec-val"><a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a></dd>
             </div>
-            <div class="flex gap-8">
-              <dt class="text-mute min-w-[7rem]">Instagram</dt>
-              <dd><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a></dd>
+            <div class="spec-row">
+              <dt class="spec-key">Instagram</dt>
+              <dd class="spec-val"><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a></dd>
             </div>
           </dl>
         </div>
@@ -206,19 +208,9 @@ const studioPhotos = [
       </div>
 
       <!-- CTA -->
-      <div class="mt-20 pt-12 border-t border-[var(--color-rule)] flex flex-col sm:flex-row gap-6">
-        <a
-          href="/#contact"
-          class="font-barlow font-semibold uppercase tracking-[0.04em] text-sm border border-[var(--color-text)] px-6 py-3 hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors inline-block text-center"
-        >
-          Send a brief →
-        </a>
-        <a
-          href="/"
-          class="font-barlow font-medium uppercase tracking-[0.04em] text-sm text-mute hover:text-[var(--color-accent)] transition-colors flex items-center"
-        >
-          ← Back to PPC
-        </a>
+      <div class="mt-16 pt-10 border-t border-[var(--color-rule)] flex flex-col sm:flex-row sm:items-center gap-6">
+        <a href="/#contact" class="btn-solid">Send a brief →</a>
+        <a href="/" class="btn-ghost">← Back to PPC</a>
       </div>
     </div>
   </main>

@@ -7,6 +7,7 @@ import Section from '../components/Section.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { SITE } from '../data/site';
 import { clients } from '../data/clients';
+import { services } from '../data/services';
 
 const workImages = [
   { src: '/photos/work-01.jpg', alt: 'Screen-printed t-shirts — custom order' },
@@ -170,149 +171,155 @@ const howToSchema = {
   <Header />
 
   <main>
-    <!-- 00: Cover -->
-    <section id="cover" class="divider py-20 md:py-28">
-      <div class="container-ppc">
-        <p class="section-num mb-10 md:mb-14">00.000</p>
-        <div>
-          <h1 class="font-barlow font-semibold leading-none tracking-tight"
-              style="font-size: clamp(4.5rem, 13vw, 9rem);">PPC</h1>
-          <p class="font-barlow font-semibold text-mute leading-tight tracking-tight"
-             style="font-size: clamp(1.75rem, 5vw, 3.5rem); margin-top: 0.2em;">
-            PORTUGAL PRINT CLUB
-          </p>
-          <p class="font-barlow text-mute"
-             style="font-size: clamp(0.9rem, 1.5vw, 1.1rem); margin-top: 1em; letter-spacing: 0.04em;">
-            LISBON · 2026
-          </p>
-        </div>
+    <!-- 00: Cover / title block -->
+    <section id="cover" class="container-ppc pt-10 md:pt-14 pb-16 md:pb-24">
+      <!-- title-block metadata row -->
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-1 section-num pb-5 mb-10 md:mb-14 border-b border-[var(--color-rule)]">
+        <span>00.000 — Index</span>
+        <span class="text-faint hidden sm:inline">/</span>
+        <span>Lisbon, Portugal</span>
+        <span class="text-faint hidden sm:inline">/</span>
+        <span>Est. {SITE.foundingDate}</span>
+        <span class="ml-auto text-accent">● Open for briefs</span>
+      </div>
+
+      <h1 class="font-barlow font-bold uppercase leading-[0.86] tracking-[-0.02em]"
+          style="font-size: clamp(4rem, 17vw, 13rem);">
+        Portugal<br />Print Club
+      </h1>
+
+      <div class="mt-10 md:mt-14 grid md:grid-cols-[1fr_auto] md:items-end gap-8">
+        <p class="lede text-mute">
+          A custom print studio in Lisbon — screen printing,
+          embroidery and DTF. From a single piece, ready in three business days.
+        </p>
+        <a href="#contact" class="btn-solid justify-self-start md:justify-self-end">Send a brief →</a>
       </div>
     </section>
 
-    <!-- 01: What we do -->
-    <Section id="services" num="01.000" label="WHAT WE DO">
-      <p class="font-baskerville mb-10 max-w-sm leading-relaxed" style="font-size:1rem;">
-        A custom print studio in Lisbon.
-      </p>
-      <ul class="space-y-2 list-none mb-10">
-        <li>
-          <a href="/screen-printing"
-             class="font-barlow font-semibold uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors"
-             style="font-size: clamp(1.5rem, 3vw, 2rem);">
-            → Screen printing
-          </a>
-        </li>
-        <li>
-          <a href="/embroidery"
-             class="font-barlow font-semibold uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors"
-             style="font-size: clamp(1.5rem, 3vw, 2rem);">
-            → Embroidery
-          </a>
-        </li>
-        <li>
-          <a href="/dtf"
-             class="font-barlow font-semibold uppercase tracking-[0.02em] hover:text-[var(--color-accent)] transition-colors"
-             style="font-size: clamp(1.5rem, 3vw, 2rem);">
-            → DTF
-          </a>
-        </li>
+    <!-- 01: What we do — service index -->
+    <Section id="services" num="01.000" label="What we do">
+      <ul class="list-none">
+        {services.map((s) => (
+          <li>
+            <a href={s.path} class="group index-row no-underline">
+              <span class="font-barlow font-semibold uppercase tracking-[0.01em] leading-none group-hover:text-[var(--color-accent)] transition-colors"
+                    style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
+                {s.name}
+              </span>
+              <span class="flex items-baseline gap-4 shrink-0 text-mute">
+                <span class="font-barlow text-sm uppercase tracking-[0.06em] hidden sm:inline">
+                  from €{s.priceLow}/pc · min {s.minOrder}
+                </span>
+                <span class="font-barlow text-xl group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all">→</span>
+              </span>
+            </a>
+          </li>
+        ))}
       </ul>
-      <p class="font-baskerville text-mute" style="font-size:0.9rem;">Ready in 3 business days.</p>
+      <p class="font-baskerville text-mute mt-6" style="font-size:0.9375rem;">
+        Every order ready in {SITE.turnaround}.
+      </p>
     </Section>
 
     <!-- 02: Blanks -->
-    <Section id="blanks" num="02.000" label="BLANKS">
-      <p class="font-baskerville mb-5 max-w-md leading-relaxed" style="font-size:1rem;">
-        We work with every brand available through Toptex — Europe's largest blank
-        supplier — plus our own premium selection from WATC Studio and Velour Garments
-        in Barcelona.
+    <Section id="blanks" num="02.000" label="Blanks">
+      <p class="prose-ppc mb-8">
+        We print on every brand available through Toptex — Europe's largest
+        blank supplier — plus our own premium selection from WATC Studio and
+        Velour Garments in Barcelona. <span class="text-mute">Or supply your own.
+        Same three-day turnaround.</span>
       </p>
-      <p class="font-baskerville text-mute mb-10 max-w-md" style="font-size:1rem;">
-        Or supply your own. Same 3-day turnaround.
-      </p>
-      <a href="/catalog"
-         class="font-barlow font-medium uppercase tracking-[0.04em] text-sm hover:text-[var(--color-accent)] transition-colors">
-        → /catalog
-      </a>
+      <a href="/catalog" class="btn-ghost">View the catalog →</a>
     </Section>
 
     <!-- 03: Studio -->
-    <Section id="studio-section" num="03.000" label="STUDIO">
+    <Section id="studio-section" num="03.000" label="Studio">
       <div class="mb-8">
-        <p class="font-baskerville" style="font-size:1rem;">{SITE.address.street}</p>
-        <p class="font-baskerville" style="font-size:1rem;">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
-        <p class="font-baskerville text-mute mt-1" style="font-size:1rem;">By appointment.</p>
+        <p class="prose-ppc">{SITE.address.street}</p>
+        <p class="prose-ppc">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
+        <p class="prose-ppc text-mute mt-1">Open by appointment.</p>
       </div>
-      <a href="/studio"
-         class="font-barlow font-medium uppercase tracking-[0.04em] text-sm hover:text-[var(--color-accent)] transition-colors">
-        → /studio
-      </a>
-      <div class="mt-12 w-full aspect-[16/7] overflow-hidden bg-[rgba(10,10,10,0.06)]">
-        <img
-          src="/photos/studio-hero.jpg"
-          alt="PPC studio interior — Calçada dos Mestres 34, Lisbon"
-          loading="lazy"
-          class="w-full h-full object-cover"
-        />
-      </div>
-      <p class="section-num mt-3">Studio · Calçada dos Mestres 34</p>
+      <a href="/studio" class="btn-ghost mb-12">Visit the studio →</a>
+      <figure class="mt-10">
+        <div class="w-full aspect-[16/8] overflow-hidden bg-[rgba(20,17,14,0.06)]">
+          <img
+            src="/photos/studio-hero.jpg"
+            alt="PPC studio interior — Calçada dos Mestres 34, Lisbon"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <figcaption class="section-num mt-3">Fig. 01 — Studio, Calçada dos Mestres 34</figcaption>
+      </figure>
     </Section>
 
     <!-- 04: Work -->
-    <Section id="work" num="04.000" label="WORK">
-      <p class="font-baskerville max-w-sm mb-10 leading-relaxed" style="font-size:1rem;">
-        The newest and most talked-about venues in Lisbon.
-        All came through word of mouth, before we had a brand or a space.
+    <Section id="work" num="04.000" label="Selected work">
+      <p class="prose-ppc mb-10">
+        The newest and most talked-about venues in Lisbon — all came
+        through word of mouth, before we had a brand or a space.
       </p>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-8">
-        {workImages.map((img) => (
-          <div class="aspect-square overflow-hidden bg-[rgba(10,10,10,0.06)]">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-1.5 md:gap-2 mb-8">
+        {workImages.map((img, i) => (
+          <figure class="aspect-square overflow-hidden bg-[rgba(20,17,14,0.06)] relative group">
             <img
               src={img.src}
               alt={img.alt}
               loading="lazy"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
             />
-          </div>
+            <figcaption class="absolute bottom-2 left-2 section-num text-[var(--color-bg)] mix-blend-difference">
+              {String(i + 1).padStart(2, '0')}
+            </figcaption>
+          </figure>
         ))}
       </div>
-      <p class="font-barlow text-mute text-sm leading-relaxed tracking-wide">
-        {clients.join('  ·  ')}
+      <p class="font-barlow text-mute text-sm tracking-[0.04em] leading-relaxed">
+        {clients.join('   ·   ')}
       </p>
     </Section>
 
     <!-- 05: Contact -->
-    <Section id="contact" num="05.000" label="SEND A BRIEF">
+    <Section id="contact" num="05.000" label="Send a brief">
+      <p class="prose-ppc mb-10">
+        Send your logo or project brief. We respond within 24 hours with a
+        technique recommendation, blank options and a precise quote.
+      </p>
       <div class="max-w-md">
         <ContactForm />
       </div>
     </Section>
 
     <!-- 06: Colophon -->
-    <Section id="colophon" num="06.000" label="COLOPHON">
-      <div class="space-y-8 font-barlow" style="font-size:0.875rem;">
-        <div class="space-y-1">
-          <p>{SITE.legalName} · NIPC {SITE.nipc}</p>
-          <p class="text-mute">{SITE.address.city}, {SITE.address.country} · {SITE.foundingDate}</p>
+    <Section id="colophon" num="06.000" label="Colophon">
+      <div class="grid sm:grid-cols-2 gap-x-12 gap-y-10">
+        <div>
+          <p class="label-text mb-3">Contact</p>
+          <ul class="list-none font-barlow text-[0.9375rem] space-y-2">
+            <li class="flex gap-6">
+              <span class="text-mute w-20 shrink-0">WhatsApp</span>
+              <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a>
+            </li>
+            <li class="flex gap-6">
+              <span class="text-mute w-20 shrink-0">Email</span>
+              <a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
+            </li>
+            <li class="flex gap-6">
+              <span class="text-mute w-20 shrink-0">Instagram</span>
+              <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a>
+            </li>
+          </ul>
         </div>
-        <div class="space-y-3">
-          <p class="flex gap-8">
-            <span class="text-mute w-24 shrink-0">WhatsApp</span>
-            <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer"
-               class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a>
-          </p>
-          <p class="flex gap-8">
-            <span class="text-mute w-24 shrink-0">Email</span>
-            <a href={`mailto:${SITE.email}`}
-               class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
-          </p>
-          <p class="flex gap-8">
-            <span class="text-mute w-24 shrink-0">Instagram</span>
-            <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer"
-               class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a>
-          </p>
+        <div>
+          <p class="label-text mb-3">Legal</p>
+          <ul class="list-none font-barlow text-[0.9375rem] space-y-2 text-mute">
+            <li>{SITE.legalName}</li>
+            <li>NIPC {SITE.nipc}</li>
+            <li>{SITE.address.city}, {SITE.address.country} · Est. {SITE.foundingDate}</li>
+            <li>Prices exclude 23% VAT.</li>
+          </ul>
         </div>
-        <p class="text-mute">Prices exclude 23% VAT.</p>
       </div>
     </Section>
   </main>
