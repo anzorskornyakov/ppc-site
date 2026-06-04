@@ -3,9 +3,9 @@ import { SITE } from '../data/site';
 import { services } from '../data/services';
 
 const links = [
-  ...services.map((s) => ({ label: s.name, href: s.path })),
-  { label: 'Studio', href: '/studio' },
   { label: 'Catalog', href: '/catalog' },
+  { label: 'Studio', href: '/studio' },
+  ...services.map((s) => ({ label: s.name, href: s.path })),
 ];
 ---
 <!-- Persistent, minimal chrome — no nav bar -->
@@ -27,6 +27,8 @@ const links = [
       will want to wear it. Screen printing, embroidery and DTF, from a single
       piece, ready in three business days.
     </p>
+
+    <button type="button" class="info__cta" data-start-project>Start a project →</button>
 
     <nav class="info__nav" aria-label="Sections">
       <ul>
@@ -111,6 +113,21 @@ const links = [
     color: var(--color-text);
   }
 
+  .info__cta {
+    align-self: flex-start;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.7rem 1.25rem;
+    background: var(--color-text);
+    color: #fff;
+    border: 1px solid var(--color-text);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .info__cta:hover { background: #fff; color: var(--color-text); }
+
   .info__nav ul { list-style: none; padding: 0; margin: 0; }
   .info__nav li { border-top: 1px solid var(--color-rule); }
   .info__nav li:last-child { border-bottom: 1px solid var(--color-rule); }
@@ -154,6 +171,10 @@ const links = [
     }
 
     trigger.addEventListener('click', open);
+    info.querySelector('[data-start-project]')?.addEventListener('click', () => {
+      close();
+      window.setTimeout(() => document.dispatchEvent(new CustomEvent('ppc:open-contact')), 300);
+    });
     info.querySelector('[data-info-close]')?.addEventListener('click', close);
     info.addEventListener('click', (e) => { if (e.target === info) close(); });
     document.addEventListener('keydown', (e) => {
