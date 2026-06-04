@@ -164,188 +164,143 @@ const howToSchema = {
   <Header />
 
   <main>
-    <!-- 00: Hero -->
-    <section id="cover" class="container-ppc pt-14 md:pt-24 pb-10 md:pb-16">
-      <p class="eyebrow mb-7">Open for briefs · Lisbon</p>
-
-      <h1 class="text-display max-w-[16ch]">
-        Merch worth <span class="text-accent">keeping</span>.
-      </h1>
-
-      <div class="mt-8 md:mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-        <p class="lede">
-          We design, source and print apparel at the level of the brands we
-          work with. Screen printing, embroidery and DTF — from a single
-          piece, ready in three business days.
-        </p>
-        <div class="flex flex-wrap items-center gap-3 shrink-0">
-          <a href="#contact" class="btn-solid">Send a brief</a>
-          <a href="/catalog" class="btn-outline">View the catalog</a>
-        </div>
+    <!-- Intro -->
+    <section class="container-ppc pt-8 pb-8 text-center">
+      <h1 class="text-display max-w-[20ch] mx-auto">Merch worth keeping.</h1>
+      <p class="lede mx-auto mt-3">
+        We design, source and print apparel at the level of the brands we work
+        with. Screen printing, embroidery and DTF, from a single piece, ready in
+        three business days.
+      </p>
+      <div class="flex flex-wrap justify-center gap-2.5 mt-6">
+        <a href="#contact" class="btn-solid">Send a brief</a>
+        <a href="/catalog" class="btn-outline">View the catalog</a>
       </div>
+    </section>
 
-      <!-- Hero image -->
-      <figure class="mt-12 md:mt-16">
-        <div class="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-2xl bg-[var(--color-surface)]">
-          <img src="/photos/studio-hero.jpg" alt="PPC studio in Campolide, Lisbon" class="w-full h-full object-cover" />
-        </div>
+    <!-- Lead image -->
+    <section class="container-ppc pb-4">
+      <figure>
+        <img src="/photos/studio-hero.jpg" alt="PPC studio in Campolide, Lisbon"
+          class="w-full aspect-[16/8] object-cover border border-[var(--color-rule)]" />
+        <figcaption class="section-num mt-1.5">PPC studio, Campolide, Lisbon</figcaption>
       </figure>
     </section>
 
+    <!-- Selected work -->
+    <Section id="work" label="Selected work">
+      <p class="prose-ppc mb-6">
+        A few of the projects we've made. Most came through word of mouth, before
+        we had a brand or a space. Tap a project to see more.
+      </p>
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-7 items-start">
+        {cases.map((c) => <CaseCard item={c} />)}
+      </div>
+      <p class="mt-8 text-mute text-[0.8125rem]">
+        <span class="label-text">Worked with</span>&nbsp;&nbsp;
+        {clients.join(', ')}.
+      </p>
+    </Section>
+
+    <!-- Techniques -->
+    <Section id="services" label="Techniques">
+      <ul class="list-none">
+        {services.map((s) => (
+          <li class="index-row">
+            <a href={s.path}>{s.name}</a>
+            <span class="text-mute text-[0.8125rem]">from €{s.priceLow}/pc · min {s.minOrder}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="prose-ppc text-mute mt-4">
+        In-house, from one piece. Each technique chosen for the result, not the order size.
+      </p>
+    </Section>
+
     <!-- How we work -->
     <Section id="how-we-work" label="How we work">
-      <h2 class="text-h2 max-w-[14ch]">More than print.</h2>
-      <p class="prose-ppc mt-6">
+      <p class="prose-ppc mb-6">
         Most studios take your file and put it on a shirt. We start one step
         earlier. Every brief is a product question first: what should this be,
         what should it be made of, and will someone actually want to wear it.
       </p>
-
-      <div class="grid sm:grid-cols-3 gap-px bg-[var(--color-rule)] border border-[var(--color-rule)] rounded-xl overflow-hidden mt-12">
-        <div class="bg-[var(--color-bg)] p-6">
-          <p class="label-text mb-3" style="color:var(--color-accent)">Design</p>
-          <p class="font-body text-[0.9375rem] leading-relaxed text-mute">
+      <div class="grid sm:grid-cols-3 gap-x-8 gap-y-5">
+        <div>
+          <p class="label-text mb-1.5">Design</p>
+          <p class="text-[0.875rem] leading-relaxed text-mute">
             Arrive with a brief, not necessarily a finished file. We work out the
-            artwork, the placement and the technique with you — and we'll tell you
+            artwork, the placement and the technique with you, and we'll tell you
             when something will print forgettably, before production, not after.
           </p>
         </div>
-        <div class="bg-[var(--color-bg)] p-6">
-          <p class="label-text mb-3" style="color:var(--color-accent)">Blanks</p>
-          <p class="font-body text-[0.9375rem] leading-relaxed text-mute">
+        <div>
+          <p class="label-text mb-1.5">Blanks</p>
+          <p class="text-[0.875rem] leading-relaxed text-mute">
             We pick the right garment for the job from over a thousand brands, or
             build a custom blank when nothing off the shelf fits. The right base
             is half the result.
           </p>
         </div>
-        <div class="bg-[var(--color-bg)] p-6">
-          <p class="label-text mb-3" style="color:var(--color-accent)">Production</p>
-          <p class="font-body text-[0.9375rem] leading-relaxed text-mute">
-            Screen printing, embroidery and DTF in-house — including complex
+        <div>
+          <p class="label-text mb-1.5">Production</p>
+          <p class="text-[0.875rem] leading-relaxed text-mute">
+            Screen printing, embroidery and DTF in-house, including complex
             multi-colour work most studios pass on. Ready in three business days.
           </p>
         </div>
       </div>
     </Section>
 
-    <!-- Techniques -->
-    <Section id="services" label="Techniques">
-      <ul class="list-none -mt-2">
-        {services.map((s) => (
-          <li>
-            <a href={s.path} class="group index-row no-underline">
-              <span class="text-h2 group-hover:text-[var(--color-accent)] transition-colors">{s.name}</span>
-              <span class="font-body text-xl text-mute group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all">→</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <p class="prose-ppc text-mute mt-6">
-        In-house, from one piece. Each technique chosen for the result, not the order size.
-      </p>
-    </Section>
-
     <!-- Blanks -->
     <Section id="blanks" label="Blanks">
       <p class="prose-ppc">
         The garment matters as much as the print. We work across the full Toptex
-        catalogue — over a thousand brands, from economy to premium — and keep our
+        catalogue, over a thousand brands from economy to premium, and keep our
         own selection from WATC Studio and Velour Garments in Barcelona for work
         that needs a better base.
       </p>
-      <p class="prose-ppc mt-5 mb-8">
+      <p class="prose-ppc mt-3">
         When nothing off the shelf is right, we source or build a custom blank.
-        Or bring your own — same three-day turnaround either way.
+        Or bring your own, same three-day turnaround either way.
+        &nbsp;<a href="/catalog">View the catalog</a>.
       </p>
-      <a href="/catalog" class="btn-ghost">View the catalog →</a>
-    </Section>
-
-    <!-- Selected work / Cases -->
-    <Section id="work" label="Selected work">
-      <p class="prose-ppc mb-12">
-        A few of the projects we've made. Most came through word of mouth,
-        before we had a brand or a space.
-      </p>
-      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-10 items-start">
-        {cases.map((c) => <CaseCard item={c} />)}
-      </div>
-
-      <!-- Worked with -->
-      <div class="mt-16 pt-8 border-t border-[var(--color-rule)]">
-        <p class="label-text mb-4">Worked with</p>
-        <div class="flex flex-wrap gap-x-2 gap-y-1 items-center">
-          {clients.map((c, i) => (
-            <>
-              {i > 0 && <span class="text-faint">·</span>}
-              <span class="font-body text-mute text-sm">{c}</span>
-            </>
-          ))}
-        </div>
-      </div>
     </Section>
 
     <!-- Studio -->
     <Section id="studio-section" label="Studio">
-      <div class="mb-6">
-        <p class="prose-ppc">{SITE.address.street}</p>
-        <p class="prose-ppc">{SITE.address.postal} {SITE.address.city} · {SITE.address.district}</p>
-        <p class="prose-ppc text-mute mt-1">Open by appointment.</p>
-      </div>
-      <p class="prose-ppc mb-8">
-        Come see samples, handle blanks and meet the people making your order.
-        Most local projects start with a studio visit.
-      </p>
-      <a href="/studio" class="btn-ghost">Visit the studio →</a>
-      <figure class="mt-10">
-        <div class="w-full aspect-[16/8] overflow-hidden rounded-2xl bg-[var(--color-surface)]">
-          <img
-            src="/photos/studio-detail-01.jpg"
-            alt="PPC studio interior — Calçada dos Mestres 34, Lisbon"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          />
+      <div class="grid md:grid-cols-2 gap-6 items-start">
+        <div>
+          <p class="prose-ppc">
+            {SITE.address.street}<br />
+            {SITE.address.postal} {SITE.address.city} · {SITE.address.district}<br />
+            <span class="text-mute">Open by appointment.</span>
+          </p>
+          <p class="prose-ppc mt-3">
+            Come see samples, handle blanks and meet the people making your order.
+            Most local projects start with a studio visit.
+            &nbsp;<a href="/studio">Visit the studio</a>.
+          </p>
         </div>
-        <figcaption class="section-num mt-3">Studio · Calçada dos Mestres 34, Campolide</figcaption>
-      </figure>
+        <figure>
+          <img src="/photos/studio-detail-01.jpg"
+            alt="PPC studio interior — Calçada dos Mestres 34, Lisbon" loading="lazy"
+            class="w-full aspect-[4/3] object-cover border border-[var(--color-rule)]" />
+        </figure>
+      </div>
     </Section>
-
-    <!-- Blue CTA band -->
-    <section class="bg-accent text-white mt-8 md:mt-16">
-      <div class="container-ppc py-20 md:py-28">
-        <p class="font-body text-sm font-medium uppercase tracking-[0.14em] text-white/70 mb-6">Let's work together</p>
-        <h2 class="text-h1 text-white max-w-[16ch]">Have a project in mind?</h2>
-        <p class="font-body text-lg text-white/80 max-w-xl mt-6">
-          Tell us what you're making. We'll come back with the right technique,
-          the right blank and a precise quote.
-        </p>
-        <div class="flex flex-wrap items-center gap-3 mt-10">
-          <a href="#contact" class="font-body text-sm font-medium px-6 py-3 rounded-full bg-white text-[var(--color-accent)] hover:bg-white/90 transition-colors">Send a brief</a>
-          <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="font-body text-sm font-medium px-6 py-3 rounded-full border border-white/40 text-white hover:bg-white/10 transition-colors">WhatsApp ↗</a>
-        </div>
-      </div>
-    </section>
 
     <!-- Contact -->
     <Section id="contact" label="Send a brief">
-      <div class="grid md:grid-cols-2 gap-12">
+      <div class="grid md:grid-cols-2 gap-10">
         <div>
-          <p class="prose-ppc mb-8">
+          <p class="prose-ppc mb-5">
             Send your logo or brief. We reply within 24 hours with a technique
             recommendation, blank options and a precise quote.
           </p>
-          <ul class="list-none font-body text-[0.9375rem] space-y-3">
-            <li class="flex gap-6">
-              <span class="text-mute w-24 shrink-0">WhatsApp</span>
-              <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a>
-            </li>
-            <li class="flex gap-6">
-              <span class="text-mute w-24 shrink-0">Email</span>
-              <a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
-            </li>
-            <li class="flex gap-6">
-              <span class="text-mute w-24 shrink-0">Instagram</span>
-              <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.instagram}</a>
-            </li>
+          <ul class="list-none text-[0.9375rem] space-y-1.5">
+            <li><span class="text-mute inline-block w-24">WhatsApp</span><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">{SITE.phone}</a></li>
+            <li><span class="text-mute inline-block w-24">Email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+            <li><span class="text-mute inline-block w-24">Instagram</span><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagram}</a></li>
           </ul>
         </div>
         <div>

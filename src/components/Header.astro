@@ -5,19 +5,47 @@ interface Props {
   active?: 'catalog' | 'studio' | null;
 }
 const { active = null } = Astro.props;
----
-<header class="sticky top-0 z-50 bg-[var(--color-bg)]/90 backdrop-blur-md border-b border-[var(--color-rule)]">
-  <div class="container-ppc flex items-center justify-between h-16">
-    <a href="/" aria-label="PPC — home" class="flex items-center gap-3 group">
-      <img src="/logo.svg" alt="PPC" width="64" height="35" class="h-8 w-auto" />
-      <span class="hidden sm:inline font-body text-sm text-mute group-hover:text-[var(--color-text)] transition-colors">Portugal Print Club</span>
-    </a>
 
-    <nav aria-label="Primary" class="flex items-center gap-6 sm:gap-8">
-      <a href="/catalog" class:list={['hidden sm:inline font-body text-sm transition-colors hover:text-[var(--color-accent)]', active === 'catalog' ? 'text-[var(--color-text)] font-medium' : 'text-mute']}>Catalog</a>
-      <a href="/studio" class:list={['hidden sm:inline font-body text-sm transition-colors hover:text-[var(--color-accent)]', active === 'studio' ? 'text-[var(--color-text)] font-medium' : 'text-mute']}>Studio</a>
-      <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" class="hidden sm:inline font-body text-sm text-mute hover:text-[var(--color-accent)] transition-colors">Instagram&nbsp;↗</a>
-      <a href="/#contact" class="font-body text-sm font-medium px-4 py-2 rounded-full bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-dark)] transition-colors">Send a brief</a>
-    </nav>
+const nav = [
+  { label: 'Screen printing', href: '/screen-printing' },
+  { label: 'Embroidery', href: '/embroidery' },
+  { label: 'DTF', href: '/dtf' },
+  { label: 'Catalog', href: '/catalog', key: 'catalog' },
+  { label: 'Studio', href: '/studio', key: 'studio' },
+  { label: 'Contact', href: '/#contact' },
+];
+---
+<header class="border-b border-[var(--color-rule)]">
+  <!-- Announcement / utility bar -->
+  <div class="border-b border-[var(--color-rule)] text-center py-1.5 px-4">
+    <p class="text-[0.75rem] text-mute">
+      Open for briefs · Lisbon ·
+      <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a>
+    </p>
   </div>
+
+  <!-- Wordmark -->
+  <div class="text-center pt-4 pb-2 px-4">
+    <a href="/" class="plain-link inline-flex items-center gap-2.5" aria-label="PPC — home">
+      <img src="/logo.svg" alt="" width="56" height="30" class="h-7 w-auto" />
+      <span class="font-sans font-bold text-[1.25rem] tracking-tight">Portugal Print Club</span>
+    </a>
+  </div>
+
+  <!-- Nav -->
+  <nav aria-label="Primary" class="text-center pb-3 px-4">
+    <ul class="inline-flex flex-wrap justify-center gap-x-3 gap-y-1 list-none text-[0.875rem]">
+      {nav.map((item, i) => (
+        <>
+          {i > 0 && <li class="text-faint select-none" aria-hidden="true">·</li>}
+          <li>
+            <a
+              href={item.href}
+              class:list={['plain-link', item.key && active === item.key ? 'underline' : '']}
+            >{item.label}</a>
+          </li>
+        </>
+      ))}
+    </ul>
+  </nav>
 </header>
