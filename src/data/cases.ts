@@ -40,6 +40,29 @@ export interface Case {
 // paste below as `garment` (the hero) and `media` (the rest).
 export const cases: Case[] = [
   {
+    slug: 'heavy-drone',
+    client: 'Heavy Drone',
+    clientUrl: 'https://www.instagram.com/heavydrone_/',
+    technique: 'Screen printing',
+    item: 'Band tee',
+    quantity: '20 pieces',
+    blank: 'Gildan 2000 Ultra Cotton',
+    garment: '/photos/cases/heavy-drone/heavy-drone-1-tee.webp',
+    media: [
+      { src: '/photos/cases/heavy-drone/heavy-drone-2-worn.webp', label: 'On location' },
+      { src: '/photos/cases/heavy-drone/heavy-drone-3-record.webp', label: 'Same artwork on the record' },
+    ],
+    details: [
+      '100% cotton',
+      '6.0 oz / 203 GSM',
+      'Classic fit',
+      'Tubular body, no side seams',
+      'Taped neck & shoulders',
+      'Double-needle sleeves & hem',
+    ],
+    body: 'A 20-piece drop for drone band Heavy Drone — the orange artwork from their "Petrozavodsk / Forest Fire" record, hand-pulled in a single colour on a heavyweight Gildan 2000.',
+  },
+  {
     slug: 'ppc-cap',
     client: 'PPC Cap',
     technique: 'Embroidery',
