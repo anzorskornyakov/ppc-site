@@ -40,6 +40,21 @@ export interface Case {
 // paste below as `garment` (the hero) and `media` (the rest).
 export const cases: Case[] = [
   {
+    slug: 'pils',
+    client: 'Pils',
+    clientUrl: 'https://www.instagram.com/pils_lisboa/',
+    technique: 'Embroidery & DTF',
+    item: 'Merch & uniform',
+    garment: '/photos/cases/pils/pils-1-cap.webp',
+    garmentLabel: 'Pils cap — embroidery',
+    media: [
+      { src: '/photos/cases/pils/pils-2-pour.webp', label: 'On the night' },
+      { src: '/photos/cases/pils/pils-3-apron.webp', label: 'Apron in the kitchen' },
+      { src: '/photos/cases/pils/pils-video.mov', label: 'Tablecloth, in motion' },
+    ],
+    body: 'A full merch and uniform programme for Pils, a Lisbon spot — t-shirts, caps, hoodies, aprons and even a printed tablecloth. Mostly embroidery and DTF.',
+  },
+  {
     slug: 'ulu',
     client: '.ulu',
     clientUrl: 'https://www.instagram.com/ulu.cascais/',
