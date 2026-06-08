@@ -9,6 +9,9 @@ interface Props {
 
 const { item, variant = 'project' } = Astro.props;
 const garment = item?.garment ?? BASE_TEE;
+// The stream shows tees small — use the lightweight ~800px thumbnail so the
+// browser doesn't decode full-size images 36× (full size stays for the overlay).
+const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
 ---
 {variant === 'contact' ? (
   <button type="button" class="tee tee--contact" data-contact aria-label="Start your project — open the contact form">
@@ -27,7 +30,7 @@ const garment = item?.garment ?? BASE_TEE;
         <span class="tee__ph-name">{item.client}</span>
         <span class="tee__ph-meta">{item.technique}</span>
       </span>
-      <img src={garment} alt={`${item.client} — ${item.technique} on ${item.item}`} loading="lazy" decoding="async" class="tee__img" onerror="this.style.display='none'" />
+      <img src={teeImg} alt={`${item.client} — ${item.technique} on ${item.item}`} loading="lazy" decoding="async" class="tee__img" onerror="this.style.display='none'" />
     </span>
     <span class="tee__caption">
       <span class="tee__client">{item.client}</span>

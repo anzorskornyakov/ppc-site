@@ -74,10 +74,19 @@ async function main() {
       .webp({ quality, effort: 6, alphaQuality: 100 })
       .toFile(outFile);
     const outMeta = await stat(outFile);
+    // Lightweight ~800px thumbnail for the gallery stream (so the homepage
+    // doesn't decode full-size images many times over). The hero <img> in
+    // TeeCell uses the matching "<name>-thumb.webp".
+    const thumbFile = outFile.replace(/\.webp$/, '-thumb.webp');
+    await sharp(file)
+      .rotate()
+      .resize({ width: 800, height: 800, fit: 'inside', withoutEnlargement: true })
+      .webp({ quality: 80, effort: 6, alphaQuality: 100 })
+      .toFile(thumbFile);
     const inSize = (await stat(file)).size;
     console.log(
       `  ${path.basename(file)} (${(inSize / 1024).toFixed(0)}KB ${inMeta.width}×${inMeta.height})` +
-        `  →  ${outName} (${(outMeta.size / 1024).toFixed(0)}KB)`
+        `  →  ${outName} (${(outMeta.size / 1024).toFixed(0)}KB) + thumb`
     );
     outPaths.push(`/photos/cases/${slug}/${outName}`);
   }
