@@ -40,6 +40,21 @@ export interface Case {
 // paste below as `garment` (the hero) and `media` (the rest).
 export const cases: Case[] = [
   {
+    slug: 'ulu',
+    client: '.ulu',
+    clientUrl: 'https://www.instagram.com/ulu.cascais/',
+    technique: 'Screen printing',
+    item: 'Staff uniform',
+    date: 'May 2026',
+    blank: 'Stanley/Stella',
+    garment: '/photos/cases/ulu/ulu-1-back.webp',
+    garmentLabel: 'Back — STAFF print',
+    media: [
+      { src: '/photos/cases/ulu/ulu-2-front.webp', label: 'Front — .ulu mark' },
+    ],
+    body: 'Staff uniform for .ulu, a café in Cascais — the .ulu mark on the chest and a large STAFF graphic across the back with the address and "Inspired by the world, born in Cascais". Screen-printed front and back on Stanley/Stella blanks.',
+  },
+  {
     slug: 'heavy-drone',
     client: 'Heavy Drone',
     clientUrl: 'https://www.instagram.com/heavydrone_/',
