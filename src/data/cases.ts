@@ -40,6 +40,19 @@ export interface Case {
 // paste below as `garment` (the hero) and `media` (the rest).
 export const cases: Case[] = [
   {
+    slug: 'katsu',
+    client: 'Katsu',
+    clientUrl: 'https://www.instagram.com/katsu.lisbon/',
+    technique: 'Embroidery',
+    item: 'Uniform & signage',
+    garment: '/photos/cases/katsu/katsu-1-sign.webp',
+    garmentLabel: 'Hanging sign — machine embroidery',
+    media: [
+      { src: '/photos/cases/katsu/katsu-2-shirt.webp', label: 'Uniform shirt — embroidery' },
+    ],
+    body: 'Uniform and signage for Katsu, an Asian bistro in Lisbon — staff shirts and a hanging fabric sign, both in machine embroidery.',
+  },
+  {
     slug: 'pils',
     client: 'Pils',
     clientUrl: 'https://www.instagram.com/pils_lisboa/',
