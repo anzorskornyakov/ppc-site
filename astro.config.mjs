@@ -13,6 +13,8 @@ export default defineConfig({
       changefreq: 'weekly',
       priority: 0.7,
       lastmod: new Date(),
+      // Exclude the Portuguese stub (still "under construction").
+      filter: (page) => !/\/pt\/?$/.test(page),
       i18n: {
         defaultLocale: 'en',
         locales: { en: 'en-GB', pt: 'pt-PT' },
