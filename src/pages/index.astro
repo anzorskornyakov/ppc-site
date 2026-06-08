@@ -175,15 +175,7 @@ const itemListSchema = {
   />
 
   <InfoOverlay />
-
-  <div class="home">
-    <header class="home__hero">
-      <h1 class="home__h1">Merch worth keeping.</h1>
-      <p class="home__sub">Custom print studio in Lisbon. From 1 piece. Ready in 3 days.</p>
-    </header>
-    <Gallery />
-  </div>
-
+  <Gallery />
   <ProjectOverlay />
 
   <!-- Lock the document on the gallery page so iOS can't rubber-band /
@@ -198,37 +190,6 @@ const itemListSchema = {
       position: fixed;
       inset: 0;
       width: 100%;
-    }
-  </style>
-
-  <style>
-    /* Hero headline sits above the gallery; the gallery fills the rest. */
-    .home {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    .home__hero {
-      flex: 0 0 auto;
-      text-align: center;
-      /* top padding clears the fixed logo/Menu row */
-      padding: clamp(4.25rem, 9vw, 7rem) 1.25rem clamp(0.75rem, 1.6vh, 1.4rem);
-    }
-    .home__h1 {
-      margin: 0;
-      font-family: var(--font-sans);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.02;
-      font-size: clamp(1.75rem, 6vw, 3.25rem);
-      color: var(--color-text);
-    }
-    .home__sub {
-      margin: 0.5rem 0 0;
-      color: var(--color-mute);
-      font-size: clamp(0.875rem, 2.2vw, 1.0625rem);
-      letter-spacing: 0;
     }
   </style>
 </Base>
