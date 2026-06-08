@@ -4,8 +4,6 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SEO from '../components/SEO.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import BrandLogo from '../components/BrandLogo.astro';
-import StructuredData from '../components/StructuredData.astro';
 import { brands, tierLabels, tierOrder } from '../data/brands';
 import { SITE } from '../data/site';
 
@@ -30,18 +28,19 @@ const itemListSchema = {
       '@type': 'Brand',
       name: brand.name,
       url: brand.url,
+      description: brand.description,
     },
   })),
 };
+
+const metaDescription =
+  'The blanks PPC prints on — WATC Studio (Portugal), Velour Garments (Spain) and AS Colour (New Zealand). A curated, trusted selection.';
 ---
-<Base
-  title="Catalog — Blank brands we print on — PPC"
-  description="The blanks PPC prints on: WATC Studio and Velour Garments from Barcelona, and AS Colour. A tight, curated selection."
->
+<Base title="Catalog — Blank brands we print on — PPC" description={metaDescription}>
   <SEO
     slot="head"
     title="Catalog — Blank brands we print on — PPC"
-    description="The blanks PPC prints on: WATC Studio and Velour Garments from Barcelona, and AS Colour. A tight, curated selection."
+    description={metaDescription}
     ogImage="/og-catalog.jpg"
     canonicalUrl={canonicalUrl}
     schemas={[itemListSchema]}
@@ -57,46 +56,63 @@ const itemListSchema = {
       <div class="mb-14 pb-10 border-b border-[var(--color-rule)]">
         <p class="eyebrow mb-5">Blanks</p>
         <h1 class="text-display mb-6">Catalog</h1>
-        <p class="lede text-mute">
-          We've narrowed it to the blanks we trust — WATC Studio and Velour
-          Garments from Barcelona, and AS Colour. The right base is half the
-          result.
+        <p class="lede text-mute max-w-[46rem]">
+          Every print is only as good as the blank under it. We work with a
+          tight, trusted set — WATC Studio and Velour Garments for heavyweight
+          and organic luxury, AS Colour for dependable premium staples — and
+          we'll source anything else you need.
         </p>
       </div>
 
       <!-- Brand tiers -->
-      <div class="space-y-16">
+      <div class="tiers">
         {brandsByTier.map(({ tier, meta, brands: tierBrands }) => (
-          <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 pb-16 border-b border-[var(--color-rule)] last:border-0">
-            <div class="mb-8 md:mb-0">
-              <p class="text-h3">{meta.label}</p>
-              {meta.desc && (
-                <p class="font-baskerville text-mute text-sm mt-2 leading-relaxed">{meta.desc}</p>
-              )}
+          <section class="tier">
+            <div class="tier__head">
+              <p class="tier__label">{meta.label}</p>
+              <p class="tier__desc">{meta.desc}</p>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-l border-t border-[var(--color-rule)]">
-              {tierBrands.map((brand) => (
-                <BrandLogo brand={brand} />
+
+            <div class="tier__cards">
+              {tierBrands.map((b) => (
+                <article class="bcard">
+                  <a class="bcard__logo" href={b.url} target="_blank" rel="noopener noreferrer" aria-label={b.name}>
+                    <img
+                      src={`/brands/${b.slug}.svg`}
+                      alt={b.name}
+                      loading="lazy"
+                      class="bcard__logo-img"
+                      onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+                    />
+                    <span class="bcard__wordmark" style="display:none">{b.name}</span>
+                  </a>
+                  <div class="bcard__body">
+                    <p class="bcard__tagline">{b.tagline}</p>
+                    <p class="bcard__desc">{b.description}</p>
+                    <ul class="bcard__facts">
+                      {b.facts.map((f) => <li>{f}</li>)}
+                    </ul>
+                    <a class="bcard__link" href={b.url} target="_blank" rel="noopener noreferrer">
+                      Visit {b.name} ↗
+                    </a>
+                  </div>
+                </article>
               ))}
             </div>
-          </div>
+          </section>
         ))}
       </div>
 
       <!-- Footer note -->
-      <div class="mt-14 md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20">
-        <p class="section-num mb-4 md:mb-0">Notes</p>
-        <div class="prose-ppc">
-          <p class="text-mute">Or supply your own blank — same three-day turnaround.</p>
-          <p>
-            Need something specific?{' '}
-            <a href="/#contact">Tell us — we'll source it.</a>
-          </p>
-        </div>
+      <div class="mt-16 pt-10 border-t border-[var(--color-rule)] prose-ppc">
+        <p class="text-mute">
+          Bring your own blank, or tell us what you're after — same three-day
+          turnaround either way. <a href="/#contact">Tell us — we'll source it.</a>
+        </p>
       </div>
 
       <!-- CTA -->
-      <div class="mt-16 pt-10 border-t border-[var(--color-rule)] flex flex-col sm:flex-row sm:items-center gap-6">
+      <div class="mt-12 flex flex-col sm:flex-row sm:items-center gap-6">
         <a href="/#contact" class="btn-solid">Send a brief →</a>
         <a href="/" class="btn-ghost">← Back to PPC</a>
       </div>
@@ -105,3 +121,96 @@ const itemListSchema = {
 
   <Footer />
 </Base>
+
+<style>
+  .tiers { display: flex; flex-direction: column; gap: clamp(3rem, 6vw, 5rem); }
+
+  .tier__head { margin-bottom: 1.5rem; }
+  .tier__label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+  }
+  .tier__desc {
+    font-size: 0.875rem;
+    color: var(--color-mute);
+    margin: 0.35rem 0 0;
+  }
+
+  .tier__cards { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .bcard {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--color-rule);
+  }
+  @media (min-width: 720px) {
+    .bcard { grid-template-columns: 16rem 1fr; }
+  }
+
+  .bcard__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 9rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-rule);
+    text-decoration: none;
+  }
+  @media (min-width: 720px) {
+    .bcard__logo { border-bottom: 0; border-right: 1px solid var(--color-rule); }
+  }
+  .bcard__logo-img {
+    max-width: 12rem;
+    max-height: 4rem;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.85;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+  .bcard__logo:hover .bcard__logo-img { filter: grayscale(0%); opacity: 1; }
+  .bcard__wordmark {
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--color-text);
+    text-align: center;
+  }
+
+  .bcard__body { padding: clamp(1.5rem, 3vw, 2rem); }
+  .bcard__tagline {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 0 0 0.6rem;
+  }
+  .bcard__desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    max-width: 52ch;
+    margin: 0 0 1.1rem;
+  }
+  .bcard__facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.5rem;
+    padding: 0;
+    margin: 0 0 1.25rem;
+  }
+  .bcard__facts li {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-mute);
+    border: 1px solid var(--color-rule);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+  }
+  .bcard__link { font-size: 0.875rem; font-weight: 700; }
+</style>

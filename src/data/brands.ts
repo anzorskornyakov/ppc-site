@@ -5,17 +5,62 @@ export interface Brand {
   slug: string;
   tier: Tier;
   url: string;
+  /** One-line positioning. */
+  tagline: string;
+  /** Short factual description. */
+  description: string;
+  /** Quick facts (origin, fabrics, range). */
+  facts: string[];
 }
 
 export const brands: Brand[] = [
-  { name: 'WATC Studio',     slug: 'watc',      tier: 'luxe',    url: 'https://watc.studio' },
-  { name: 'Velour Garments', slug: 'velour',    tier: 'luxe',    url: 'https://velourgarments.eu' },
-  { name: 'AS Colour',       slug: 'as-colour', tier: 'premium', url: 'https://ascolour.com' },
+  {
+    name: 'WATC Studio',
+    slug: 'watc',
+    tier: 'luxe',
+    url: 'https://watc-studio.com/',
+    tagline: 'Organic luxury blanks, made in Portugal',
+    description:
+      'A vertically integrated maker crafting organic, heavyweight blanks in its own Portuguese ateliers — tees, hoodies, denim and an Ultra Heavy line. Manufacturer-direct, with transparent pricing and turnaround.',
+    facts: [
+      'Made in own ateliers, Portugal',
+      'Organic · heavyweight · Ultra Heavy',
+      'Tees · hoodies · denim · sweats',
+    ],
+  },
+  {
+    name: 'Velour Garments',
+    slug: 'velour',
+    tier: 'luxe',
+    url: 'https://velourgarments.eu',
+    tagline: 'Heavyweight basics & workwear, from Spain',
+    description:
+      'A Spanish label built around heavyweight fabrics — hoodies up to 1000 GSM, tees from 180 to 300 GSM, plus knitwear, trousers and workwear cuts. Design-forward staples with a dedicated wholesale arm.',
+    facts: [
+      'Based in Spain',
+      'Hoodies 450–1000 GSM · tees 180–300 GSM',
+      'Tees · hoodies · knitwear · trousers',
+    ],
+  },
+  {
+    name: 'AS Colour',
+    slug: 'as-colour',
+    tier: 'premium',
+    url: 'https://ascolour.eu',
+    tagline: 'Premium blanks, built to last',
+    description:
+      'A New Zealand brand making clean, consistent premium blanks since 2005 — tees, sweats, hoodies, headwear and bags. The dependable staple for creators and makers, available at scale.',
+    facts: [
+      'New Zealand, since 2005',
+      'Premium, built to last',
+      'Tees · sweats · headwear · bags',
+    ],
+  },
 ];
 
-export const tierLabels: Record<Tier, { num: string; label: string; desc: string }> = {
-  luxe:    { num: '', label: 'Luxe',    desc: 'Heavyweight, design-forward blanks from Barcelona' },
-  premium: { num: '', label: 'Premium', desc: 'Clean, consistent staples' },
+export const tierLabels: Record<Tier, { label: string; desc: string }> = {
+  luxe: { label: 'Luxe', desc: 'Made-to-last heavyweight & organic blanks' },
+  premium: { label: 'Premium', desc: 'Dependable premium staples' },
 };
 
 export const tierOrder: Tier[] = ['luxe', 'premium'];
