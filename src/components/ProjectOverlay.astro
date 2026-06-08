@@ -5,15 +5,18 @@ import { caseImages } from '../data/media';
 import { SITE } from '../data/site';
 
 // Data island the overlay script reads to build project views on demand.
-// images[0] is the enlarged tee itself; the rest is additional case media.
 const projectData = cases.map((c) => ({
   slug: c.slug,
   client: c.client,
+  clientUrl: c.clientUrl ?? '',
   technique: c.technique,
   item: c.item,
   quantity: c.quantity ?? '',
+  date: c.date ?? '',
+  blank: c.blank ?? '',
+  details: c.details ?? [],
   body: c.body ?? '',
-  images: caseImages(c),
+  media: caseImages(c), // [{ src, label? }] — media[0] is the hero
 }));
 ---
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true" hidden>
@@ -24,20 +27,34 @@ const projectData = cases.map((c) => ({
   <!-- Project view (populated by script) -->
   <div class="overlay__inner" data-panel="project" hidden>
     <div class="overlay__media" data-media></div>
+
     <div class="overlay__info">
-      <h2 class="overlay__client" data-client></h2>
-      <p class="overlay__spec" data-spec></p>
-      <p class="overlay__body" data-body></p>
-      <div class="overlay__services" data-services></div>
+      <p class="ov-eyebrow" data-date hidden></p>
+      <h2 class="ov-title" data-client></h2>
+      <p class="ov-meta" data-spec></p>
+      <a class="ov-clientlink" data-client-link target="_blank" rel="noopener noreferrer" hidden></a>
+
+      <div class="ov-body" data-body></div>
+
+      <div class="ov-block" data-tech-block hidden>
+        <p class="ov-label">Technique</p>
+        <div class="ov-links" data-services></div>
+      </div>
+
+      <div class="ov-block" data-details-block hidden>
+        <p class="ov-label">Garment</p>
+        <p class="ov-blank" data-blank hidden></p>
+        <ul class="ov-details" data-details></ul>
+      </div>
     </div>
   </div>
 
   <!-- Contact view -->
   <div class="overlay__inner overlay__inner--contact" data-panel="contact" hidden>
     <div class="overlay__info overlay__info--contact">
-      <p class="overlay__eyebrow">Your project goes here</p>
-      <h2 class="overlay__client">Send a brief</h2>
-      <p class="overlay__body">
+      <p class="ov-eyebrow">Your project goes here</p>
+      <h2 class="ov-title">Send a brief</h2>
+      <p class="ov-body">
         Send your logo or brief. We reply within 24 hours with a technique
         recommendation, blank options and a precise quote.
       </p>
@@ -69,26 +86,20 @@ const projectData = cases.map((c) => ({
   .overlay.is-open { opacity: 1; }
   .overlay[hidden] { display: none; }
 
-  /* The product grows in; description settles beside it */
+  /* The product grows in; the info settles beside it */
   .overlay__media {
-    transform: scale(0.82);
+    transform: scale(0.9);
     opacity: 0;
-    transform-origin: center center;
+    transform-origin: center top;
     transition: transform 0.6s cubic-bezier(0.16, 0.84, 0.34, 1), opacity 0.5s ease;
   }
-  .overlay.is-open .overlay__media {
-    transform: scale(1);
-    opacity: 1;
-  }
+  .overlay.is-open .overlay__media { transform: scale(1); opacity: 1; }
   .overlay__info {
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 0.5s ease 0.12s, transform 0.5s ease 0.12s;
   }
-  .overlay.is-open .overlay__info {
-    opacity: 1;
-    transform: none;
-  }
+  .overlay.is-open .overlay__info { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) {
     .overlay__media, .overlay__info { transition: none; transform: none; opacity: 1; }
   }
@@ -122,17 +133,26 @@ const projectData = cases.map((c) => ({
     align-items: start;
   }
   @media (min-width: 820px) {
-    .overlay__inner { grid-template-columns: 1.4fr 1fr; }
+    .overlay__inner { grid-template-columns: 1.35fr 1fr; }
   }
 
-  .overlay__media { display: flex; flex-direction: column; gap: clamp(1rem, 3vw, 2rem); }
+  /* ---- Media gallery ---- */
+  .overlay__media { display: flex; flex-direction: column; gap: clamp(1.25rem, 3vw, 2.25rem); }
+  .overlay__media figure { margin: 0; }
   .overlay__media img,
   .overlay__media video {
     width: 100%;
     height: auto;
     object-fit: contain;
-    background: transparent;
+    background: #fff;
     display: block;
+  }
+  .overlay__media figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-faint);
   }
   .overlay__media .ph {
     width: 100%;
@@ -147,38 +167,91 @@ const projectData = cases.map((c) => ({
     color: var(--color-faint);
   }
 
-  .overlay__info { position: sticky; top: clamp(4rem, 12vh, 8rem); }
-  .overlay__eyebrow {
+  /* ---- Info panel (product-page style) ---- */
+  .overlay__info { align-self: start; }
+
+  .ov-eyebrow {
     font-size: 0.6875rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: var(--color-faint);
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.6rem;
   }
-  .overlay__client {
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  .ov-title {
+    font-size: clamp(1.625rem, 3.2vw, 2.4rem);
     font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.1;
-    margin: 0 0 0.75rem;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    margin: 0 0 0.6rem;
   }
-  .overlay__spec {
+  .ov-meta {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-mute);
-    margin: 0 0 1.25rem;
+    margin: 0 0 0.9rem;
   }
-  .overlay__body {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--color-text);
-    max-width: 40ch;
+  .ov-clientlink {
+    display: inline-block;
+    font-size: 0.875rem;
     margin: 0 0 1.5rem;
   }
-  .overlay__services { display: flex; flex-direction: column; gap: 0.4rem; }
-  .overlay__service { font-size: 0.875rem; }
+  .ov-body {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text);
+    max-width: 42ch;
+    margin: 0;
+    white-space: pre-line;
+  }
 
+  .ov-block {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-rule);
+  }
+  .ov-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text);
+    margin: 0 0 0.9rem;
+  }
+  .ov-links { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ov-links a { font-size: 0.9375rem; }
+
+  .ov-blank {
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    margin: 0 0 0.9rem;
+  }
+  .ov-details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem 1.5rem;
+  }
+  .ov-details li {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--color-mute);
+    padding-left: 0.9rem;
+    position: relative;
+  }
+  .ov-details li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-faint);
+  }
+  @media (max-width: 480px) {
+    .ov-details { grid-template-columns: 1fr; }
+  }
+
+  /* ---- Contact panel ---- */
   .overlay__inner--contact { align-items: start; }
   .overlay__channels {
     list-style: none;
@@ -191,9 +264,11 @@ const projectData = cases.map((c) => ({
 </style>
 
 <script>
+  type Media = { src: string; label?: string };
   type ProjectView = {
-    slug: string; client: string; technique: string; item: string;
-    quantity: string; body: string; images: string[];
+    slug: string; client: string; clientUrl: string; technique: string;
+    item: string; quantity: string; date: string; blank: string;
+    details: string[]; body: string; media: Media[];
   };
 
   const SERVICE_PATH: Record<string, string> = {
@@ -201,6 +276,8 @@ const projectData = cases.map((c) => ({
     'Embroidery': '/embroidery',
     'DTF': '/dtf',
   };
+  const isVideo = (src: string) => /\.(mp4|webm|mov)$/i.test(src);
+  const esc = (s: string) => s.replace(/"/g, '&quot;');
 
   function initOverlay() {
     const overlay = document.getElementById('overlay');
@@ -210,11 +287,17 @@ const projectData = cases.map((c) => ({
     const projects: ProjectView[] = JSON.parse(dataEl.textContent || '[]');
     const projectPanel = overlay.querySelector<HTMLElement>('[data-panel="project"]')!;
     const contactPanel = overlay.querySelector<HTMLElement>('[data-panel="contact"]')!;
-    const media = overlay.querySelector<HTMLElement>('[data-media]')!;
+    const mediaEl = overlay.querySelector<HTMLElement>('[data-media]')!;
+    const dateEl = overlay.querySelector<HTMLElement>('[data-date]')!;
     const clientEl = overlay.querySelector<HTMLElement>('[data-client]')!;
     const specEl = overlay.querySelector<HTMLElement>('[data-spec]')!;
+    const clientLinkEl = overlay.querySelector<HTMLAnchorElement>('[data-client-link]')!;
     const bodyEl = overlay.querySelector<HTMLElement>('[data-body]')!;
+    const techBlock = overlay.querySelector<HTMLElement>('[data-tech-block]')!;
     const servicesEl = overlay.querySelector<HTMLElement>('[data-services]')!;
+    const detailsBlock = overlay.querySelector<HTMLElement>('[data-details-block]')!;
+    const blankEl = overlay.querySelector<HTMLElement>('[data-blank]')!;
+    const detailsEl = overlay.querySelector<HTMLElement>('[data-details]')!;
 
     let lastFocus: HTMLElement | null = null;
 
@@ -233,24 +316,46 @@ const projectData = cases.map((c) => ({
     function openProject(slug: string, push = true) {
       const p = projects.find((x) => x.slug === slug);
       if (!p) return;
-      media.innerHTML = p.images.length
-        ? p.images.map((src) =>
-            /\.(mp4|webm|mov)$/i.test(src)
-              ? `<video src="${src}" muted loop autoplay playsinline preload="metadata" controls></video>`
-              : `<img src="${src}" alt="${p.client} — ${p.technique}" loading="lazy" />`
-          ).join('')
+
+      // Media (each item with optional caption)
+      mediaEl.innerHTML = p.media.length
+        ? p.media.map((m) => {
+            const inner = isVideo(m.src)
+              ? `<video src="${esc(m.src)}" muted loop autoplay playsinline preload="metadata" controls></video>`
+              : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" loading="lazy" />`;
+            const cap = m.label ? `<figcaption>${m.label}</figcaption>` : '';
+            return `<figure>${inner}${cap}</figure>`;
+          }).join('')
         : `<div class="ph">Image coming soon</div>`;
+
+      // Header
+      dateEl.textContent = p.date;
+      dateEl.hidden = !p.date;
       clientEl.textContent = p.client;
-      const specBits = [p.technique, p.item, p.quantity].filter(Boolean);
-      specEl.textContent = specBits.join(' · ');
+      specEl.textContent = [p.item, p.quantity].filter(Boolean).join(' · ');
+      if (p.clientUrl) {
+        clientLinkEl.href = p.clientUrl;
+        clientLinkEl.textContent = `Visit ${p.client} ↗`;
+        clientLinkEl.hidden = false;
+      } else {
+        clientLinkEl.hidden = true;
+      }
       bodyEl.textContent = p.body;
       bodyEl.style.display = p.body ? '' : 'none';
-      // One "View the technique" link per technique named in the spec.
+
+      // Technique links (one per technique named in the spec)
       const links = Object.keys(SERVICE_PATH)
         .filter((name) => p.technique.includes(name))
-        .map((name) => `<a class="overlay__service" href="${SERVICE_PATH[name]}">${name} →</a>`);
+        .map((name) => `<a href="${SERVICE_PATH[name]}">${name} →</a>`);
       servicesEl.innerHTML = links.join('');
-      servicesEl.hidden = links.length === 0;
+      techBlock.hidden = links.length === 0;
+
+      // Garment details
+      blankEl.textContent = p.blank;
+      blankEl.hidden = !p.blank;
+      detailsEl.innerHTML = p.details.map((d) => `<li>${d}</li>`).join('');
+      detailsBlock.hidden = !p.blank && p.details.length === 0;
+
       show(projectPanel);
       if (push) history.pushState({ ppc: 'project', slug }, '', `#project/${slug}`);
     }
@@ -266,6 +371,7 @@ const projectData = cases.map((c) => ({
       window.setTimeout(() => {
         overlay!.hidden = true;
         overlay!.setAttribute('aria-hidden', 'true');
+        mediaEl.innerHTML = ''; // stop any playing video
       }, 300);
       lastFocus?.focus();
       if (pop && location.hash) history.pushState('', '', location.pathname);
@@ -273,7 +379,6 @@ const projectData = cases.map((c) => ({
 
     overlay.querySelector('[data-close]')?.addEventListener('click', () => close());
     overlay.addEventListener('click', (e) => {
-      // Click on the bare backdrop (the overlay itself) closes it.
       if (e.target === overlay) close();
     });
     document.addEventListener('keydown', (e) => {
@@ -283,7 +388,6 @@ const projectData = cases.map((c) => ({
     document.addEventListener('ppc:open-project', (e) => openProject((e as CustomEvent).detail));
     document.addEventListener('ppc:open-contact', () => openContact());
 
-    // Hash deep-linking + browser Back/Forward.
     function syncFromHash(push = false) {
       const h = location.hash.replace(/^#/, '');
       if (h.startsWith('project/')) openProject(h.slice('project/'.length), push);
@@ -291,7 +395,7 @@ const projectData = cases.map((c) => ({
       else if (!overlay!.hidden) close(false);
     }
     window.addEventListener('popstate', () => syncFromHash(false));
-    syncFromHash(false); // open from a shared deep link on load
+    syncFromHash(false);
   }
 
   if (document.readyState === 'loading') {
