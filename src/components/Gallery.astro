@@ -38,10 +38,9 @@ const copies = [0, 1, 2];
 
 <style>
   .gallery {
-    position: fixed;
-    inset: 0;
-    height: 100vh;
-    height: 100svh; /* stable across iOS toolbar show/hide — no reflow jump */
+    /* fills the space under the hero (parent .home is fixed full-height) */
+    flex: 1 1 auto;
+    min-height: 0;
     overflow: hidden;
     background: #fff;
     display: grid;

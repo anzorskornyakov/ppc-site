@@ -10,7 +10,8 @@
     <input type="hidden" name="quantity" id="rf-quantity" />
     <input type="hidden" name="timeline" id="rf-timeline" />
 
-    <p class="rf__progress"><span data-current>1</span> / 4</p>
+    <p class="rf__intro">A few quick questions. We reply within one business day.</p>
+    <p class="rf__progress" aria-live="polite">Step <span data-current>1</span> of <span data-total>4</span></p>
 
     <div class="rf__step" data-step="1">
       <label class="rf__q" for="rf-project">What are you working on?</label>
@@ -56,6 +57,13 @@
 <style>
   .rf { max-width: 24rem; }
 
+  .rf__intro {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--color-mute);
+    margin: 0 0 1rem;
+    max-width: 24rem;
+  }
   .rf__progress {
     font-size: 0.6875rem;
     text-transform: uppercase;
@@ -139,6 +147,7 @@
     const form = root.querySelector<HTMLFormElement>('#rf-form');
     const steps = Array.from(root.querySelectorAll<HTMLElement>('.rf__step'));
     const currentLabel = root.querySelector<HTMLElement>('[data-current]');
+    const totalLabel = root.querySelector<HTMLElement>('[data-total]');
     const backBtn = root.querySelector<HTMLButtonElement>('[data-back]');
     const submitBtn = root.querySelector<HTMLButtonElement>('#rf-submit');
     const errorEl = root.querySelector<HTMLElement>('#rf-error');
@@ -148,6 +157,7 @@
     if (!form) return;
 
     const total = steps.length;
+    if (totalLabel) totalLabel.textContent = String(total); // derived, not hardcoded
     let step = 1;
 
     function show(n: number) {
