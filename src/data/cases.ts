@@ -40,6 +40,33 @@ export interface Case {
 // paste below as `garment` (the hero) and `media` (the rest).
 export const cases: Case[] = [
   {
+    slug: 'lova',
+    client: 'Lova',
+    clientUrl: 'https://www.instagram.com/lova_cakes_and_flowers/',
+    technique: 'Screen printing & Embroidery',
+    item: 'Caps & tees',
+    blank: 'WATC Studio — Boxy · Vintage White',
+    garment: '/photos/cases/lova/lova-1-stacks.webp',
+    garmentLabel: 'The run — boxy WATC tees, vintage white',
+    media: [
+      { src: '/photos/cases/lova/lova-2-back.webp', label: 'Back — screen print' },
+      { src: '/photos/cases/lova/lova-3-cap.webp', label: 'Cap — machine embroidery' },
+    ],
+    details: [
+      'Made in Portugal',
+      'Crafted in WATC ateliers',
+      '100% organic cotton',
+      '240 GSM heavyweight jersey',
+      '10.4 oz / 0.295 kg',
+      'Rib 1×1 with 5% lycra',
+      'Oversized, boxy fit',
+      'Dropped shoulders',
+      'Untagged · unisex',
+      'Pre-shrunk 0–3%',
+    ],
+    body: 'Caps and tees for Lova, a cakes, flowers & coffee spot — boxy WATC tees in vintage white with a "Coffee is my love language" back, screen-printed, and caps carrying the lova mark in machine embroidery.',
+  },
+  {
     slug: 'katsu',
     client: 'Katsu',
     clientUrl: 'https://www.instagram.com/katsu.lisbon/',
