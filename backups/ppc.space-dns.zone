@@ -1,0 +1,51 @@
+;;
+;; Domain:     ppc.space.
+;; Exported:   2026-06-08 20:59:09
+;;
+;; This file is intended for use for informational and archival
+;; purposes ONLY and MUST be edited before use on a production
+;; DNS server.  In particular, you must:
+;;   -- update the SOA record with the correct authoritative name server
+;;   -- update the SOA record with the contact e-mail address information
+;;   -- update the NS record(s) with the authoritative name servers for this domain.
+;;
+;; For further information, please consult the BIND documentation
+;; located on the following website:
+;;
+;; http://www.isc.org/
+;;
+;; And RFC 1035:
+;;
+;; http://www.ietf.org/rfc/rfc1035.txt
+;;
+;; Please note that we do NOT offer technical support for any use
+;; of this zone data, the BIND name server, or any other third-party
+;; DNS software.
+;;
+;; Use at your own risk.
+;; SOA Record
+ppc.space	3600	IN	SOA	melnicoff.ns.cloudflare.com. dns.cloudflare.com. 2053261894 10000 2400 604800 3600
+
+;; NS Records
+ppc.space.	86400	IN	NS	melnicoff.ns.cloudflare.com.
+ppc.space.	86400	IN	NS	paris.ns.cloudflare.com.
+
+;; CNAME Records
+_domainconnect.ppc.space.	1	IN	CNAME	_domainconnect.gd.domaincontrol.com. ; cf_tags=cf-proxied:true
+email.ppc.space.	1	IN	CNAME	email.secureserver.net. ; cf_tags=cf-proxied:true
+lyncdiscover.ppc.space.	1	IN	CNAME	webdir.online.lync.com. ; cf_tags=cf-proxied:true
+msoid.ppc.space.	1	IN	CNAME	clientconfig.microsoftonline-p.net. ; cf_tags=cf-proxied:true
+sip.ppc.space.	1	IN	CNAME	sipdir.online.lync.com. ; cf_tags=cf-proxied:true
+
+;; MX Records
+ppc.space.	1	IN	MX	0 ppc-space.mail.protection.outlook.com.
+
+;; SRV Records
+_sipfederationtls._tcp.ppc.space.	1	IN	SRV	100 1 5061 sipfed.online.lync.com.
+_sip._tls.ppc.space.	1	IN	SRV	100 1 443 sipdir.online.lync.com.
+
+;; TXT Records
+_dmarc.ppc.space.	1	IN	TXT	"v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net;"
+ppc.space.	1	IN	TXT	"v=spf1 include:secureserver.net -all"
+ppc.space.	1	IN	TXT	"NETORG20545355.onmicrosoft.com"
+ppc.space.	1	IN	TXT	"31.43.160.6"
