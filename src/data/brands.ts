@@ -15,6 +15,20 @@ export interface Brand {
 
 export const brands: Brand[] = [
   {
+    name: 'AS Colour',
+    slug: 'as-colour',
+    tier: 'premium',
+    url: 'https://ascolour.eu',
+    tagline: 'Premium blanks, built to last',
+    description:
+      'A New Zealand brand making clean, consistent premium blanks since 2005 — tees, sweats, hoodies, headwear and bags. The dependable staple for creators and makers, available at scale.',
+    facts: [
+      'New Zealand, since 2005',
+      'Premium, built to last',
+      'Tees · sweats · headwear · bags',
+    ],
+  },
+  {
     name: 'WATC Studio',
     slug: 'watc',
     tier: 'luxe',
@@ -42,20 +56,6 @@ export const brands: Brand[] = [
       'Tees · hoodies · knitwear · trousers',
     ],
   },
-  {
-    name: 'AS Colour',
-    slug: 'as-colour',
-    tier: 'premium',
-    url: 'https://ascolour.eu',
-    tagline: 'Premium blanks, built to last',
-    description:
-      'A New Zealand brand making clean, consistent premium blanks since 2005 — tees, sweats, hoodies, headwear and bags. The dependable staple for creators and makers, available at scale.',
-    facts: [
-      'New Zealand, since 2005',
-      'Premium, built to last',
-      'Tees · sweats · headwear · bags',
-    ],
-  },
 ];
 
 export const tierLabels: Record<Tier, { label: string; desc: string }> = {
@@ -63,4 +63,5 @@ export const tierLabels: Record<Tier, { label: string; desc: string }> = {
   premium: { label: 'Premium', desc: 'Dependable premium staples' },
 };
 
-export const tierOrder: Tier[] = ['luxe', 'premium'];
+// AS Colour (Premium) leads — it's the blank we reach for most.
+export const tierOrder: Tier[] = ['premium', 'luxe'];
