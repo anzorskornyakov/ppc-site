@@ -28,7 +28,7 @@ const projectData = cases.map((c) => ({
       <h2 class="overlay__client" data-client></h2>
       <p class="overlay__spec" data-spec></p>
       <p class="overlay__body" data-body></p>
-      <a class="overlay__service" data-service href="#">View the technique →</a>
+      <div class="overlay__services" data-services></div>
     </div>
   </div>
 
@@ -126,11 +126,13 @@ const projectData = cases.map((c) => ({
   }
 
   .overlay__media { display: flex; flex-direction: column; gap: clamp(1rem, 3vw, 2rem); }
-  .overlay__media img {
+  .overlay__media img,
+  .overlay__media video {
     width: 100%;
     height: auto;
     object-fit: contain;
     background: transparent;
+    display: block;
   }
   .overlay__media .ph {
     width: 100%;
@@ -174,6 +176,7 @@ const projectData = cases.map((c) => ({
     max-width: 40ch;
     margin: 0 0 1.5rem;
   }
+  .overlay__services { display: flex; flex-direction: column; gap: 0.4rem; }
   .overlay__service { font-size: 0.875rem; }
 
   .overlay__inner--contact { align-items: start; }
@@ -211,7 +214,7 @@ const projectData = cases.map((c) => ({
     const clientEl = overlay.querySelector<HTMLElement>('[data-client]')!;
     const specEl = overlay.querySelector<HTMLElement>('[data-spec]')!;
     const bodyEl = overlay.querySelector<HTMLElement>('[data-body]')!;
-    const serviceEl = overlay.querySelector<HTMLAnchorElement>('[data-service]')!;
+    const servicesEl = overlay.querySelector<HTMLElement>('[data-services]')!;
 
     let lastFocus: HTMLElement | null = null;
 
@@ -231,16 +234,23 @@ const projectData = cases.map((c) => ({
       const p = projects.find((x) => x.slug === slug);
       if (!p) return;
       media.innerHTML = p.images.length
-        ? p.images.map((src) => `<img src="${src}" alt="${p.client} — ${p.technique}" loading="lazy" />`).join('')
+        ? p.images.map((src) =>
+            /\.(mp4|webm|mov)$/i.test(src)
+              ? `<video src="${src}" muted loop autoplay playsinline preload="metadata" controls></video>`
+              : `<img src="${src}" alt="${p.client} — ${p.technique}" loading="lazy" />`
+          ).join('')
         : `<div class="ph">Image coming soon</div>`;
       clientEl.textContent = p.client;
       const specBits = [p.technique, p.item, p.quantity].filter(Boolean);
       specEl.textContent = specBits.join(' · ');
       bodyEl.textContent = p.body;
       bodyEl.style.display = p.body ? '' : 'none';
-      const path = SERVICE_PATH[p.technique];
-      if (path) { serviceEl.href = path; serviceEl.hidden = false; }
-      else { serviceEl.hidden = true; }
+      // One "View the technique" link per technique named in the spec.
+      const links = Object.keys(SERVICE_PATH)
+        .filter((name) => p.technique.includes(name))
+        .map((name) => `<a class="overlay__service" href="${SERVICE_PATH[name]}">${name} →</a>`);
+      servicesEl.innerHTML = links.join('');
+      servicesEl.hidden = links.length === 0;
       show(projectPanel);
       if (push) history.pushState({ ppc: 'project', slug }, '', `#project/${slug}`);
     }

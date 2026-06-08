@@ -65,7 +65,15 @@ export const cases: Case[] = [
   {
     slug: 'joom',
     client: 'Joom',
-    technique: 'Embroidery',
-    item: 'corporate merch',
+    technique: 'Screen printing & DTF',
+    item: 'Boxy WATC tee',
+    quantity: '80 pieces',
+    garment: '/photos/cases/joom/joom-1-package.webp',
+    media: [
+      '/photos/cases/joom/joom-2-front.webp',
+      '/photos/cases/joom/joom-3-back.webp',
+      '/photos/cases/joom/joom-video.mp4',
+    ],
+    body: 'Management Week 2026 for Joom — 80 pieces on a boxy WATC blank, packaged one per name. The front graphic is screen-printed from a single frame; the back carries six different printed lines, each run in DTF so every batch could vary without new screens. PPC, May 2026.',
   },
 ];
