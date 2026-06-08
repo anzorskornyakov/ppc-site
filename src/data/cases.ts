@@ -22,6 +22,14 @@ export interface Case {
 // paste below as `garment` (the tee) and `media` (the rest).
 export const cases: Case[] = [
   {
+    slug: 'ppc-cap',
+    client: 'PPC Cap',
+    technique: 'Embroidery',
+    item: 'AS Colour camo cap',
+    garment: '/photos/cases/ppc-cap/ppc-cap-1.webp',
+    body: 'Our own cap on an AS Colour blank — the PPC mark stitched in orange thread on realtree camo. Flat embroidery that stays crisp on a structured front panel. June 2026.',
+  },
+  {
     slug: 'ulu',
     client: '.ulu',
     technique: 'Screen printing',
