@@ -2,11 +2,11 @@
 import TeeCell from './TeeCell.astro';
 import { cases } from '../data/cases';
 
-// Two streams show different orderings so the columns never mirror each other.
-// The contact tee ("Your project goes here") is woven into each stream once.
-const half = Math.ceil(cases.length / 2);
-const leftSeq = cases;
-const rightSeq = [...cases.slice(half), ...cases.slice(0, half)];
+// Each project is assigned to one desktop column (a = left, b = right) so the
+// same item never shows in both columns at once. Both streams render the full
+// list (tagged a/b) and CSS shows only the matching half per column on desktop;
+// on mobile the single (left) column shows everything.
+const col = (i: number): 'a' | 'b' => (i % 2 === 0 ? 'a' : 'b');
 
 // Three copies per column → seamless modulo wrap in both directions.
 const copies = [0, 1, 2];
@@ -16,8 +16,8 @@ const copies = [0, 1, 2];
     <div class="stream__track" data-track>
       {copies.map((copy) => (
         <div class="stream__set" data-set aria-hidden={copy > 0 ? 'true' : 'false'}>
-          {leftSeq.map((c) => <TeeCell item={c} />)}
-          <TeeCell variant="contact" />
+          {cases.map((c, i) => <TeeCell item={c} col={col(i)} />)}
+          <TeeCell variant="contact" col="a" />
         </div>
       ))}
     </div>
@@ -27,8 +27,8 @@ const copies = [0, 1, 2];
     <div class="stream__track" data-track>
       {copies.map((copy) => (
         <div class="stream__set" data-set aria-hidden={copy > 0 ? 'true' : 'false'}>
-          {rightSeq.map((c) => <TeeCell item={c} />)}
-          <TeeCell variant="contact" />
+          {cases.map((c, i) => <TeeCell item={c} col={col(i)} />)}
+          <TeeCell variant="contact" col="b" />
         </div>
       ))}
     </div>
@@ -60,6 +60,13 @@ const copies = [0, 1, 2];
       padding: 0 1rem;
     }
     .stream--right { display: none; }
+  }
+
+  /* Desktop: split the projects across the two columns so the same item is
+     never shown on both sides at once (left = set A, right = set B). */
+  @media (min-width: 641px) {
+    .stream--left :global([data-col='b']) { display: none; }
+    .stream--right :global([data-col='a']) { display: none; }
   }
 
   .stream { position: relative; overflow: visible; }

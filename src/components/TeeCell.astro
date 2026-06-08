@@ -5,16 +5,18 @@ import { BASE_TEE } from '../data/media';
 interface Props {
   item?: Case;
   variant?: 'project' | 'contact';
+  /** Which desktop column this cell belongs to (a = left, b = right). */
+  col?: 'a' | 'b';
 }
 
-const { item, variant = 'project' } = Astro.props;
+const { item, variant = 'project', col = 'a' } = Astro.props;
 const garment = item?.garment ?? BASE_TEE;
 // The stream shows tees small — use the lightweight ~800px thumbnail so the
 // browser doesn't decode full-size images 36× (full size stays for the overlay).
 const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
 ---
 {variant === 'contact' ? (
-  <button type="button" class="tee tee--contact" data-contact aria-label="Start your project — open the contact form">
+  <button type="button" class="tee tee--contact" data-contact data-col={col} aria-label="Start your project — open the contact form">
     <span class="tee__frame tee__frame--empty">
       <span class="tee__empty-label">Your project<br />goes here</span>
     </span>
@@ -24,7 +26,7 @@ const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
     </span>
   </button>
 ) : item && (
-  <button type="button" class="tee" data-project={item.slug} aria-label={`${item.client} — ${item.technique}, ${item.item}`}>
+  <button type="button" class="tee" data-project={item.slug} data-col={col} aria-label={`${item.client} — ${item.technique}, ${item.item}`}>
     <span class="tee__frame">
       <span class="tee__placeholder">
         <span class="tee__ph-name">{item.client}</span>
