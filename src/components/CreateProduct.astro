@@ -39,7 +39,7 @@ const TOTAL = 5;
       <input type="hidden" name="needs" id="cp-needs" />
       <input type="hidden" name="quantity" id="cp-quantity" />
       <input type="hidden" name="deadline" id="cp-deadline" />
-      <input type="hidden" name="files" id="cp-files-value" />
+      <input type="hidden" name="uploaded_files" id="cp-files-value" />
 
       <p class="cp__progress">Step <span data-current>1</span> / {TOTAL}</p>
 
@@ -384,7 +384,15 @@ const TOTAL = 5;
           if (!/\.(pdf|ai|eps|svg|png|jpe?g|zip|rar)$/i.test(fileInfo.name)) throw new Error('fileType');
         });
         ucWidget.onChange((group: any) => {
-          if (filesField) filesField.value = group ? group.cdnUrl : '';
+          if (!filesField) return;
+          if (!group || !group.cdnUrl) { filesField.value = ''; return; }
+          // Build a direct, openable link per file (the bare group URL ~N/ isn't).
+          const m = String(group.cdnUrl).match(/~(\d+)\/?$/);
+          const n = m ? parseInt(m[1], 10) : 0;
+          const base = group.cdnUrl.endsWith('/') ? group.cdnUrl : group.cdnUrl + '/';
+          const urls: string[] = [];
+          for (let i = 0; i < n; i++) urls.push(`${base}nth/${i}/`);
+          filesField.value = urls.length ? urls.join('\n') : group.cdnUrl;
         });
       }).catch(() => {
         if (fallback) fallback.hidden = false;
@@ -401,7 +409,10 @@ const TOTAL = 5;
 
       const data: Record<string, string> = {};
       new FormData(form).forEach((v, k) => { if (k !== 'uc-files') data[k] = String(v); });
-      if (!data.files) data.files = '(none)';
+      // Fallback: if onChange didn't populate links, use the raw widget value.
+      const ucRaw = (root!.querySelector('#cp-uc') as HTMLInputElement | null)?.value;
+      if (!data.uploaded_files && ucRaw) data.uploaded_files = ucRaw;
+      if (!data.uploaded_files) data.uploaded_files = '(none)';
       if (!data.needs) data.needs = '(not specified)';
 
       try {
