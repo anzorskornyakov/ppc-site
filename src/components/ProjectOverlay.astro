@@ -359,8 +359,22 @@ const projectData = cases.map((c) => ({
       const p = projects.find((x) => x.slug === slug);
       if (!p) return;
 
-      // Media — large hero + 2-up thumbnail grid; click a thumb to swap the hero.
+      // Media — large hero + 2-up grid of the OTHER images (no duplicate of the
+      // hero). Click a thumbnail to swap it into the hero.
       const media = p.media;
+      function renderThumbs(active: number) {
+        const others = media.map((m, i) => ({ m, i })).filter((x) => x.i !== active);
+        thumbsEl.innerHTML = others.map(({ m, i }) => {
+          const inner = isVideo(m.src)
+            ? `<video src="${esc(m.src)}" muted preload="metadata"></video><span class="ov-thumb__play" aria-hidden="true">▶</span>`
+            : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" loading="lazy" />`;
+          return `<button type="button" class="ov-thumb" data-i="${i}" aria-label="${esc('View ' + (m.label || `${p.client} ${i + 1}`))}">${inner}</button>`;
+        }).join('');
+        thumbsEl.hidden = others.length === 0;
+        thumbsEl.querySelectorAll<HTMLElement>('.ov-thumb').forEach((b) =>
+          b.addEventListener('click', () => setHero(Number(b.dataset.i)))
+        );
+      }
       function setHero(i: number) {
         const m = media[i];
         if (!m) { heroEl.innerHTML = '<div class="ph">Image coming soon</div>'; heroCapEl.hidden = true; return; }
@@ -369,21 +383,9 @@ const projectData = cases.map((c) => ({
           : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" />`;
         heroCapEl.textContent = m.label || '';
         heroCapEl.hidden = !m.label;
-        thumbsEl.querySelectorAll<HTMLElement>('.ov-thumb').forEach((t, idx) =>
-          t.setAttribute('aria-current', idx === i ? 'true' : 'false')
-        );
+        renderThumbs(i);
       }
       if (media.length) {
-        thumbsEl.innerHTML = media.map((m, i) => {
-          const inner = isVideo(m.src)
-            ? `<video src="${esc(m.src)}" muted preload="metadata"></video><span class="ov-thumb__play" aria-hidden="true">▶</span>`
-            : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" loading="lazy" />`;
-          return `<button type="button" class="ov-thumb" data-i="${i}" aria-label="${esc('View ' + (m.label || `${p.client} ${i + 1}`))}">${inner}</button>`;
-        }).join('');
-        thumbsEl.hidden = media.length <= 1;
-        thumbsEl.querySelectorAll<HTMLElement>('.ov-thumb').forEach((b) =>
-          b.addEventListener('click', () => setHero(Number(b.dataset.i)))
-        );
         setHero(0);
       } else {
         thumbsEl.innerHTML = '';
