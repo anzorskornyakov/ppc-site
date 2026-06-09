@@ -1,7 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import SEO from '../components/SEO.astro';
+import Gallery from '../components/Gallery.astro';
+import ProjectOverlay from '../components/ProjectOverlay.astro';
+import InfoOverlay from '../components/InfoOverlay.astro';
 import { SITE } from '../data/site';
+import { cases } from '../data/cases';
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -11,7 +15,12 @@ const organizationSchema = {
   alternateName: ['PPC', 'Printclub Collective'],
   legalName: SITE.legalName,
   url: SITE.url,
-  logo: { '@type': 'ImageObject', url: `${SITE.url}/favicon.png`, width: 512, height: 512 },
+  logo: {
+    '@type': 'ImageObject',
+    url: `${SITE.url}/favicon.svg`,
+    width: 512,
+    height: 512,
+  },
   email: SITE.email,
   telephone: SITE.phonePlain,
   vatID: SITE.vatId,
@@ -22,6 +31,7 @@ const organizationSchema = {
     streetAddress: SITE.address.street,
     addressLocality: SITE.address.city,
     postalCode: SITE.address.postal,
+    addressRegion: SITE.address.city,
     addressCountry: SITE.address.countryCode,
   },
   contactPoint: {
@@ -39,6 +49,10 @@ const localBusinessSchema = {
   '@type': ['LocalBusiness', 'ProfessionalService'],
   '@id': `${SITE.url}/#studio`,
   name: SITE.name,
+  image: [
+    `${SITE.url}/photos/studio-hero.jpg`,
+    `${SITE.url}/photos/studio-detail-01.jpg`,
+  ],
   description: SITE.description,
   address: {
     '@type': 'PostalAddress',
@@ -47,7 +61,11 @@ const localBusinessSchema = {
     postalCode: SITE.address.postal,
     addressCountry: SITE.address.countryCode,
   },
-  geo: { '@type': 'GeoCoordinates', latitude: SITE.geo.lat, longitude: SITE.geo.lon },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.lat,
+    longitude: SITE.geo.lon,
+  },
   url: SITE.url,
   telephone: SITE.phonePlain,
   email: SITE.email,
@@ -55,12 +73,24 @@ const localBusinessSchema = {
   currenciesAccepted: 'EUR',
   paymentAccepted: 'Bank transfer, MBWay, Card',
   openingHoursSpecification: [
-    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '19:00' },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '10:00',
+      closes: '19:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday', 'Sunday'],
+      opens: '00:00',
+      closes: '00:00',
+    },
   ],
   areaServed: [
     { '@type': 'City', name: 'Lisboa' },
     { '@type': 'City', name: 'Cascais' },
     { '@type': 'Country', name: 'Portugal' },
+    { '@type': 'Place', name: 'European Union' },
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -83,6 +113,53 @@ const websiteSchema = {
   publisher: { '@id': `${SITE.url}/#organization` },
   inLanguage: 'en',
 };
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  '@id': `${SITE.url}/#process`,
+  name: 'How to order custom printing in Lisbon',
+  description: 'Three-step process to order custom screen printing, embroidery, or DTF from PPC.',
+  totalTime: 'PT3D',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'EUR', value: '100' },
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Send your logo or brief',
+      text: `Send your logo or project brief via WhatsApp (${SITE.phone}), email (${SITE.email}), or Instagram DM (@ppcspace).`,
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Receive a quote within 24 hours',
+      text: 'We respond within 24 hours with a technique recommendation, blank options, and a precise quote.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Approve and receive in 3 business days',
+      text: 'You approve the proof. Production starts. Order is ready for pickup or delivery in 3 business days.',
+    },
+  ],
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${SITE.url}/#work`,
+  name: 'Selected work',
+  itemListElement: cases.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'CreativeWork',
+      name: `${c.client} — ${c.item}`,
+      about: c.technique,
+      url: `${SITE.url}/#project/${c.slug}`,
+    },
+  })),
+};
 ---
 <Base
   title="PPC — Custom print studio in Lisbon. 3-day turnaround."
@@ -94,112 +171,25 @@ const websiteSchema = {
     description="Portugal Print Club. Screen printing, embroidery, DTF printing in Lisbon. From 1 piece. Ready in 3 business days. Studio open for visits in Campolide."
     ogImage="/og-default.jpg"
     canonicalUrl={SITE.url}
-    schemas={[organizationSchema, localBusinessSchema, websiteSchema]}
+    schemas={[organizationSchema, localBusinessSchema, websiteSchema, howToSchema, itemListSchema]}
   />
 
-  <main class="cover">
-    <div class="cover__inner">
-      <img class="cover__logo" src="/logo.webp" alt={SITE.name} width="200" height="92" />
+  <InfoOverlay />
+  <Gallery />
+  <ProjectOverlay />
 
-      <h1 class="cover__lead">
-        Custom print studio in Lisbon. Screen printing, embroidery and DTF —
-        from one piece, ready in three days.
-      </h1>
-
-      <nav class="cover__nav" aria-label="Primary">
-        <a href="/archive">Archive</a>
-        <a href="/catalog">Catalog</a>
-        <a href="/contact">Start a project</a>
-      </nav>
-
-      <nav class="cover__sub" aria-label="Services">
-        <a href="/screen-printing">Screen printing</a>
-        <a href="/embroidery">Embroidery</a>
-        <a href="/dtf">DTF</a>
-        <a href="/studio">Studio</a>
-      </nav>
-
-      <ul class="cover__contact">
-        <li><span>WhatsApp</span><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">{SITE.phone}</a></li>
-        <li><span>Telegram</span><a href={SITE.telegramUrl} target="_blank" rel="noopener noreferrer">{SITE.telegram}</a></li>
-        <li><span>Email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-        <li><span>Instagram</span><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagram}</a></li>
-      </ul>
-
-      <p class="cover__addr">{SITE.address.full} · {SITE.address.district}</p>
-    </div>
-  </main>
-
-  <style>
-    .cover {
-      min-height: 100svh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(3rem, 8vh, 6rem) clamp(1.5rem, 6vw, 5rem);
+  <!-- Lock the document on the gallery page so iOS can't rubber-band /
+       pull-to-refresh and fight the gallery's own scroll. Homepage only. -->
+  <style is:global>
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
     }
-    .cover__inner {
+    body {
+      position: fixed;
+      inset: 0;
       width: 100%;
-      max-width: 46rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: clamp(1.75rem, 4vh, 2.75rem);
-    }
-    .cover__logo { height: clamp(2.75rem, 6vw, 4rem); width: auto; }
-
-    .cover__lead {
-      margin: 0;
-      font-weight: 700;
-      letter-spacing: -0.015em;
-      line-height: 1.12;
-      font-size: clamp(1.5rem, 3.6vw, 2.5rem);
-      max-width: 26ch;
-      color: var(--color-text);
-    }
-
-    .cover__nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-    .cover__nav a {
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
-      line-height: 1.15;
-      color: var(--color-text);
-      text-decoration: none;
-      width: fit-content;
-    }
-    .cover__nav a:hover { color: var(--color-accent); }
-
-    .cover__sub {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem 1rem;
-    }
-    .cover__sub a {
-      font-size: 0.875rem;
-      color: var(--color-mute);
-      text-decoration: none;
-    }
-    .cover__sub a:hover { color: var(--color-text); }
-
-    .cover__contact {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-size: 0.875rem;
-      display: grid;
-      gap: 0.3rem;
-    }
-    .cover__contact span { display: inline-block; width: 6rem; color: var(--color-mute); }
-
-    .cover__addr {
-      margin: 0;
-      font-size: 0.8125rem;
-      color: var(--color-faint);
     }
   </style>
 </Base>
