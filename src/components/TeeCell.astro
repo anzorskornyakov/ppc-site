@@ -26,7 +26,7 @@ const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
     </span>
   </button>
 ) : item && (
-  <button type="button" class="tee" data-project={item.slug} data-col={col} aria-label={`${item.client} — ${item.technique}, ${item.item}`}>
+  <a href={`/work/${item.slug}`} class="tee" data-project={item.slug} data-col={col} aria-label={`${item.client} — ${item.technique}, ${item.item}`}>
     <span class="tee__frame">
       <span class="tee__placeholder">
         <span class="tee__ph-name">{item.client}</span>
@@ -38,12 +38,13 @@ const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
       <span class="tee__client">{item.client}</span>
       <span class="tee__meta">{item.technique} · {item.item}</span>
     </span>
-  </button>
+  </a>
 )}
 
 <style>
   .tee {
     display: block;
+    text-decoration: none;
     width: 100%;
     max-width: 80%;
     margin: 0 auto;

@@ -333,7 +333,8 @@ const projectData = cases.map((c) => ({
       detailsBlock.hidden = !p.blank && p.details.length === 0;
 
       show();
-      if (push) history.pushState({ ppc: 'project', slug }, '', `#project/${slug}`);
+      // Reflect the real page URL so the address bar / share = /work/<slug>.
+      if (push) history.pushState({ ppc: 'project', slug }, '', `/work/${slug}`);
     }
 
     function close(pop = true) {
@@ -345,7 +346,7 @@ const projectData = cases.map((c) => ({
         mediaEl.innerHTML = ''; // stop any playing video
       }, 300);
       lastFocus?.focus();
-      if (pop && location.hash) history.pushState('', '', location.pathname);
+      if (pop && /^\/work\//.test(location.pathname)) history.pushState('', '', '/');
     }
 
     overlay.querySelector('[data-close]')?.addEventListener('click', () => close());
@@ -358,13 +359,16 @@ const projectData = cases.map((c) => ({
 
     document.addEventListener('ppc:open-project', (e) => openProject((e as CustomEvent).detail));
 
-    function syncFromHash(push = false) {
+    function syncFromLocation() {
+      // Back-compat: old #project/<slug> deep links → the real page.
       const h = location.hash.replace(/^#/, '');
-      if (h.startsWith('project/')) openProject(h.slice('project/'.length), push);
+      if (h.startsWith('project/')) { location.replace(`/work/${h.slice('project/'.length)}`); return; }
+      const m = location.pathname.match(/^\/work\/([^/]+)\/?$/);
+      if (m) openProject(decodeURIComponent(m[1]), false);
       else if (!overlay!.hidden) close(false);
     }
-    window.addEventListener('popstate', () => syncFromHash(false));
-    syncFromHash(false);
+    window.addEventListener('popstate', syncFromLocation);
+    syncFromLocation();
   }
 
   if (document.readyState === 'loading') {

@@ -127,7 +127,7 @@ const copies = [0, 1, 2];
     }));
 
     // Buttons in duplicate sets shouldn't be tab-stops.
-    gallery.querySelectorAll<HTMLElement>('[data-set][aria-hidden="true"] button')
+    gallery.querySelectorAll<HTMLElement>('[data-set][aria-hidden="true"] a, [data-set][aria-hidden="true"] button')
       .forEach((b) => b.setAttribute('tabindex', '-1'));
 
     const WHEEL = 1;        // 1:1 wheel scroll — direct, no inertia
@@ -281,6 +281,10 @@ const copies = [0, 1, 2];
       }
       const project = target.closest<HTMLElement>('[data-project]');
       if (project) {
+        const me = e as MouseEvent;
+        // Let cmd/ctrl/shift-click (open in new tab/window) hit the real page.
+        if (me.metaKey || me.ctrlKey || me.shiftKey || me.altKey) return;
+        e.preventDefault(); // plain click → smooth in-place overlay
         document.dispatchEvent(
           new CustomEvent('ppc:open-project', { detail: project.dataset.project })
         );
