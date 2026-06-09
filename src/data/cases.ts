@@ -131,6 +131,8 @@ export const cases: Case[] = [
     garmentLabel: 'Back — STAFF print',
     media: [
       { src: '/photos/cases/ulu/ulu-2-front.webp', label: 'Front — .ulu mark' },
+      { src: '/photos/cases/ulu/ulu-3-worn.webp', label: 'Worn — .ulu chest mark' },
+      { src: '/photos/cases/ulu/ulu-4-staff.webp', label: 'On the floor — staff in Cascais' },
     ],
     body: 'Staff uniform for .ulu, a café in Cascais — the .ulu mark on the chest and a large STAFF graphic across the back with the address and "Inspired by the world, born in Cascais". Screen-printed front and back on Stanley/Stella blanks.',
   },
