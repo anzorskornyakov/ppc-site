@@ -5,6 +5,7 @@ import Footer from './Footer.astro';
 import SEO from './SEO.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
 import CreateProduct from './CreateProduct.astro';
+import { cases } from '../data/cases';
 
 interface Props {
   sectionNum: string;
@@ -16,6 +17,8 @@ interface Props {
   canonicalUrl: string;
   schemas: object[];
   breadcrumbs: { name: string; href?: string }[];
+  /** Technique name (e.g. "Screen printing") to surface related work. */
+  relatedTechnique?: string;
 }
 
 const {
@@ -28,7 +31,12 @@ const {
   canonicalUrl,
   schemas,
   breadcrumbs,
+  relatedTechnique,
 } = Astro.props;
+
+const related = relatedTechnique
+  ? cases.filter((c) => c.technique.includes(relatedTechnique)).slice(0, 8)
+  : [];
 ---
 <Base title={metaTitle} description={metaDescription}>
   <SEO
@@ -58,6 +66,24 @@ const {
         <slot />
       </div>
 
+      <!-- Related work -->
+      {related.length > 0 && (
+        <section class="mt-20 pt-10 border-t border-[var(--color-rule)]">
+          <p class="label-text mb-6">SELECTED WORK</p>
+          <div class="related-grid">
+            {related.map((c) => (
+              <a class="related-card" href={`/work/${c.slug}`}>
+                <span class="related-card__img">
+                  <img src={c.garment} alt={`${c.client} — ${c.technique}`} loading="lazy" decoding="async" />
+                </span>
+                <span class="related-card__name">{c.client}</span>
+                <span class="related-card__meta">{c.item}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
       <!-- CTA block -->
       <div class="mt-20 pt-10 border-t border-[var(--color-rule)] flex flex-col sm:flex-row sm:items-center gap-6">
         <a href="/#create" data-open-contact class="btn-cta">Create new product →</a>
@@ -69,3 +95,48 @@ const {
   <CreateProduct />
   <Footer />
 </Base>
+
+<style>
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+  @media (min-width: 640px) {
+    .related-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .related-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .related-card { text-decoration: none; color: inherit; display: block; }
+  .related-card__img {
+    display: block;
+    aspect-ratio: 1 / 1;
+    background: var(--color-surface);
+    overflow: hidden;
+  }
+  .related-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+  }
+  @media (hover: hover) {
+    .related-card:hover .related-card__img img { transform: scale(1.03); }
+  }
+  .related-card__name {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--color-text);
+  }
+  .related-card__meta {
+    display: block;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-mute);
+  }
+</style>
