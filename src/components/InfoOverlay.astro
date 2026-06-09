@@ -1,15 +1,9 @@
 ---
 import { SITE } from '../data/site';
 import { services } from '../data/services';
-
-const links = [
-  { label: 'Catalog', href: '/catalog' },
-  { label: 'Studio', href: '/studio' },
-  ...services.map((s) => ({ label: s.name, href: s.path })),
-];
+import RequestForm from './RequestForm.astro';
 ---
-<!-- Persistent, minimal chrome — no nav bar. Logo + Menu share one row,
-     vertically centred to each other. -->
+<!-- Top chrome over the gallery (visible when the menu is closed) -->
 <div class="topbar">
   <a class="wordmark" href="/" aria-label={`${SITE.name} — home`}>
     <img src="/logo.webp" alt={SITE.name} width="116" height="54" />
@@ -17,15 +11,18 @@ const links = [
   <button type="button" class="menu-trigger" data-info-open aria-haspopup="dialog">Menu</button>
 </div>
 
-<!-- Persistent CTA on the gallery — opens the enquiry form -->
+<!-- Persistent CTA on the gallery — opens the menu's brief form -->
 <button type="button" class="cta-fab" data-open-contact>Create new product</button>
 
+<!-- The menu doubles as the homepage: it's open by default on first load -->
 <div class="info" id="info" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true" hidden>
-  <button type="button" class="info__close" data-info-close aria-label="Close">
+  <button type="button" class="info__close" data-info-close aria-label="Close menu">
     <span aria-hidden="true">×</span>
   </button>
 
   <div class="info__inner">
+    <img class="info__logo" src="/logo.webp" alt={SITE.name} width="160" height="74" />
+
     <p class="info__statement">
       PPC is a creative merchandise production studio. We help brands turn ideas
       into high-quality products by selecting the most suitable garments and
@@ -34,14 +31,28 @@ const links = [
       in as little as 3 business days.
     </p>
 
-    <button type="button" class="info__cta" data-start-project>Create new product</button>
+    <nav class="info__buttons" aria-label="Sections">
+      <button type="button" class="info__btn info__btn--primary" data-info-close>
+        <span class="info__btn-title">Gallery</span>
+        <span class="info__btn-sub">See our work →</span>
+      </button>
+      <a class="info__btn" href="/catalog">
+        <span class="info__btn-title">Catalog</span>
+        <span class="info__btn-sub">Blanks we print on →</span>
+      </a>
+      <a class="info__btn" href="/studio">
+        <span class="info__btn-title">Studio</span>
+        <span class="info__btn-sub">Visit us in Lisbon →</span>
+      </a>
+    </nav>
 
-    <nav class="info__nav" aria-label="Sections">
-      <ul>
-        {links.map((l) => (
-          <li><a href={l.href}>{l.label}</a></li>
-        ))}
-      </ul>
+    <section class="info__brief" id="brief">
+      <h2 class="info__h">Start a project</h2>
+      <RequestForm />
+    </section>
+
+    <nav class="info__links" aria-label="Techniques">
+      {services.map((s) => <a href={s.path}>{s.name}</a>)}
     </nav>
 
     <ul class="info__contact">
@@ -51,18 +62,15 @@ const links = [
       <li><span>Email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
       <li><span>Instagram</span><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagram}</a></li>
     </ul>
+
+    <p class="info__legal">{SITE.legalName} · NIPC {SITE.nipc} · VAT {SITE.vatId}</p>
   </div>
 </div>
 
 <style>
-  /* Top row: logo left, Menu right, both vertically centred to each other.
-     pointer-events:none lets gallery scroll through the empty bar; the two
-     interactive items re-enable pointer events. */
   .topbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     z-index: 40;
     display: flex;
     align-items: center;
@@ -71,134 +79,143 @@ const links = [
     pointer-events: none;
   }
   .topbar > * { pointer-events: auto; }
-
   .wordmark { line-height: 0; }
   .wordmark img { height: clamp(2.75rem, 5.5vw, 4.5rem); width: auto; }
 
   .menu-trigger {
-    border: 0;
-    background: transparent;
-    font-size: 0.875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-accent);
-    cursor: pointer;
-    padding: 0.25rem 0;
-    transition: opacity 0.2s ease;
+    border: 0; background: transparent;
+    font-size: 0.875rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--color-accent); cursor: pointer;
+    padding: 0.25rem 0; transition: opacity 0.2s ease;
   }
   .menu-trigger:hover { opacity: 0.65; }
 
-  /* Persistent enquiry CTA, styled like the PPC wordmark (blue oval) */
   .cta-fab {
     position: fixed;
-    left: 50%;
-    bottom: clamp(1.25rem, 4vw, 2.5rem);
+    left: 50%; bottom: clamp(1.25rem, 4vw, 2.5rem);
     transform: translateX(-50%);
     z-index: 40;
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.9375rem;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    color: var(--color-accent);
-    background: #fff;
-    border: 2.5px solid var(--color-accent);
-    border-radius: 50%;
-    padding: 0.9rem 2.3rem;
-    cursor: pointer;
+    font-family: var(--font-sans); font-weight: 700;
+    font-size: 0.9375rem; letter-spacing: 0.02em; white-space: nowrap;
+    color: var(--color-accent); background: #fff;
+    border: 2.5px solid var(--color-accent); border-radius: 50%;
+    padding: 0.9rem 2.3rem; cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
   }
   .cta-fab:hover { background: var(--color-accent); color: #fff; }
 
   .info {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    background: #fff;
-    overflow-y: auto;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    position: fixed; inset: 0; z-index: 60;
+    background: #fff; overflow-y: auto;
+    opacity: 0; transition: opacity 0.4s ease;
   }
   .info.is-open { opacity: 1; }
   .info[hidden] { display: none; }
 
   .info__close {
     position: fixed;
-    top: clamp(1rem, 3vw, 2rem);
-    right: clamp(1rem, 3vw, 2rem);
+    top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem);
     width: 2.75rem; height: 2.75rem;
     display: flex; align-items: center; justify-content: center;
     border: 0; background: transparent;
     font-size: 2rem; line-height: 1;
-    color: var(--color-text); cursor: pointer;
+    color: var(--color-text); cursor: pointer; z-index: 2;
   }
   .info__close:hover { color: var(--color-accent); }
 
   .info__inner {
     max-width: 720px;
     margin: 0 auto;
-    padding: clamp(5rem, 16vh, 10rem) clamp(1.25rem, 6vw, 3rem);
+    padding: clamp(3rem, 8vh, 5rem) clamp(1.25rem, 6vw, 3rem) clamp(3rem, 8vh, 5rem);
     display: flex;
     flex-direction: column;
-    gap: clamp(2rem, 6vh, 3.5rem);
+    gap: clamp(2rem, 5vh, 3rem);
   }
+  .info__logo { height: clamp(2.5rem, 6vw, 3.5rem); width: auto; }
+
   .info__statement {
     font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
     line-height: 1.45;
     margin: 0;
     color: var(--color-text);
+    max-width: 38ch;
   }
 
-  /* Styled like the PPC wordmark: blue elliptical outline + blue text */
-  .info__cta {
-    align-self: flex-start;
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.9375rem;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    color: var(--color-accent);
-    background: transparent;
-    border: 2.5px solid var(--color-accent);
-    border-radius: 50%;
-    padding: 0.95rem 2.4rem;
+  /* Three primary destinations — unmistakably clickable cards */
+  .info__buttons { display: flex; flex-direction: column; gap: 0.75rem; }
+  .info__btn {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    text-align: left;
+    padding: 1.1rem 1.35rem;
+    border: 1px solid var(--color-text);
+    background: #fff;
+    color: var(--color-text);
     cursor: pointer;
+    text-decoration: none;
+    font: inherit;
     transition: background 0.2s ease, color 0.2s ease;
   }
-  .info__cta:hover { background: var(--color-accent); color: #fff; }
-
-  .info__nav ul { list-style: none; padding: 0; margin: 0; }
-  .info__nav li { border-top: 1px solid var(--color-rule); }
-  .info__nav li:last-child { border-bottom: 1px solid var(--color-rule); }
-  .info__nav a {
-    display: block;
-    padding: 0.7rem 0;
-    color: var(--color-text);
-    text-decoration: none;
-    font-size: 1rem;
+  .info__btn:hover { background: var(--color-text); color: #fff; }
+  .info__btn--primary { background: var(--color-text); color: #fff; }
+  .info__btn--primary:hover { background: var(--color-accent); border-color: var(--color-accent); }
+  .info__btn-title {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
-  .info__nav a:hover { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  .info__btn-sub {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  .info__brief { border-top: 1px solid var(--color-rule); padding-top: clamp(1.75rem, 4vh, 2.5rem); }
+  .info__h {
+    margin: 0 0 1.25rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .info__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+  .info__links a { font-size: 0.9375rem; color: var(--color-text); }
 
   .info__contact { list-style: none; padding: 0; margin: 0; font-size: 0.9375rem; }
   .info__contact li { margin-bottom: 0.4rem; color: var(--color-text); }
   .info__contact span { display: inline-block; width: 6rem; color: var(--color-mute); }
+
+  .info__legal {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--color-faint);
+  }
 </style>
 
 <script>
   function initInfo() {
     const info = document.getElementById('info');
-    const trigger = document.querySelector<HTMLButtonElement>('[data-info-open]');
-    if (!info || !trigger) return;
+    if (!info) return;
     let lastFocus: HTMLElement | null = null;
 
-    function open() {
+    function open(focus = true) {
       lastFocus = document.activeElement as HTMLElement;
       info!.hidden = false;
       info!.setAttribute('aria-hidden', 'false');
       document.body.classList.add('overlay-open');
       requestAnimationFrame(() => info!.classList.add('is-open'));
-      info!.querySelector<HTMLElement>('[data-info-close]')?.focus();
+      if (focus) info!.querySelector<HTMLElement>('[data-info-close]')?.focus();
     }
     function close() {
       info!.classList.remove('is-open');
@@ -209,21 +226,30 @@ const links = [
       }, 300);
       lastFocus?.focus();
     }
+    function openToForm() {
+      open(false);
+      requestAnimationFrame(() =>
+        info!.querySelector('#brief')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      );
+    }
 
-    trigger.addEventListener('click', open);
-    document.querySelector('[data-open-contact]')?.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('ppc:open-contact'));
-    });
-    info.querySelector('[data-start-project]')?.addEventListener('click', () => {
-      close();
-      window.setTimeout(() => document.dispatchEvent(new CustomEvent('ppc:open-contact')), 300);
-    });
-    info.querySelector('[data-info-close]')?.addEventListener('click', close);
+    document.querySelector('[data-info-open]')?.addEventListener('click', () => open());
+    // X and the "Gallery" card both just close the menu (revealing the gallery)
+    info.querySelectorAll('[data-info-close]').forEach((el) =>
+      el.addEventListener('click', () => close())
+    );
     info.addEventListener('click', (e) => { if (e.target === info) close(); });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !info.hidden) close();
     });
-    document.addEventListener('ppc:open-info', open);
+
+    // CTA on the gallery + the empty contact tee open the menu at the form
+    document.querySelector('[data-open-contact]')?.addEventListener('click', openToForm);
+    document.addEventListener('ppc:open-contact', openToForm);
+    document.addEventListener('ppc:open-info', () => open());
+
+    // The menu IS the homepage: open it on first load (unless deep-linking a project)
+    if (!location.hash) open(false);
   }
 
   if (document.readyState === 'loading') {

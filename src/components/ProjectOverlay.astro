@@ -1,8 +1,6 @@
 ---
-import RequestForm from './RequestForm.astro';
 import { cases } from '../data/cases';
 import { caseImages } from '../data/media';
-import { SITE } from '../data/site';
 
 // Data island the overlay script reads to build project views on demand.
 const projectData = cases.map((c) => ({
@@ -49,26 +47,6 @@ const projectData = cases.map((c) => ({
     </div>
   </div>
 
-  <!-- Contact view -->
-  <div class="overlay__inner overlay__inner--contact" data-panel="contact" hidden>
-    <div class="overlay__info overlay__info--contact">
-      <p class="ov-eyebrow">Your project goes here</p>
-      <h2 class="ov-title">Send a brief</h2>
-      <p class="ov-body">
-        Send your logo or brief. We reply within 24 hours with a technique
-        recommendation, blank options and a precise quote.
-      </p>
-      <ul class="overlay__channels">
-        <li><span>WhatsApp</span><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">{SITE.phone}</a></li>
-        <li><span>Telegram</span><a href={SITE.telegramUrl} target="_blank" rel="noopener noreferrer">{SITE.telegram}</a></li>
-        <li><span>Email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-        <li><span>Instagram</span><a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagram}</a></li>
-      </ul>
-    </div>
-    <div class="overlay__form">
-      <RequestForm />
-    </div>
-  </div>
 </div>
 
 <script id="ppc-projects" type="application/json" set:html={JSON.stringify(projectData)}></script>
@@ -286,7 +264,6 @@ const projectData = cases.map((c) => ({
 
     const projects: ProjectView[] = JSON.parse(dataEl.textContent || '[]');
     const projectPanel = overlay.querySelector<HTMLElement>('[data-panel="project"]')!;
-    const contactPanel = overlay.querySelector<HTMLElement>('[data-panel="contact"]')!;
     const mediaEl = overlay.querySelector<HTMLElement>('[data-media]')!;
     const dateEl = overlay.querySelector<HTMLElement>('[data-date]')!;
     const clientEl = overlay.querySelector<HTMLElement>('[data-client]')!;
@@ -301,9 +278,8 @@ const projectData = cases.map((c) => ({
 
     let lastFocus: HTMLElement | null = null;
 
-    function show(panel: HTMLElement) {
-      projectPanel.hidden = panel !== projectPanel;
-      contactPanel.hidden = panel !== contactPanel;
+    function show() {
+      projectPanel.hidden = false;
       lastFocus = document.activeElement as HTMLElement;
       overlay!.hidden = false;
       overlay!.setAttribute('aria-hidden', 'false');
@@ -356,13 +332,8 @@ const projectData = cases.map((c) => ({
       detailsEl.innerHTML = p.details.map((d) => `<li>${d}</li>`).join('');
       detailsBlock.hidden = !p.blank && p.details.length === 0;
 
-      show(projectPanel);
+      show();
       if (push) history.pushState({ ppc: 'project', slug }, '', `#project/${slug}`);
-    }
-
-    function openContact(push = true) {
-      show(contactPanel);
-      if (push) history.pushState({ ppc: 'contact' }, '', '#contact');
     }
 
     function close(pop = true) {
@@ -386,12 +357,10 @@ const projectData = cases.map((c) => ({
     });
 
     document.addEventListener('ppc:open-project', (e) => openProject((e as CustomEvent).detail));
-    document.addEventListener('ppc:open-contact', () => openContact());
 
     function syncFromHash(push = false) {
       const h = location.hash.replace(/^#/, '');
       if (h.startsWith('project/')) openProject(h.slice('project/'.length), push);
-      else if (h === 'contact') openContact(push);
       else if (!overlay!.hidden) close(false);
     }
     window.addEventListener('popstate', () => syncFromHash(false));
