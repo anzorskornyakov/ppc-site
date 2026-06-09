@@ -23,27 +23,20 @@ import RequestForm from './RequestForm.astro';
   <div class="info__inner">
     <img class="info__logo" src="/logo.webp" alt={SITE.name} width="160" height="74" />
 
-    <p class="info__statement">
-      PPC is a creative merchandise production studio. We help brands turn ideas
-      into high-quality products by selecting the most suitable garments and
-      items for each project, then bringing them to life through premium printing
-      and embroidery. When timing is critical, we can deliver complete projects
-      in as little as 3 business days.
-    </p>
+    <div class="info__about">
+      <p>PPC is a creative merchandise production studio.</p>
+      <p>
+        We help brands turn ideas into high-quality products by selecting the
+        most suitable garments and items for each project, then bringing them to
+        life through premium printing and embroidery.
+      </p>
+      <p>When timing is critical, we can deliver complete projects in as little as 3 business days.</p>
+    </div>
 
     <nav class="info__buttons" aria-label="Sections">
-      <button type="button" class="info__btn info__btn--primary" data-info-close>
-        <span class="info__btn-title">Gallery</span>
-        <span class="info__btn-sub">See our work →</span>
-      </button>
-      <a class="info__btn" href="/catalog">
-        <span class="info__btn-title">Catalog</span>
-        <span class="info__btn-sub">Blanks we print on →</span>
-      </a>
-      <a class="info__btn" href="/studio">
-        <span class="info__btn-title">Studio</span>
-        <span class="info__btn-sub">Visit us in Lisbon →</span>
-      </a>
+      <button type="button" class="info__btn info__btn--primary" data-info-close>Gallery</button>
+      <a class="info__btn" href="/catalog">Catalog</a>
+      <a class="info__btn" href="/studio">Studio</a>
     </nav>
 
     <section class="info__brief" id="brief">
@@ -132,49 +125,55 @@ import RequestForm from './RequestForm.astro';
     flex-direction: column;
     gap: clamp(2rem, 5vh, 3rem);
   }
-  .info__logo { height: clamp(2.5rem, 6vw, 3.5rem); width: auto; }
-
-  .info__statement {
-    font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
-    line-height: 1.45;
-    margin: 0;
-    color: var(--color-text);
-    max-width: 38ch;
+  .info__logo {
+    align-self: center;        /* don't stretch in the column flex */
+    height: clamp(2.5rem, 6vw, 3.5rem);
+    width: auto;
+    max-width: 100%;
   }
 
-  /* Three primary destinations — unmistakably clickable cards */
-  .info__buttons { display: flex; flex-direction: column; gap: 0.75rem; }
-  .info__btn {
+  .info__about {
+    text-align: center;
+    max-width: 44ch;
+    margin: 0 auto;
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    width: 100%;
-    text-align: left;
-    padding: 1.1rem 1.35rem;
-    border: 1px solid var(--color-text);
-    background: #fff;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .info__about p {
+    margin: 0;
+    font-size: clamp(1.0625rem, 2.1vw, 1.3125rem);
+    line-height: 1.5;
     color: var(--color-text);
-    cursor: pointer;
-    text-decoration: none;
-    font: inherit;
-    transition: background 0.2s ease, color 0.2s ease;
   }
-  .info__btn:hover { background: var(--color-text); color: #fff; }
-  .info__btn--primary { background: var(--color-text); color: #fff; }
-  .info__btn--primary:hover { background: var(--color-accent); border-color: var(--color-accent); }
-  .info__btn-title {
-    font-size: clamp(1.25rem, 3vw, 1.75rem);
+
+  /* Three primary destinations — oval buttons echoing the PPC logo */
+  .info__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .info__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 15rem;
+    padding: 0.9rem 2.25rem;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--color-accent);
     font-weight: 700;
-    letter-spacing: -0.01em;
+    font-size: 1.0625rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
-  .info__btn-sub {
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    opacity: 0.7;
-    white-space: nowrap;
-  }
+  .info__btn:hover { background: var(--color-accent); color: #fff; }
+  .info__btn--primary { background: var(--color-accent); color: #fff; }
+  .info__btn--primary:hover { background: var(--color-text); border-color: var(--color-text); }
 
   .info__brief { border-top: 1px solid var(--color-rule); padding-top: clamp(1.75rem, 4vh, 2.5rem); }
   .info__h {
