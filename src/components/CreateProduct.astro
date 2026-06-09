@@ -3,7 +3,8 @@
 // collects a short brief and submits to Web3Forms. Files go to Uploadcare
 // (free tier) when PUBLIC_UPLOADCARE_PUBLIC_KEY is set; the email gets links.
 const W3F_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
-const UC_KEY = import.meta.env.PUBLIC_UPLOADCARE_PUBLIC_KEY ?? '';
+// Uploadcare PUBLIC key — safe to expose in client code (the widget uses it).
+const UC_KEY = import.meta.env.PUBLIC_UPLOADCARE_PUBLIC_KEY ?? 'e9aa54b6a14c38e95eee';
 
 const needs = [
   'Merch Production',

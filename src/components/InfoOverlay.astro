@@ -58,8 +58,10 @@ const { defaultOpen = true, primary = true } = Astro.props;
     </nav>
 
     <section class="info__brief" id="brief">
-      <h2 class="info__h">Start a project</h2>
-      <button type="button" class="info__cta" data-open-contact>Create new product →</button>
+      <button type="button" class="info__btn info__btn--primary" data-open-contact>
+        <span class="info__btn__label">Create new product</span>
+        <span class="info__btn__desc">Tell us about your project</span>
+      </button>
     </section>
 
     <nav class="info__links" aria-label="Techniques">
@@ -211,28 +213,12 @@ const { defaultOpen = true, primary = true } = Astro.props;
   }
   .info__btn--primary .info__btn__label { color: var(--color-accent); }
 
-  .info__brief { border-top: 1px solid var(--color-rule); padding-top: clamp(1.75rem, 4vh, 2.5rem); }
-  .info__h {
-    margin: 0 0 1.25rem;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  .info__brief {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--color-rule);
+    padding-top: clamp(1.5rem, 3.5vh, 2rem);
   }
-  .info__cta {
-    font-family: var(--font-sans);
-    font-size: 0.9375rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #fff;
-    background: var(--color-accent);
-    border: 2px solid var(--color-accent);
-    border-radius: 50%;
-    padding: 0.85rem 2.1rem;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-  .info__cta:hover { background: #fff; color: var(--color-accent); }
 
   .info__links {
     display: flex;
