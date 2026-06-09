@@ -163,49 +163,42 @@ import RequestForm from './RequestForm.astro';
     text-wrap: pretty;
   }
 
-  /* Three primary destinations — brutalist: one hard-edged box, thick
-     borders, shared dividers. Bold label + a short line of where it leads. */
+  /* Three primary destinations — plain text, no frame. Same type as the copy
+     above, just a larger tap area. Gallery's label is accent blue. */
   .info__buttons {
     display: flex;
     flex-direction: column;
-    max-width: 30rem;
-    margin: 0 auto;
-    width: 100%;
-    border: 2.5px solid var(--color-text);
+    align-items: center;
+    gap: 0.4rem;
   }
   .info__btn {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-    padding: 1rem 1.25rem;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.7rem 1.5rem;     /* generous tap area without any box */
     border: 0;
-    border-bottom: 2.5px solid var(--color-text);
-    background: #fff;
+    background: transparent;
     color: var(--color-text);
-    text-align: left;
+    text-align: center;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition: opacity 0.15s ease;
   }
-  .info__btn:last-child { border-bottom: 0; }
+  .info__btn:hover { opacity: 0.55; }
   .info__btn__label {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    line-height: 1.1;
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 1.7vw, 1.1875rem);  /* matches the about block */
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.3;
   }
   .info__btn__desc {
     font-size: 0.8125rem;
     color: var(--color-mute);
     line-height: 1.25;
   }
-  .info__btn:hover { background: var(--color-text); color: #fff; }
-  .info__btn:hover .info__btn__desc { color: rgba(255, 255, 255, 0.72); }
-  .info__btn--primary { background: var(--color-accent); color: #fff; }
-  .info__btn--primary .info__btn__desc { color: rgba(255, 255, 255, 0.82); }
-  .info__btn--primary:hover { background: var(--color-text); }
+  .info__btn--primary .info__btn__label { color: var(--color-accent); }
 
   .info__brief { border-top: 1px solid var(--color-rule); padding-top: clamp(1.75rem, 4vh, 2.5rem); }
   .info__h {
