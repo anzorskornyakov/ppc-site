@@ -18,11 +18,11 @@ const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
 {variant === 'contact' ? (
   <button type="button" class="tee tee--contact" data-contact data-col={col} aria-label="Start your project — open the contact form">
     <span class="tee__frame tee__frame--empty">
-      <span class="tee__empty-label">Your project<br />goes here</span>
+      <span class="tee__empty-label">Your project here<br /><span class="tee__empty-cta">Start a project →</span></span>
     </span>
     <span class="tee__caption">
-      <span class="tee__client">Add yours</span>
-      <span class="tee__meta">Send a brief</span>
+      <span class="tee__client">Your project</span>
+      <span class="tee__meta">Start a project</span>
     </span>
   </button>
 ) : item && (
@@ -113,31 +113,36 @@ const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
     color: var(--color-faint);
   }
 
-  /* Empty contact tee */
+  /* Contact tee — a deliberate invitation, not a broken/placeholder card */
   .tee__frame--empty {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed var(--color-rule-strong);
-    background: #fff;
-    transition: border-color 0.4s ease, background 0.4s ease;
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-surface);
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
   .tee--contact:hover .tee__frame--empty,
   .tee--contact:focus-visible .tee__frame--empty {
+    background: var(--color-text);
     border-color: var(--color-text);
-    background: var(--color-surface);
   }
   .tee__empty-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    line-height: 1.5;
+    font-size: 0.8125rem;
+    line-height: 1.6;
     text-align: center;
-    color: var(--color-faint);
-    transition: color 0.4s ease;
+    color: var(--color-mute);
+    transition: color 0.3s ease;
+  }
+  .tee__empty-cta {
+    font-weight: 700;
+    color: var(--color-text);
+    transition: color 0.3s ease;
   }
   .tee--contact:hover .tee__empty-label,
-  .tee--contact:focus-visible .tee__empty-label { color: var(--color-text); }
+  .tee--contact:focus-visible .tee__empty-label,
+  .tee--contact:hover .tee__empty-cta,
+  .tee--contact:focus-visible .tee__empty-cta { color: #fff; }
 
   /* Caption — silent by default, surfaces on interaction */
   .tee__caption {
