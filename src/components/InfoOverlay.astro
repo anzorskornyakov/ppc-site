@@ -14,8 +14,10 @@ import RequestForm from './RequestForm.astro';
 <!-- Persistent CTA on the gallery — opens the menu's brief form -->
 <button type="button" class="cta-fab" data-open-contact>Create new product</button>
 
-<!-- The menu doubles as the homepage: it's open by default on first load -->
-<div class="info" id="info" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true" hidden>
+<!-- The menu IS the homepage. Rendered OPEN in static HTML so the h1 and copy
+     are crawlable by search engines and LLM bots that don't execute JS. JS
+     only handles closing (to reveal the gallery) and deep-linked projects. -->
+<div class="info is-open" id="info" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="false">
   <button type="button" class="info__close" data-info-close aria-label="Close menu">
     <span aria-hidden="true">×</span>
   </button>
@@ -277,8 +279,15 @@ import RequestForm from './RequestForm.astro';
     document.addEventListener('ppc:open-contact', openToForm);
     document.addEventListener('ppc:open-info', () => open());
 
-    // The menu IS the homepage: open it on first load (unless deep-linking a project)
-    if (!location.hash) open(false);
+    // The menu is rendered open in the HTML. If the URL deep-links a project,
+    // close it instantly (no animation) so the project overlay takes over.
+    if (location.hash) {
+      info.classList.remove('is-open');
+      info.hidden = true;
+      info.setAttribute('aria-hidden', 'true');
+    } else {
+      document.body.classList.add('overlay-open');
+    }
   }
 
   if (document.readyState === 'loading') {
