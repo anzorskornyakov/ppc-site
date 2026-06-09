@@ -271,10 +271,7 @@ const { defaultOpen = true, primary = true } = Astro.props;
       if (e.key === 'Escape' && !info.hidden) close();
     });
 
-    // Every "Create new product" trigger opens the brief modal (CreateProduct).
-    document.querySelectorAll('[data-open-contact]').forEach((el) =>
-      el.addEventListener('click', () => document.dispatchEvent(new CustomEvent('ppc:open-contact')))
-    );
+    // "Create new product" triggers are handled by CreateProduct (the modal).
     document.addEventListener('ppc:open-info', () => open());
 
     const startOpen = info.dataset.defaultOpen !== 'false';

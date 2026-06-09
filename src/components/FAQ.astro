@@ -6,11 +6,69 @@ interface Props {
 }
 const { items } = Astro.props;
 ---
-<div class="faq-list space-y-8">
+<div class="faq-list">
   {items.map((item) => (
-    <div class="faq-item">
-      <p class="font-barlow font-semibold text-[1rem] uppercase tracking-[0.01em] mb-2">{item.q}</p>
-      <p class="text-[var(--color-text)] leading-relaxed" set:html={item.a} />
-    </div>
+    <details class="faq-item">
+      <summary class="faq-q">
+        <span class="faq-q__text">{item.q}</span>
+        <span class="faq-q__icon" aria-hidden="true"></span>
+      </summary>
+      <div class="faq-a" set:html={item.a} />
+    </details>
   ))}
 </div>
+
+<style>
+  .faq-list { border-top: 1px solid var(--color-rule); }
+  .faq-item { border-bottom: 1px solid var(--color-rule); }
+
+  .faq-q {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.35;
+    color: var(--color-text);
+    transition: color 0.15s ease;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q:hover { color: var(--color-accent); }
+
+  /* +/– toggle */
+  .faq-q__icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.15rem;
+  }
+  .faq-q__icon::before,
+  .faq-q__icon::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .faq-q__icon::before { top: 50%; left: 0; width: 100%; height: 1.5px; transform: translateY(-50%); }
+  .faq-q__icon::after { left: 50%; top: 0; width: 1.5px; height: 100%; transform: translateX(-50%); }
+  .faq-item[open] .faq-q__icon::after { opacity: 0; transform: translateX(-50%) rotate(90deg); }
+
+  .faq-a {
+    padding: 0 0 1.25rem;
+    max-width: 60ch;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-mute);
+  }
+  .faq-a :global(a) { color: var(--color-accent); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-q__icon::before, .faq-q__icon::after { transition: none; }
+  }
+</style>

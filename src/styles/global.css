@@ -240,6 +240,25 @@
   }
   .btn-ghost:hover { color: var(--color-accent-dark); }
 
+  /* Primary call-to-action — the prominent "leave a request" button */
+  .btn-cta {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.9rem;
+    background: var(--color-accent);
+    color: #fff;
+    border: 1px solid var(--color-accent);
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .btn-cta:hover { background: var(--color-text); border-color: var(--color-text); }
+
   /* Brand logo cells */
   .brand-logo-cell img {
     filter: grayscale(100%);

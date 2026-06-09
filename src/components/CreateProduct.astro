@@ -456,6 +456,10 @@ const TOTAL = 5;
 
     document.addEventListener('ppc:open-contact', () => open());
     document.addEventListener('ppc:open-create', () => open());
+    // Any "leave a request" trigger on the page opens the modal in place.
+    document.querySelectorAll('[data-open-contact]').forEach((el) =>
+      el.addEventListener('click', (e) => { e.preventDefault(); open(); })
+    );
 
     // Deep links / Contact links open the brief directly.
     const h = location.hash;
