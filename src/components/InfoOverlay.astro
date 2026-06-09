@@ -100,7 +100,11 @@ import RequestForm from './RequestForm.astro';
 
   .info {
     position: fixed; inset: 0; z-index: 60;
-    background: #fff; overflow-y: auto;
+    /* Frosted glass — the gallery shows through, softly, while text stays legible */
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px) saturate(1.05);
+    -webkit-backdrop-filter: blur(14px) saturate(1.05);
+    overflow-y: auto;
     opacity: 0; transition: opacity 0.4s ease;
   }
   .info.is-open { opacity: 1; }
