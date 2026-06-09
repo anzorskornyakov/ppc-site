@@ -24,7 +24,11 @@ const projectData = cases.map((c) => ({
 
   <!-- Project view (populated by script) -->
   <div class="overlay__inner" data-panel="project" hidden>
-    <div class="overlay__media" data-media></div>
+    <div class="overlay__media">
+      <div class="ov-hero" data-hero></div>
+      <p class="ov-hero__cap" data-hero-cap hidden></p>
+      <div class="ov-thumbs" data-thumbs hidden></div>
+    </div>
 
     <div class="overlay__info">
       <p class="ov-eyebrow" data-date hidden></p>
@@ -104,35 +108,92 @@ const projectData = cases.map((c) => ({
   .overlay__inner {
     max-width: 1100px;
     margin: 0 auto;
-    padding: clamp(4rem, 12vh, 8rem) clamp(1.25rem, 5vw, 4rem);
-    display: grid;
-    gap: clamp(1.5rem, 5vw, 4rem);
-    grid-template-columns: 1fr;
-    align-items: start;
+    padding: clamp(3.5rem, 9vh, 6rem) clamp(1.25rem, 5vw, 3rem) clamp(2.5rem, 6vh, 4rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vw, 2.25rem);
   }
   @media (min-width: 820px) {
-    .overlay__inner { grid-template-columns: 1.35fr 1fr; }
+    .overlay__inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: clamp(2rem, 4vw, 3.5rem);
+      align-items: start;
+    }
+  }
+  /* Mobile: text sits ABOVE the media */
+  @media (max-width: 819px) {
+    .overlay__info { order: -1; }
   }
 
-  /* ---- Media gallery ---- */
-  .overlay__media { display: flex; flex-direction: column; gap: clamp(1.25rem, 3vw, 2.25rem); }
-  .overlay__media figure { margin: 0; }
-  .overlay__media img,
-  .overlay__media video {
+  /* ---- Media: large hero + thumbnail grid ---- */
+  .overlay__media { display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
+  .ov-hero {
     width: 100%;
-    height: auto;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ov-hero img,
+  .ov-hero video {
+    width: 100%;
+    max-height: 62vh;
     object-fit: contain;
     background: #fff;
     display: block;
   }
-  .overlay__media figcaption {
-    margin-top: 0.6rem;
+  @media (max-width: 819px) {
+    .ov-hero img, .ov-hero video { max-height: 52vh; }
+  }
+  .ov-hero__cap {
+    margin: 0;
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-faint);
   }
-  .overlay__media .ph {
+  .ov-thumbs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  .ov-thumb {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border: 1px solid var(--color-rule);
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.15s ease;
+  }
+  .ov-thumb img,
+  .ov-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .ov-thumb:hover { border-color: var(--color-text); }
+  .ov-thumb[aria-current='true'] {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -1px;
+    border-color: var(--color-accent);
+  }
+  .ov-thumb__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: #fff;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
+  }
+  .ov-hero .ph {
     width: 100%;
     aspect-ratio: 4 / 5;
     background: var(--color-surface);
@@ -146,7 +207,10 @@ const projectData = cases.map((c) => ({
   }
 
   /* ---- Info panel (product-page style) ---- */
-  .overlay__info { align-self: start; }
+  .overlay__info { align-self: start; min-width: 0; }
+  @media (min-width: 820px) {
+    .overlay__info { position: sticky; top: clamp(3.5rem, 9vh, 6rem); }
+  }
 
   .ov-eyebrow {
     font-size: 0.6875rem;
@@ -264,7 +328,9 @@ const projectData = cases.map((c) => ({
 
     const projects: ProjectView[] = JSON.parse(dataEl.textContent || '[]');
     const projectPanel = overlay.querySelector<HTMLElement>('[data-panel="project"]')!;
-    const mediaEl = overlay.querySelector<HTMLElement>('[data-media]')!;
+    const heroEl = overlay.querySelector<HTMLElement>('[data-hero]')!;
+    const heroCapEl = overlay.querySelector<HTMLElement>('[data-hero-cap]')!;
+    const thumbsEl = overlay.querySelector<HTMLElement>('[data-thumbs]')!;
     const dateEl = overlay.querySelector<HTMLElement>('[data-date]')!;
     const clientEl = overlay.querySelector<HTMLElement>('[data-client]')!;
     const specEl = overlay.querySelector<HTMLElement>('[data-spec]')!;
@@ -293,16 +359,38 @@ const projectData = cases.map((c) => ({
       const p = projects.find((x) => x.slug === slug);
       if (!p) return;
 
-      // Media (each item with optional caption)
-      mediaEl.innerHTML = p.media.length
-        ? p.media.map((m) => {
-            const inner = isVideo(m.src)
-              ? `<video src="${esc(m.src)}" muted loop autoplay playsinline preload="metadata" controls></video>`
-              : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" loading="lazy" />`;
-            const cap = m.label ? `<figcaption>${m.label}</figcaption>` : '';
-            return `<figure>${inner}${cap}</figure>`;
-          }).join('')
-        : `<div class="ph">Image coming soon</div>`;
+      // Media — large hero + 2-up thumbnail grid; click a thumb to swap the hero.
+      const media = p.media;
+      function setHero(i: number) {
+        const m = media[i];
+        if (!m) { heroEl.innerHTML = '<div class="ph">Image coming soon</div>'; heroCapEl.hidden = true; return; }
+        heroEl.innerHTML = isVideo(m.src)
+          ? `<video src="${esc(m.src)}" controls autoplay muted loop playsinline preload="metadata"></video>`
+          : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" />`;
+        heroCapEl.textContent = m.label || '';
+        heroCapEl.hidden = !m.label;
+        thumbsEl.querySelectorAll<HTMLElement>('.ov-thumb').forEach((t, idx) =>
+          t.setAttribute('aria-current', idx === i ? 'true' : 'false')
+        );
+      }
+      if (media.length) {
+        thumbsEl.innerHTML = media.map((m, i) => {
+          const inner = isVideo(m.src)
+            ? `<video src="${esc(m.src)}" muted preload="metadata"></video><span class="ov-thumb__play" aria-hidden="true">▶</span>`
+            : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" loading="lazy" />`;
+          return `<button type="button" class="ov-thumb" data-i="${i}" aria-label="${esc('View ' + (m.label || `${p.client} ${i + 1}`))}">${inner}</button>`;
+        }).join('');
+        thumbsEl.hidden = media.length <= 1;
+        thumbsEl.querySelectorAll<HTMLElement>('.ov-thumb').forEach((b) =>
+          b.addEventListener('click', () => setHero(Number(b.dataset.i)))
+        );
+        setHero(0);
+      } else {
+        thumbsEl.innerHTML = '';
+        thumbsEl.hidden = true;
+        heroEl.innerHTML = '<div class="ph">Image coming soon</div>';
+        heroCapEl.hidden = true;
+      }
 
       // Header
       dateEl.textContent = p.date;
@@ -343,7 +431,8 @@ const projectData = cases.map((c) => ({
       window.setTimeout(() => {
         overlay!.hidden = true;
         overlay!.setAttribute('aria-hidden', 'true');
-        mediaEl.innerHTML = ''; // stop any playing video
+        heroEl.innerHTML = ''; // stop any playing video
+        thumbsEl.innerHTML = '';
       }, 300);
       lastFocus?.focus();
       if (pop && /^\/work\//.test(location.pathname)) history.pushState('', '', '/');
