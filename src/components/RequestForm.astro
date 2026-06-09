@@ -150,7 +150,7 @@
     const total = steps.length;
     let step = 1;
 
-    function show(n: number) {
+    function show(n: number, focus = true) {
       step = Math.max(1, Math.min(total, n));
       steps.forEach((el) => {
         el.hidden = Number(el.dataset.step) !== step;
@@ -158,7 +158,9 @@
       if (currentLabel) currentLabel.textContent = String(step);
       if (backBtn) backBtn.hidden = step === 1;
       const active = steps[step - 1];
-      active.querySelector<HTMLElement>('input, button')?.focus();
+      // Don't steal focus on first paint — the menu is the homepage and is
+      // always in the DOM, so focusing here would scroll it away from the top.
+      if (focus) active.querySelector<HTMLElement>('input, button')?.focus();
     }
 
     // Text step: Next
@@ -220,7 +222,7 @@
       show(1);
     });
 
-    show(1);
+    show(1, false);
   }
 
   if (document.readyState === 'loading') {

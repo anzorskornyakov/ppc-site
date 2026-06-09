@@ -280,12 +280,24 @@ import RequestForm from './RequestForm.astro';
       info.setAttribute('aria-hidden', 'true');
     } else {
       document.body.classList.add('overlay-open');
+      // The menu is a persistent scroll container now, so the browser may
+      // restore a previous scroll position. Always open it from the top.
+      info.scrollTop = 0;
+      requestAnimationFrame(() => { info.scrollTop = 0; });
     }
   }
+
+  // Browsers restore scroll positions (incl. nested containers) on history nav.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initInfo);
   } else {
     initInfo();
   }
+  // bfcache restores (back/forward) re-run pageshow, not the script.
+  window.addEventListener('pageshow', () => {
+    const info = document.getElementById('info');
+    if (info && !info.hidden && !location.hash) info.scrollTop = 0;
+  });
 </script>
