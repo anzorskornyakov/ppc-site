@@ -69,24 +69,30 @@ const placeSchema = {
   },
 };
 
-// Photos coming soon — clean labelled placeholders for now.
+// Equipment / areas — photos coming soon, labelled placeholders for now.
 const studioPhotos = [
   { label: 'Garment & blank racks' },
-  { label: 'Past prints & designs' },
+  { label: 'Past prints & projects' },
   { label: 'Screen printing carousel' },
   { label: 'Embroidery machine' },
   { label: 'Design & sample table' },
-  { label: 'The studio floor' },
+  { label: 'Production area' },
+  { label: 'Studio floor' },
 ];
+
+// Directions from the visitor's current location to the studio.
+const mapsDir = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+  `${SITE.address.street}, ${SITE.address.postal} ${SITE.address.city}, ${SITE.address.country}`
+)}`;
 ---
 <Base
-  title="The PPC studio — a creative print space in central Lisbon"
-  description="A creative space in central Lisbon: choose garments, browse designs, handle samples. Open weekdays, visits by appointment via email. Campolide, 5 min from Marquês de Pombal."
+  title="Visit the PPC studio — merch development in Lisbon"
+  description="A studio built for merch development in Campolide, Lisbon. Compare garments, review samples and past projects, and choose products before production. Open studio sessions for creators. Book a visit by email."
 >
   <SEO
     slot="head"
-    title="The PPC studio — a creative print space in central Lisbon"
-    description="A creative space in central Lisbon: choose garments, browse designs, handle samples. Open weekdays, visits by appointment via email. Campolide, 5 min from Marquês de Pombal."
+    title="Visit the PPC studio — merch development in Lisbon"
+    description="A studio built for merch development in Campolide, Lisbon. Compare garments, review samples and past projects, and choose products before production. Open studio sessions for creators. Book a visit by email."
     ogImage="/og-studio.jpg"
     canonicalUrl={canonicalUrl}
     schemas={[localBusinessSchema, placeSchema]}
@@ -98,52 +104,62 @@ const studioPhotos = [
     <Breadcrumbs items={[{ name: 'PPC', href: '/' }, { name: 'Studio' }]} />
 
     <div class="container-ppc pt-10 pb-24">
-      <!-- Title block -->
+      <!-- Hero / title block -->
       <div class="mb-14 pb-10 border-b border-[var(--color-rule)]">
         <p class="eyebrow mb-5">Studio</p>
-        <h1 class="text-display mb-6">A creative space, not just a print shop</h1>
-        <p class="lede text-mute">
-          A studio in central Lisbon where you can choose garments, browse
-          past designs and prints, handle samples, and shape your project
-          with us in the room — then watch it get made.
-        </p>
+        <h1 class="text-display mb-6">A studio built for merch development</h1>
+        <div class="lede text-mute space-y-4">
+          <p>
+            Our studio is open to clients, brands, agencies, and creators who
+            want to work on products in person. Visit the studio to compare
+            garments, review samples, explore previous projects, and choose
+            the right products and production methods for your needs.
+          </p>
+          <p>
+            Everything can be discussed, tested, and approved on site before
+            production begins.
+          </p>
+        </div>
       </div>
 
       <!-- Hero placeholder -->
       <figure class="mb-16">
         <div class="w-full aspect-[16/8] bg-[var(--color-surface)] border border-[var(--color-rule)] flex items-center justify-center">
-          <span class="section-num">The studio floor — photo coming soon</span>
+          <span class="section-num">Studio floor — photo coming soon</span>
         </div>
-        <figcaption class="section-num mt-3">Fig. 01 — Calçada dos Mestres 34, Lisbon</figcaption>
+        <figcaption class="section-num mt-3">Calçada dos Mestres 34, Campolide, Lisbon</figcaption>
       </figure>
 
       <div class="divide-y divide-[var(--color-rule)] border-t border-[var(--color-rule)]">
 
-        <!-- A creative space -->
+        <!-- The space -->
         <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
           <p class="label-text mb-4 md:mb-0">The space</p>
           <div>
             <div class="prose-ppc mb-8">
+              <p>The studio is designed to help clients make better product decisions.</p>
               <p>
-                PPC isn't just a production floor — it's a place to make
-                things. Come in to pick out blanks and garments, feel the
-                difference between fabrics and weights, flip through past
-                prints and designs, and figure out what actually works for
-                your idea, together with us.
+                Browse garments and blanks, compare fabrics and weights,
+                review embroidery and print samples, and discuss ideas with
+                our team before placing an order.
               </p>
               <p>
-                It's also where everything gets made: a 6-colour screen
-                printing carousel, an embroidery machine, a DTF printer, a
-                heat press, sample racks, and a worktable for design and
-                conversation. Approvals happen with the real thing in
-                hand — not over email.
+                We regularly work with brands, creative teams, designers, and
+                independent creators who want to develop products in person
+                rather than through emails and PDFs.
+              </p>
+              <p>
+                Production happens here too. Screen printing, embroidery, DTF
+                printing, sampling, and product development all take place
+                under one roof, allowing you to review physical samples and
+                make decisions with the actual product in front of you.
               </p>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {studioPhotos.map((photo, i) => (
                 <figure class="aspect-[4/3] bg-[var(--color-surface)] border border-[var(--color-rule)] flex items-center justify-center p-3 relative">
                   <span class="section-num text-center">{photo.label}</span>
-                  <figcaption class="absolute bottom-2 left-2 section-num text-mute">{String(i + 2).padStart(2, '0')}</figcaption>
+                  <figcaption class="absolute bottom-2 left-2 section-num text-mute">{String(i + 1).padStart(2, '0')}</figcaption>
                 </figure>
               ))}
             </div>
@@ -158,37 +174,58 @@ const studioPhotos = [
             <address class="not-italic prose-ppc mb-3">
               <span class="block">{SITE.address.street}</span>
               <span class="block">{SITE.address.postal} {SITE.address.city}, {SITE.address.country}</span>
-              <span class="block">{SITE.address.district}</span>
             </address>
+            <p class="prose-ppc mb-5">
+              The studio is located in Campolide, close to the centre of
+              Lisbon. Ground-floor entrance, letter A.
+            </p>
+            <a href={mapsDir} target="_blank" rel="noopener noreferrer" class="btn-ghost">Open in Google Maps →</a>
+          </div>
+        </div>
+
+        <!-- Visits & consultations -->
+        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
+          <p class="label-text mb-4 md:mb-0">Visits & consultations</p>
+          <div>
+            <div class="prose-ppc mb-6">
+              <p>
+                Visits are scheduled in advance so we can dedicate time to
+                your project.
+              </p>
+              <p>
+                Whether you need help selecting products, reviewing samples,
+                discussing design ideas, or planning production, we recommend
+                booking a visit before placing an order. Most visits take
+                between 30 and 60 minutes.
+              </p>
+            </div>
             <p class="prose-ppc">
-              We're almost in the centre of Lisbon, in Campolide — about
-              five minutes on foot from Marquês de Pombal, and easy to
-              reach by metro, bus or car. Ground floor, street entrance,
-              letter A.
+              To arrange a visit, email
+              <a href={`mailto:${SITE.email}?subject=Studio%20visit`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>.
             </p>
           </div>
         </div>
 
-        <!-- Hours & visits -->
+        <!-- Open studio sessions -->
         <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
-          <p class="label-text mb-4 md:mb-0">Hours & visits</p>
+          <p class="label-text mb-4 md:mb-0">Open studio sessions</p>
           <div>
-            <dl class="mb-6">
-              <div class="spec-row">
-                <dt class="spec-key">Monday — Friday</dt>
-                <dd class="spec-val">10:00 — 19:00</dd>
-              </div>
-              <div class="spec-row">
-                <dt class="spec-key">Saturday — Sunday</dt>
-                <dd class="spec-val">By appointment</dd>
-              </div>
-            </dl>
+            <div class="prose-ppc mb-6">
+              <p>
+                We offer bookable studio sessions for designers, creators, and
+                makers who want access to professional equipment and workspace.
+              </p>
+              <p>
+                Open sessions are available in 2–3 hour blocks and can be used
+                for sampling, testing ideas, learning equipment, developing
+                products, or working on personal projects. Equipment
+                availability depends on the session and project requirements.
+              </p>
+              <p>Sessions must be booked in advance.</p>
+            </div>
             <p class="prose-ppc">
-              Visits are by appointment so we can give you our full
-              attention. Write to us at
-              <a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
-              to arrange a time — a typical visit is 30 to 60 minutes.
-              Bring your brief if you have one.
+              To check availability and book a session, email
+              <a href={`mailto:${SITE.email}?subject=Open%20studio%20session`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>.
             </p>
           </div>
         </div>
@@ -216,7 +253,7 @@ const studioPhotos = [
 
       <!-- CTA -->
       <div class="mt-16 pt-10 border-t border-[var(--color-rule)] flex flex-col sm:flex-row sm:items-center gap-6">
-        <a href={`mailto:${SITE.email}?subject=Studio%20visit`} class="btn-solid">Email to book a visit →</a>
+        <a href={`mailto:${SITE.email}?subject=Studio%20visit`} class="btn-solid">Book a Visit →</a>
         <a href="/" class="btn-ghost">← Back to PPC</a>
       </div>
     </div>
