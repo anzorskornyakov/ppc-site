@@ -4,6 +4,7 @@ import SEO from '../components/SEO.astro';
 import Gallery from '../components/Gallery.astro';
 import ProjectOverlay from '../components/ProjectOverlay.astro';
 import InfoOverlay from '../components/InfoOverlay.astro';
+import CreateProduct from '../components/CreateProduct.astro';
 import { SITE } from '../data/site';
 import { cases } from '../data/cases';
 
@@ -177,6 +178,7 @@ const itemListSchema = {
   <InfoOverlay />
   <Gallery />
   <ProjectOverlay />
+  <CreateProduct />
 
   <!-- Lock the document on the gallery page so iOS can't rubber-band /
        pull-to-refresh and fight the gallery's own scroll. Homepage only. -->

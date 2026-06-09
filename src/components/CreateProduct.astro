@@ -1,0 +1,458 @@
+---
+// "Create New Product" — a modal wizard (window with changing steps) that
+// collects a short brief and submits to Web3Forms. Files go to Uploadcare
+// (free tier) when PUBLIC_UPLOADCARE_PUBLIC_KEY is set; the email gets links.
+const W3F_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+const UC_KEY = import.meta.env.PUBLIC_UPLOADCARE_PUBLIC_KEY ?? '';
+
+const needs = [
+  'Merch Production',
+  'Embroidery',
+  'Screen Printing',
+  'DTF Printing',
+  'Sampling',
+  'Product Development',
+  'Corporate Gifts',
+  'Other',
+];
+const quantities = ['1–20', '20–50', '50–100', '100–300', '300–1000', '1000+'];
+const deadlines = ['Flexible', 'Less than 1 week', '1–2 weeks', '2–4 weeks', 'More than 1 month'];
+const TOTAL = 5;
+---
+<div class="cp" id="create-product" role="dialog" aria-modal="true" aria-label="Create New Product" aria-hidden="true" hidden data-uc-key={UC_KEY}>
+  <button type="button" class="cp__close" data-cp-close aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+
+  <div class="cp__inner">
+    <header class="cp__head">
+      <h2 class="cp__title-main">Create New Product</h2>
+      <p class="cp__sub">Tell us about your project and upload any materials you already have.</p>
+    </header>
+
+    <form id="cp-form" novalidate>
+      <input type="hidden" name="access_key" value={W3F_KEY} />
+      <input type="hidden" name="subject" value="New project brief — ppc.space" />
+      <input type="hidden" name="from_name" value="PPC — Create New Product" />
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true" />
+      <input type="hidden" name="needs" id="cp-needs" />
+      <input type="hidden" name="quantity" id="cp-quantity" />
+      <input type="hidden" name="deadline" id="cp-deadline" />
+      <input type="hidden" name="files" id="cp-files-value" />
+
+      <p class="cp__progress">Step <span data-current>1</span> / {TOTAL}</p>
+
+      <!-- Step 1 — Contact Information -->
+      <section class="cp__step" data-step="1">
+        <p class="cp__steplabel">Step 1</p>
+        <h3 class="cp__h">Contact Information</h3>
+        <div class="cp__field">
+          <label class="cp__label" for="cp-name">Name *</label>
+          <input class="cp__input" type="text" id="cp-name" name="name" autocomplete="name" />
+        </div>
+        <div class="cp__field">
+          <label class="cp__label" for="cp-company">Company</label>
+          <input class="cp__input" type="text" id="cp-company" name="company" autocomplete="organization" />
+        </div>
+        <div class="cp__field">
+          <label class="cp__label" for="cp-email">Email *</label>
+          <input class="cp__input" type="email" id="cp-email" name="email" autocomplete="email" />
+        </div>
+        <div class="cp__field">
+          <label class="cp__label" for="cp-phone">Phone / Telegram</label>
+          <input class="cp__input" type="text" id="cp-phone" name="phone" autocomplete="tel" />
+        </div>
+      </section>
+
+      <!-- Step 2 — What do you need? -->
+      <section class="cp__step" data-step="2" hidden>
+        <p class="cp__steplabel">Step 2</p>
+        <h3 class="cp__h">What do you need?</h3>
+        <div class="cp__checks" role="group" aria-label="What do you need?">
+          {needs.map((n) => (
+            <button type="button" class="cp__check" data-need={n} aria-pressed="false">{n}</button>
+          ))}
+        </div>
+      </section>
+
+      <!-- Step 3 — Product Details -->
+      <section class="cp__step" data-step="3" hidden>
+        <p class="cp__steplabel">Step 3</p>
+        <h3 class="cp__h">Product Details</h3>
+        <p class="cp__label cp__label--block">Estimated Quantity</p>
+        <div class="cp__choices" data-group="quantity">
+          {quantities.map((q) => (
+            <button type="button" class="cp__choice" data-value={q}>{q}</button>
+          ))}
+        </div>
+        <p class="cp__label cp__label--block" style="margin-top:1.5rem">Desired Deadline</p>
+        <div class="cp__choices" data-group="deadline">
+          {deadlines.map((d) => (
+            <button type="button" class="cp__choice" data-value={d}>{d}</button>
+          ))}
+        </div>
+      </section>
+
+      <!-- Step 4 — Upload Files -->
+      <section class="cp__step" data-step="4" hidden>
+        <p class="cp__steplabel">Step 4</p>
+        <h3 class="cp__h">Upload Files</h3>
+        <p class="cp__hint">Upload logos, artwork, mockups, references, brand guidelines or technical specifications.</p>
+        <div class="cp__upload" data-upload>
+          <input type="hidden" role="uploadcare-uploader" id="cp-uc" name="uc-files"
+            data-multiple data-multiple-max="10" data-images-only="false" data-preview-step="true" />
+          <p class="cp__upload-meta">PDF, AI, EPS, SVG, PNG, JPG, ZIP, RAR · up to 10 files · 25 MB each</p>
+        </div>
+        <p class="cp__upload-fallback" data-upload-fallback hidden>
+          File upload is being set up. You can send your files to
+          <a href="mailto:anzor@ppc.space">anzor@ppc.space</a> after submitting this brief.
+        </p>
+      </section>
+
+      <!-- Step 5 — Additional Information -->
+      <section class="cp__step" data-step="5" hidden>
+        <p class="cp__steplabel">Step 5</p>
+        <h3 class="cp__h">Additional Information</h3>
+        <textarea class="cp__textarea" id="cp-details" name="details" rows="5"
+          placeholder="Anything else we should know about your project?"></textarea>
+        <ul class="cp__examples">
+          <li>idea or concept</li>
+          <li>reference links</li>
+          <li>material preferences</li>
+          <li>packaging requirements</li>
+          <li>production specifics</li>
+        </ul>
+      </section>
+
+      <p class="cp__error" id="cp-error" hidden>Something went wrong. Try again or email anzor@ppc.space.</p>
+
+      <div class="cp__nav">
+        <button type="button" class="cp__back" data-back hidden>← Back</button>
+        <button type="button" class="cp__next" data-next>Next →</button>
+        <button type="submit" class="cp__submit" data-submit hidden>Create New Product</button>
+      </div>
+    </form>
+
+    <div class="cp__success" id="cp-success" hidden>
+      <p class="cp__success-title">Thank you.</p>
+      <p class="cp__success-text">We've received your project brief and will get back to you within one business day.</p>
+      <button type="button" class="cp__back" data-cp-close style="margin-top:1.5rem">Close</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cp {
+    position: fixed; inset: 0; z-index: 70;
+    background: rgba(255, 255, 255, 0.98);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    overflow-y: auto;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .cp.is-open { opacity: 1; }
+  .cp[hidden] { display: none; }
+
+  .cp__close {
+    position: fixed; top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem);
+    width: 2.75rem; height: 2.75rem;
+    display: flex; align-items: center; justify-content: center;
+    border: 0; background: transparent; font-size: 2rem; line-height: 1;
+    color: var(--color-text); cursor: pointer; z-index: 2;
+  }
+  .cp__close:hover { color: var(--color-accent); }
+
+  .cp__inner {
+    max-width: 36rem; margin: 0 auto;
+    padding: clamp(3.5rem, 10vh, 6rem) clamp(1.25rem, 5vw, 2.5rem) clamp(3rem, 8vh, 5rem);
+  }
+
+  .cp__head { margin-bottom: clamp(2rem, 5vh, 3rem); }
+  .cp__title-main {
+    margin: 0 0 0.6rem;
+    font-size: clamp(1.5rem, 4vw, 2.125rem);
+    font-weight: 700; letter-spacing: -0.015em; line-height: 1.1;
+  }
+  .cp__sub { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--color-mute); }
+
+  .cp__progress {
+    margin: 0 0 1.5rem;
+    font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--color-faint);
+  }
+
+  .cp__steplabel {
+    margin: 0 0 0.35rem;
+    font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--color-accent); font-weight: 700;
+  }
+  .cp__h {
+    margin: 0 0 1.5rem;
+    font-size: 1.375rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15;
+  }
+
+  .cp__field { margin-bottom: 1.25rem; }
+  .cp__label {
+    display: block; margin-bottom: 0.4rem;
+    font-size: 0.8125rem; color: var(--color-mute);
+  }
+  .cp__label--block { margin-bottom: 0.75rem; color: var(--color-text); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .cp__input {
+    width: 100%; border: 0; border-bottom: 1px solid var(--color-text);
+    background: transparent; padding: 0.5rem 0; font-size: 1rem; color: var(--color-text);
+  }
+  .cp__input:focus { outline: none; border-color: var(--color-accent); }
+  .cp__input.is-invalid { border-color: var(--color-accent); }
+
+  .cp__checks { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  @media (max-width: 460px) { .cp__checks { grid-template-columns: 1fr; } }
+  .cp__check {
+    text-align: left; padding: 0.7rem 1rem;
+    border: 1px solid var(--color-rule-strong); background: #fff;
+    font-size: 0.9375rem; color: var(--color-text); cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .cp__check:hover { border-color: var(--color-text); }
+  .cp__check[aria-pressed='true'] { background: var(--color-text); color: #fff; border-color: var(--color-text); }
+
+  .cp__choices { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .cp__choice {
+    padding: 0.6rem 1.1rem; border: 1px solid var(--color-rule-strong); background: #fff;
+    font-size: 0.9375rem; color: var(--color-text); cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .cp__choice:hover { border-color: var(--color-text); }
+  .cp__choice.is-selected { background: var(--color-text); color: #fff; border-color: var(--color-text); }
+
+  .cp__hint { margin: 0 0 1.25rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-mute); }
+  .cp__upload { border: 1px dashed var(--color-rule-strong); padding: 1.5rem; }
+  .cp__upload-meta { margin: 0.9rem 0 0; font-size: 0.75rem; color: var(--color-faint); }
+  .cp__upload-fallback { margin: 1rem 0 0; font-size: 0.875rem; color: var(--color-mute); }
+
+  .cp__textarea {
+    width: 100%; border: 1px solid var(--color-rule-strong); background: #fff;
+    padding: 0.85rem 1rem; font-size: 1rem; font-family: inherit; color: var(--color-text);
+    line-height: 1.5; resize: vertical; min-height: 8rem;
+  }
+  .cp__textarea:focus { outline: none; border-color: var(--color-accent); }
+  .cp__examples {
+    margin: 1rem 0 0; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 0.35rem 1rem;
+    font-size: 0.75rem; color: var(--color-faint);
+  }
+  .cp__examples li::before { content: '— '; }
+
+  .cp__error { margin: 1.25rem 0 0; font-size: 0.8125rem; color: var(--color-accent); }
+
+  .cp__nav { display: flex; align-items: center; gap: 1.25rem; margin-top: 2rem; }
+  .cp__next, .cp__submit {
+    font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    padding: 0.7rem 1.4rem; background: var(--color-text); color: #fff;
+    border: 1px solid var(--color-text); cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .cp__next:hover, .cp__submit:hover { background: #fff; color: var(--color-text); }
+  .cp__back {
+    border: 0; background: transparent; font-size: 0.8125rem; color: var(--color-mute);
+    cursor: pointer; padding: 0;
+  }
+  .cp__back:hover { color: var(--color-text); }
+
+  .cp__success-title { margin: 0 0 0.6rem; font-size: 1.5rem; font-weight: 700; }
+  .cp__success-text { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--color-mute); max-width: 34ch; }
+
+  /* Tame the Uploadcare widget so it reads closer to the PPC interface */
+  .cp :global(.uploadcare--widget__button) {
+    background: var(--color-text); border-radius: 0; font-weight: 700;
+    letter-spacing: 0.03em; text-transform: uppercase; font-size: 0.8125rem;
+  }
+  .cp :global(.uploadcare--widget__button:hover) { background: var(--color-accent); }
+</style>
+
+<script>
+  declare const uploadcare: any;
+
+  function initCreateProduct() {
+    const root = document.getElementById('create-product');
+    if (!root) return;
+    const form = root.querySelector<HTMLFormElement>('#cp-form');
+    if (!form) return;
+
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('.cp__step'));
+    const total = steps.length;
+    const currentLabel = root.querySelector<HTMLElement>('[data-current]');
+    const backBtn = root.querySelector<HTMLButtonElement>('[data-back]');
+    const nextBtn = root.querySelector<HTMLButtonElement>('[data-next]');
+    const submitBtn = root.querySelector<HTMLButtonElement>('[data-submit]');
+    const errorEl = root.querySelector<HTMLElement>('#cp-error');
+    const successEl = root.querySelector<HTMLElement>('#cp-success');
+    const nameInput = root.querySelector<HTMLInputElement>('#cp-name');
+    const emailInput = root.querySelector<HTMLInputElement>('#cp-email');
+    const needsField = root.querySelector<HTMLInputElement>('#cp-needs');
+    const quantityField = root.querySelector<HTMLInputElement>('#cp-quantity');
+    const deadlineField = root.querySelector<HTMLInputElement>('#cp-deadline');
+    const filesField = root.querySelector<HTMLInputElement>('#cp-files-value');
+    const ucKey = root.dataset.ucKey || '';
+
+    let step = 1;
+    let lastFocus: HTMLElement | null = null;
+
+    function render() {
+      steps.forEach((el) => { el.hidden = Number(el.dataset.step) !== step; });
+      if (currentLabel) currentLabel.textContent = String(step);
+      if (backBtn) backBtn.hidden = step === 1;
+      const last = step === total;
+      if (nextBtn) nextBtn.hidden = last;
+      if (submitBtn) submitBtn.hidden = !last;
+    }
+
+    function goto(n: number, focus = true) {
+      step = Math.max(1, Math.min(total, n));
+      render();
+      if (step === 4) initUploader();
+      if (focus) steps[step - 1].querySelector<HTMLElement>('input, textarea, button')?.focus();
+    }
+
+    function validateStep1() {
+      let ok = true;
+      [nameInput, emailInput].forEach((i) => i?.classList.remove('is-invalid'));
+      if (!nameInput?.value.trim()) { nameInput?.classList.add('is-invalid'); ok = false; }
+      if (!emailInput?.value.trim() || !emailInput.checkValidity()) { emailInput?.classList.add('is-invalid'); ok = false; }
+      return ok;
+    }
+
+    nextBtn?.addEventListener('click', () => {
+      if (step === 1 && !validateStep1()) { (nameInput?.value.trim() ? emailInput : nameInput)?.focus(); return; }
+      goto(step + 1);
+    });
+    backBtn?.addEventListener('click', () => goto(step - 1));
+
+    // Step 2 — multi-select
+    const selectedNeeds = new Set<string>();
+    root.querySelectorAll<HTMLButtonElement>('.cp__check').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const v = btn.dataset.need!;
+        if (selectedNeeds.has(v)) { selectedNeeds.delete(v); btn.setAttribute('aria-pressed', 'false'); }
+        else { selectedNeeds.add(v); btn.setAttribute('aria-pressed', 'true'); }
+        if (needsField) needsField.value = [...selectedNeeds].join(', ');
+      });
+    });
+
+    // Step 3 — single-select groups
+    root.querySelectorAll<HTMLElement>('.cp__choices').forEach((group) => {
+      const field = group.dataset.group === 'quantity' ? quantityField : deadlineField;
+      group.querySelectorAll<HTMLButtonElement>('.cp__choice').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('.cp__choice').forEach((b) => b.classList.remove('is-selected'));
+          btn.classList.add('is-selected');
+          if (field) field.value = btn.dataset.value!;
+        });
+      });
+    });
+
+    // Step 4 — Uploadcare (lazy-loaded on first reach)
+    let ucLoading: Promise<void> | null = null;
+    let ucWidget: any = null;
+    function loadUploadcare(): Promise<void> {
+      if (ucLoading) return ucLoading;
+      ucLoading = new Promise((resolve, reject) => {
+        if (!ucKey) return reject(new Error('no-key'));
+        (window as any).UPLOADCARE_PUBLIC_KEY = ucKey;
+        (window as any).UPLOADCARE_LOCALE = 'en';
+        const s = document.createElement('script');
+        s.src = 'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js';
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('load-failed'));
+        document.head.appendChild(s);
+      });
+      return ucLoading;
+    }
+    function initUploader() {
+      const fallback = root!.querySelector<HTMLElement>('[data-upload-fallback]');
+      const uploadBox = root!.querySelector<HTMLElement>('[data-upload]');
+      if (!ucKey) { if (fallback) fallback.hidden = false; if (uploadBox) uploadBox.hidden = true; return; }
+      if (ucWidget) return;
+      loadUploadcare().then(() => {
+        ucWidget = uploadcare.Widget('#cp-uc', { multiple: true, multipleMax: 10, imagesOnly: false, previewStep: true });
+        ucWidget.validators.push((fileInfo: any) => {
+          if (fileInfo.size !== null && fileInfo.size > 25 * 1024 * 1024) throw new Error('fileMaximumSize');
+        });
+        ucWidget.validators.push((fileInfo: any) => {
+          if (fileInfo.name === null) return;
+          if (!/\.(pdf|ai|eps|svg|png|jpe?g|zip|rar)$/i.test(fileInfo.name)) throw new Error('fileType');
+        });
+        ucWidget.onChange((group: any) => {
+          if (filesField) filesField.value = group ? group.cdnUrl : '';
+        });
+      }).catch(() => {
+        if (fallback) fallback.hidden = false;
+        if (uploadBox) uploadBox.hidden = true;
+      });
+    }
+
+    // Submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validateStep1()) { goto(1); return; }
+      if (submitBtn) { submitBtn.textContent = 'Sending…'; submitBtn.disabled = true; }
+      errorEl?.setAttribute('hidden', '');
+
+      const data: Record<string, string> = {};
+      new FormData(form).forEach((v, k) => { if (k !== 'uc-files') data[k] = String(v); });
+      if (!data.files) data.files = '(none)';
+      if (!data.needs) data.needs = '(not specified)';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message ?? 'failed');
+        form.hidden = true;
+        successEl?.removeAttribute('hidden');
+      } catch {
+        errorEl?.removeAttribute('hidden');
+        if (submitBtn) { submitBtn.textContent = 'Create New Product'; submitBtn.disabled = false; }
+      }
+    });
+
+    // Open / close
+    function open() {
+      lastFocus = document.activeElement as HTMLElement;
+      root!.hidden = false;
+      root!.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('overlay-open');
+      requestAnimationFrame(() => root!.classList.add('is-open'));
+      root!.scrollTop = 0;
+      if (form!.hidden) { form!.hidden = false; successEl?.setAttribute('hidden', ''); }
+      goto(1, false);
+      nameInput?.focus();
+    }
+    function close() {
+      root!.classList.remove('is-open');
+      document.body.classList.remove('overlay-open');
+      window.setTimeout(() => { root!.hidden = true; root!.setAttribute('aria-hidden', 'true'); }, 250);
+      lastFocus?.focus();
+    }
+
+    root.querySelectorAll('[data-cp-close]').forEach((el) => el.addEventListener('click', () => close()));
+    root.addEventListener('click', (e) => { if (e.target === root) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !root.hidden) close(); });
+
+    document.addEventListener('ppc:open-contact', () => open());
+    document.addEventListener('ppc:open-create', () => open());
+
+    // Deep links / Contact links open the brief directly.
+    const h = location.hash;
+    if (h === '#create' || h === '#brief' || h === '#contact') open();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCreateProduct);
+  } else {
+    initCreateProduct();
+  }
+</script>

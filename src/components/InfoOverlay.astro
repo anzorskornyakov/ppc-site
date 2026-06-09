@@ -1,7 +1,6 @@
 ---
 import { SITE } from '../data/site';
 import { services } from '../data/services';
-import RequestForm from './RequestForm.astro';
 
 interface Props {
   /** Render the menu open in the static HTML (homepage). False = start closed (e.g. /gallery). */
@@ -60,7 +59,7 @@ const { defaultOpen = true, primary = true } = Astro.props;
 
     <section class="info__brief" id="brief">
       <h2 class="info__h">Start a project</h2>
-      <RequestForm />
+      <button type="button" class="info__cta" data-open-contact>Create new product →</button>
     </section>
 
     <nav class="info__links" aria-label="Techniques">
@@ -220,6 +219,20 @@ const { defaultOpen = true, primary = true } = Astro.props;
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
+  .info__cta {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: var(--color-accent);
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    padding: 0.85rem 2.1rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .info__cta:hover { background: #fff; color: var(--color-accent); }
 
   .info__links {
     display: flex;
@@ -262,13 +275,6 @@ const { defaultOpen = true, primary = true } = Astro.props;
       }, 300);
       lastFocus?.focus();
     }
-    function openToForm() {
-      open(false);
-      requestAnimationFrame(() =>
-        info!.querySelector('#brief')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      );
-    }
-
     document.querySelector('[data-info-open]')?.addEventListener('click', () => open());
     // X and the "Gallery" card both just close the menu (revealing the gallery)
     info.querySelectorAll('[data-info-close]').forEach((el) =>
@@ -279,17 +285,23 @@ const { defaultOpen = true, primary = true } = Astro.props;
       if (e.key === 'Escape' && !info.hidden) close();
     });
 
-    // CTA on the gallery + the empty contact tee open the menu at the form
-    document.querySelector('[data-open-contact]')?.addEventListener('click', openToForm);
-    document.addEventListener('ppc:open-contact', openToForm);
+    // Every "Create new product" trigger opens the brief modal (CreateProduct).
+    document.querySelectorAll('[data-open-contact]').forEach((el) =>
+      el.addEventListener('click', () => document.dispatchEvent(new CustomEvent('ppc:open-contact')))
+    );
     document.addEventListener('ppc:open-info', () => open());
 
     const startOpen = info.dataset.defaultOpen !== 'false';
 
     if (location.hash.startsWith('#project/')) {
       // Old deep link — ProjectOverlay redirects it to /work/<slug>; do nothing.
-    } else if (location.hash === '#brief' || location.hash === '#contact') {
-      openToForm();
+    } else if (location.hash) {
+      // A hash like #create opens the brief modal — keep the menu closed behind it.
+      if (startOpen) {
+        info.classList.remove('is-open');
+        info.hidden = true;
+        info.setAttribute('aria-hidden', 'true');
+      }
     } else if (startOpen) {
       document.body.classList.add('overlay-open');
       // The menu is a persistent scroll container now, so the browser may
