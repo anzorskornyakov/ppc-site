@@ -40,6 +40,31 @@ export interface Case {
 // paste below as `garment` (the hero) and `media` (the rest).
 export const cases: Case[] = [
   {
+    slug: 'tims',
+    client: 'Tims',
+    clientUrl: 'https://www.instagram.com/tims.lisboa/',
+    technique: 'Screen printing & Puff print',
+    item: 'Staff uniform',
+    date: 'June 2026',
+    blank: 'AS Colour — Box Tee 5030',
+    garment: '/photos/cases/tims/tims-1.webp',
+    garmentLabel: 'Box tee — chest print',
+    media: [
+      { src: '/photos/cases/tims/tims-2.webp', label: 'Puff print — raised off the fabric' },
+      { src: '/photos/cases/tims/tims-video.mov', label: 'In motion' },
+    ],
+    details: [
+      '100% combed cotton',
+      'Midweight, substantial hand',
+      'Boxy, modern fit',
+      'Drop shoulder',
+      'Ribbed crew neck',
+      'AS Colour 5030',
+    ],
+    body:
+      "Staff uniform for Tims, a Lisbon spot — one chest mark on a boxy AS Colour Box Tee. The red logo is printed in puff: a special ink that expands under heat and rises off the fabric, so the mark sits raised and almost embossed — you can feel it with a finger — while the lettering stays crisp in flat screen print. The cut is unusual and current, the blank genuinely good, and the weight is spot on, so it wears less like a uniform and more like merch worth keeping.",
+  },
+  {
     slug: 'lova',
     client: 'Lova',
     clientUrl: 'https://www.instagram.com/lova_cakes_and_flowers/',
