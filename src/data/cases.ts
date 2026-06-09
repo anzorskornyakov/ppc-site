@@ -51,7 +51,7 @@ export const cases: Case[] = [
     garmentLabel: 'Box tee — chest print',
     media: [
       { src: '/photos/cases/tims/tims-2.webp', label: 'Puff print — raised off the fabric' },
-      { src: '/photos/cases/tims/tims-video.mov', label: 'In motion' },
+      { src: '/photos/cases/tims/tims-video.mp4', label: 'In motion' },
     ],
     details: [
       '100% combed cotton',
@@ -115,7 +115,7 @@ export const cases: Case[] = [
     media: [
       { src: '/photos/cases/pils/pils-2-pour.webp', label: 'On the night' },
       { src: '/photos/cases/pils/pils-3-apron.webp', label: 'Apron in the kitchen' },
-      { src: '/photos/cases/pils/pils-video.mov', label: 'Tablecloth, in motion' },
+      { src: '/photos/cases/pils/pils-video.mp4', label: 'Tablecloth, in motion' },
     ],
     body: 'A full merch and uniform programme for Pils, a Lisbon spot — t-shirts, caps, hoodies, aprons and even a printed tablecloth. Mostly embroidery and DTF.',
   },

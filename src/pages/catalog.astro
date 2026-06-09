@@ -6,6 +6,11 @@ import SEO from '../components/SEO.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { brands, tierLabels, tierOrder } from '../data/brands';
 import { SITE } from '../data/site';
+import { existsSync } from 'node:fs';
+
+// Only render a logo <img> when the SVG actually exists — otherwise show a
+// clean text wordmark (no 404s, consistent presentation).
+const hasLogo = (slug: string) => existsSync(`public/brands/${slug}.svg`);
 
 const canonicalUrl = `${SITE.url}/catalog`;
 
@@ -77,14 +82,11 @@ const metaDescription =
               {tierBrands.map((b) => (
                 <article class="bcard">
                   <a class="bcard__logo" href={b.url} target="_blank" rel="noopener noreferrer" aria-label={b.name}>
-                    <img
-                      src={`/brands/${b.slug}.svg`}
-                      alt={b.name}
-                      loading="lazy"
-                      class="bcard__logo-img"
-                      onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
-                    />
-                    <span class="bcard__wordmark" style="display:none">{b.name}</span>
+                    {hasLogo(b.slug) ? (
+                      <img src={`/brands/${b.slug}.svg`} alt={b.name} loading="lazy" class="bcard__logo-img" />
+                    ) : (
+                      <span class="bcard__wordmark">{b.name}</span>
+                    )}
                   </a>
                   <div class="bcard__body">
                     <p class="bcard__tagline">{b.tagline}</p>
