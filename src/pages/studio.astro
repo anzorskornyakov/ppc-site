@@ -69,20 +69,24 @@ const placeSchema = {
   },
 };
 
+// Photos coming soon — clean labelled placeholders for now.
 const studioPhotos = [
-  { src: '/photos/studio-detail-01.jpg', alt: '6-color screen printing carousel at PPC studio' },
-  { src: '/photos/studio-detail-02.jpg', alt: 'Single-head industrial embroidery machine at PPC' },
-  { src: '/photos/studio-detail-03.jpg', alt: 'DTF printer at PPC studio' },
+  { label: 'Garment & blank racks' },
+  { label: 'Past prints & designs' },
+  { label: 'Screen printing carousel' },
+  { label: 'Embroidery machine' },
+  { label: 'Design & sample table' },
+  { label: 'The studio floor' },
 ];
 ---
 <Base
-  title="Visit the PPC studio — Calçada dos Mestres 34, Lisbon"
-  description="Visit Portugal Print Club in Campolide, Lisbon. See screen printing, embroidery, and DTF in person. By appointment."
+  title="The PPC studio — a creative print space in central Lisbon"
+  description="A creative space in central Lisbon: choose garments, browse designs, handle samples. Open weekdays, visits by appointment via email. Campolide, 5 min from Marquês de Pombal."
 >
   <SEO
     slot="head"
-    title="Visit the PPC studio — Calçada dos Mestres 34, Lisbon"
-    description="Visit Portugal Print Club in Campolide, Lisbon. See screen printing, embroidery, and DTF in person. By appointment."
+    title="The PPC studio — a creative print space in central Lisbon"
+    description="A creative space in central Lisbon: choose garments, browse designs, handle samples. Open weekdays, visits by appointment via email. Campolide, 5 min from Marquês de Pombal."
     ogImage="/og-studio.jpg"
     canonicalUrl={canonicalUrl}
     schemas={[localBusinessSchema, placeSchema]}
@@ -97,93 +101,96 @@ const studioPhotos = [
       <!-- Title block -->
       <div class="mb-14 pb-10 border-b border-[var(--color-rule)]">
         <p class="eyebrow mb-5">Studio</p>
-        <h1 class="text-display mb-6">Studio</h1>
+        <h1 class="text-display mb-6">A creative space, not just a print shop</h1>
         <p class="lede text-mute">
-          A custom print studio in Campolide, Lisbon. Open for client
-          visits by appointment.
+          A studio in central Lisbon where you can choose garments, browse
+          past designs and prints, handle samples, and shape your project
+          with us in the room — then watch it get made.
         </p>
       </div>
 
-      <!-- Hero photo -->
+      <!-- Hero placeholder -->
       <figure class="mb-16">
-        <div class="w-full aspect-[16/8] overflow-hidden bg-[rgba(20,17,14,0.06)]">
-          <img src="/photos/studio-hero.jpg" alt="PPC studio interior — Calçada dos Mestres 34, Lisbon" loading="lazy" class="w-full h-full object-cover" />
+        <div class="w-full aspect-[16/8] bg-[var(--color-surface)] border border-[var(--color-rule)] flex items-center justify-center">
+          <span class="section-num">The studio floor — photo coming soon</span>
         </div>
-        <figcaption class="section-num mt-3">Fig. 01 — The studio floor, Calçada dos Mestres 34</figcaption>
+        <figcaption class="section-num mt-3">Fig. 01 — Calçada dos Mestres 34, Lisbon</figcaption>
       </figure>
 
       <div class="divide-y divide-[var(--color-rule)] border-t border-[var(--color-rule)]">
 
-        <!-- Address -->
+        <!-- A creative space -->
         <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
-          <p class="label-text mb-4 md:mb-0">Address</p>
+          <p class="label-text mb-4 md:mb-0">The space</p>
+          <div>
+            <div class="prose-ppc mb-8">
+              <p>
+                PPC isn't just a production floor — it's a place to make
+                things. Come in to pick out blanks and garments, feel the
+                difference between fabrics and weights, flip through past
+                prints and designs, and figure out what actually works for
+                your idea, together with us.
+              </p>
+              <p>
+                It's also where everything gets made: a 6-colour screen
+                printing carousel, an embroidery machine, a DTF printer, a
+                heat press, sample racks, and a worktable for design and
+                conversation. Approvals happen with the real thing in
+                hand — not over email.
+              </p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {studioPhotos.map((photo, i) => (
+                <figure class="aspect-[4/3] bg-[var(--color-surface)] border border-[var(--color-rule)] flex items-center justify-center p-3 relative">
+                  <span class="section-num text-center">{photo.label}</span>
+                  <figcaption class="absolute bottom-2 left-2 section-num text-mute">{String(i + 2).padStart(2, '0')}</figcaption>
+                </figure>
+              ))}
+            </div>
+            <p class="section-num mt-3">Photos coming soon.</p>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
+          <p class="label-text mb-4 md:mb-0">Location</p>
           <div>
             <address class="not-italic prose-ppc mb-3">
               <span class="block">{SITE.address.street}</span>
               <span class="block">{SITE.address.postal} {SITE.address.city}, {SITE.address.country}</span>
               <span class="block">{SITE.address.district}</span>
             </address>
-            <p class="prose-ppc text-mute text-sm">Ground floor. Street entrance, letter A. Five minutes from Marquês de Pombal on foot.</p>
+            <p class="prose-ppc">
+              We're almost in the centre of Lisbon, in Campolide — about
+              five minutes on foot from Marquês de Pombal, and easy to
+              reach by metro, bus or car. Ground floor, street entrance,
+              letter A.
+            </p>
           </div>
         </div>
 
-        <!-- About the space -->
+        <!-- Hours & visits -->
         <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
-          <p class="label-text mb-4 md:mb-0">About the space</p>
+          <p class="label-text mb-4 md:mb-0">Hours & visits</p>
           <div>
-            <div class="prose-ppc mb-8">
-              <p>This is where we work and where we meet clients.</p>
-              <p>
-                Inside: a 6-colour screen printing carousel, a single-head
-                embroidery machine, a DTF printer, a heat press, sample fabric
-                racks, and a worktable for design and conversation.
-              </p>
-              <p>
-                We invite clients in. See samples, handle blanks, understand
-                what each technique actually looks like in person, and meet
-                the people making your order. Approvals happen with the real
-                thing in hand — not over email.
-              </p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {studioPhotos.map((photo, i) => (
-                <figure class="aspect-[4/3] overflow-hidden bg-[rgba(20,17,14,0.06)] relative group">
-                  <img src={photo.src} alt={photo.alt} loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
-                  <figcaption class="absolute bottom-2 left-2 section-num text-[var(--color-bg)] mix-blend-difference">{String(i + 2).padStart(2, '0')}</figcaption>
-                </figure>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <!-- How to visit -->
-        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
-          <p class="label-text mb-4 md:mb-0">How to visit</p>
-          <div class="prose-ppc">
-            <p>
-              Studio visits are by appointment. Book ahead via WhatsApp or
-              email — a typical visit is 30 to 60 minutes.
-            </p>
-            <p>
-              Bring your brief if you have one. We keep samples of every
-              technique, fabric weight and blank on file.
+            <dl class="mb-6">
+              <div class="spec-row">
+                <dt class="spec-key">Monday — Friday</dt>
+                <dd class="spec-val">10:00 — 19:00</dd>
+              </div>
+              <div class="spec-row">
+                <dt class="spec-key">Saturday — Sunday</dt>
+                <dd class="spec-val">By appointment</dd>
+              </div>
+            </dl>
+            <p class="prose-ppc">
+              Visits are by appointment so we can give you our full
+              attention. Write to us at
+              <a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a>
+              to arrange a time — a typical visit is 30 to 60 minutes.
+              Bring your brief if you have one.
             </p>
           </div>
-        </div>
-
-        <!-- Hours -->
-        <div class="md:grid md:grid-cols-[11rem_1fr] md:gap-12 lg:gap-20 py-10">
-          <p class="label-text mb-4 md:mb-0">Hours</p>
-          <dl>
-            <div class="spec-row">
-              <dt class="spec-key">Monday — Friday</dt>
-              <dd class="spec-val">10:00 — 19:00</dd>
-            </div>
-            <div class="spec-row">
-              <dt class="spec-key">Saturday — Sunday</dt>
-              <dd class="spec-val">By appointment</dd>
-            </div>
-          </dl>
         </div>
 
         <!-- Contact -->
@@ -191,12 +198,12 @@ const studioPhotos = [
           <p class="label-text mb-4 md:mb-0">Contact</p>
           <dl>
             <div class="spec-row">
-              <dt class="spec-key">WhatsApp</dt>
-              <dd class="spec-val"><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a></dd>
-            </div>
-            <div class="spec-row">
               <dt class="spec-key">Email</dt>
               <dd class="spec-val"><a href={`mailto:${SITE.email}`} class="hover:text-[var(--color-accent)] transition-colors">{SITE.email}</a></dd>
+            </div>
+            <div class="spec-row">
+              <dt class="spec-key">WhatsApp</dt>
+              <dd class="spec-val"><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a></dd>
             </div>
             <div class="spec-row">
               <dt class="spec-key">Instagram</dt>
@@ -209,7 +216,7 @@ const studioPhotos = [
 
       <!-- CTA -->
       <div class="mt-16 pt-10 border-t border-[var(--color-rule)] flex flex-col sm:flex-row sm:items-center gap-6">
-        <a href="/#contact" class="btn-solid">Send a brief →</a>
+        <a href={`mailto:${SITE.email}?subject=Studio%20visit`} class="btn-solid">Email to book a visit →</a>
         <a href="/" class="btn-ghost">← Back to PPC</a>
       </div>
     </div>

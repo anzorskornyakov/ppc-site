@@ -30,9 +30,18 @@ import RequestForm from './RequestForm.astro';
     </div>
 
     <nav class="info__buttons" aria-label="Sections">
-      <button type="button" class="info__btn info__btn--primary" data-info-close>Gallery</button>
-      <a class="info__btn" href="/catalog">Catalog</a>
-      <a class="info__btn" href="/studio">Studio</a>
+      <button type="button" class="info__btn info__btn--primary" data-info-close>
+        <span class="info__btn__label">Gallery</span>
+        <span class="info__btn__desc">See the merch we've made</span>
+      </button>
+      <a class="info__btn" href="/catalog">
+        <span class="info__btn__label">Catalog</span>
+        <span class="info__btn__desc">Blanks and garments to print on</span>
+      </a>
+      <a class="info__btn" href="/studio">
+        <span class="info__btn__label">Studio</span>
+        <span class="info__btn__desc">Visit our space in central Lisbon</span>
+      </a>
     </nav>
 
     <section class="info__brief" id="brief">
@@ -152,33 +161,49 @@ import RequestForm from './RequestForm.astro';
     text-wrap: pretty;
   }
 
-  /* Three primary destinations — oval buttons echoing the PPC logo */
+  /* Three primary destinations — brutalist: one hard-edged box, thick
+     borders, shared dividers. Bold label + a short line of where it leads. */
   .info__buttons {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.85rem;
+    max-width: 30rem;
+    margin: 0 auto;
+    width: 100%;
+    border: 2.5px solid var(--color-text);
   }
   .info__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 15rem;
-    padding: 0.9rem 2.25rem;
-    border: 2px solid var(--color-accent);
-    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding: 1rem 1.25rem;
+    border: 0;
+    border-bottom: 2.5px solid var(--color-text);
     background: #fff;
-    color: var(--color-accent);
-    font-weight: 700;
-    font-size: 1.0625rem;
-    letter-spacing: 0.01em;
+    color: var(--color-text);
+    text-align: left;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: background 0.15s ease, color 0.15s ease;
   }
-  .info__btn:hover { background: var(--color-accent); color: #fff; }
+  .info__btn:last-child { border-bottom: 0; }
+  .info__btn__label {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+  }
+  .info__btn__desc {
+    font-size: 0.8125rem;
+    color: var(--color-mute);
+    line-height: 1.25;
+  }
+  .info__btn:hover { background: var(--color-text); color: #fff; }
+  .info__btn:hover .info__btn__desc { color: rgba(255, 255, 255, 0.72); }
   .info__btn--primary { background: var(--color-accent); color: #fff; }
-  .info__btn--primary:hover { background: var(--color-text); border-color: var(--color-text); }
+  .info__btn--primary .info__btn__desc { color: rgba(255, 255, 255, 0.82); }
+  .info__btn--primary:hover { background: var(--color-text); }
 
   .info__brief { border-top: 1px solid var(--color-rule); padding-top: clamp(1.75rem, 4vh, 2.5rem); }
   .info__h {
