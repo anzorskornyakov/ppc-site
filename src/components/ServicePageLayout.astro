@@ -8,7 +8,6 @@ import CreateProduct from './CreateProduct.astro';
 import { cases } from '../data/cases';
 
 interface Props {
-  sectionNum: string;
   title: string;
   subtitle: string;
   metaTitle: string;
@@ -22,7 +21,6 @@ interface Props {
 }
 
 const {
-  sectionNum,
   title,
   subtitle,
   metaTitle,
@@ -92,11 +90,38 @@ const related = relatedTechnique
     </div>
   </main>
 
+  <!-- Sticky CTA — always reachable on these long pages -->
+  <button type="button" class="svc-fab" data-open-contact>Create new product</button>
+
   <CreateProduct />
   <Footer />
 </Base>
 
 <style>
+  /* Sticky CTA */
+  .svc-fab {
+    position: fixed;
+    right: clamp(1rem, 4vw, 2.5rem);
+    bottom: clamp(1rem, 4vw, 2.5rem);
+    z-index: 40;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: #fff;
+    background: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    padding: 0.85rem 1.7rem;
+    cursor: pointer;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.16);
+    transition: background 0.18s ease, opacity 0.2s ease;
+  }
+  .svc-fab:hover { background: var(--color-text); border-color: var(--color-text); }
+  /* Hide while the brief modal is open */
+  :global(body.overlay-open) .svc-fab { opacity: 0; pointer-events: none; }
+
   .related-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
