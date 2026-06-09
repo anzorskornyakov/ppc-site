@@ -3,12 +3,15 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import SEO from '../../components/SEO.astro';
+import { SITE } from '../../data/site';
 ---
 <Base title="PPC — Em construção" description="Em breve.">
   <SEO
     slot="head"
     title="PPC — Em construção"
     description="Em breve."
+    canonicalUrl={`${SITE.url}/pt`}
+    noindex
   />
 
   <Header />

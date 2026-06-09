@@ -271,6 +271,18 @@ const { defaultOpen = true, primary = true } = Astro.props;
       if (e.key === 'Escape' && !info.hidden) close();
     });
 
+    // Keep keyboard focus inside the menu while it's open.
+    info.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || info!.hidden) return;
+      const f = Array.from(info!.querySelectorAll<HTMLElement>(
+        'a[href],button:not([disabled]),input,textarea,select,[tabindex]:not([tabindex="-1"])'
+      )).filter((el) => el.offsetParent !== null);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
     // "Create new product" triggers are handled by CreateProduct (the modal).
     document.addEventListener('ppc:open-info', () => open());
 
