@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import SEO from '../components/SEO.astro';
+import Gallery from '../components/Gallery.astro';
+import ProjectOverlay from '../components/ProjectOverlay.astro';
+import InfoOverlay from '../components/InfoOverlay.astro';
+import { SITE } from '../data/site';
+import { cases } from '../data/cases';
+
+const canonicalUrl = `${SITE.url}/gallery`;
+const title = 'Gallery — custom merch & print by PPC, Lisbon';
+const description =
+  'Selected work by PPC — custom screen printing, embroidery and DTF on tees, caps, and uniforms for brands, cafés and bands in Lisbon and beyond.';
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${canonicalUrl}#work`,
+  name: 'PPC — selected work',
+  url: canonicalUrl,
+  numberOfItems: cases.length,
+  itemListElement: cases.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'CreativeWork',
+      name: `${c.client} — ${c.item}`,
+      about: c.technique,
+      url: `${SITE.url}/work/${c.slug}`,
+    },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'PPC', item: SITE.url },
+    { '@type': 'ListItem', position: 2, name: 'Gallery', item: canonicalUrl },
+  ],
+};
+---
+<Base title={title} description={description}>
+  <SEO
+    slot="head"
+    title={title}
+    description={description}
+    ogImage="/og-default.jpg"
+    canonicalUrl={canonicalUrl}
+    schemas={[itemListSchema, breadcrumbSchema]}
+  />
+
+  <h1 class="sr-only">Gallery — selected custom merch by PPC</h1>
+
+  <InfoOverlay defaultOpen={false} primary={false} />
+  <Gallery />
+  <ProjectOverlay />
+
+  <!-- Lock the document on the gallery so iOS can't rubber-band / pull-to-
+       refresh and fight the gallery's own scroll. -->
+  <style is:global>
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+    body {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+    }
+  </style>
+</Base>

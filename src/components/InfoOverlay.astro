@@ -2,6 +2,14 @@
 import { SITE } from '../data/site';
 import { services } from '../data/services';
 import RequestForm from './RequestForm.astro';
+
+interface Props {
+  /** Render the menu open in the static HTML (homepage). False = start closed (e.g. /gallery). */
+  defaultOpen?: boolean;
+  /** Render the lead line as the page <h1>. Set false when the page has its own h1. */
+  primary?: boolean;
+}
+const { defaultOpen = true, primary = true } = Astro.props;
 ---
 <!-- Top chrome over the gallery (visible when the menu is closed) -->
 <div class="topbar">
@@ -14,10 +22,10 @@ import RequestForm from './RequestForm.astro';
 <!-- Persistent CTA on the gallery — opens the menu's brief form -->
 <button type="button" class="cta-fab" data-open-contact>Create new product</button>
 
-<!-- The menu IS the homepage. Rendered OPEN in static HTML so the h1 and copy
-     are crawlable by search engines and LLM bots that don't execute JS. JS
-     only handles closing (to reveal the gallery) and deep-linked projects. -->
-<div class="info is-open" id="info" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="false">
+<!-- On the homepage the menu is rendered OPEN in static HTML so the h1 and copy
+     are crawlable by bots that don't execute JS. On other pages (e.g. /gallery)
+     it starts closed and is opened with the "Menu" trigger. -->
+<div class:list={['info', defaultOpen && 'is-open']} id="info" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden={defaultOpen ? 'false' : 'true'} hidden={!defaultOpen} data-default-open={String(defaultOpen)}>
   <button type="button" class="info__close" data-info-close aria-label="Close menu">
     <span aria-hidden="true">×</span>
   </button>
@@ -26,16 +34,20 @@ import RequestForm from './RequestForm.astro';
     <img class="info__logo" src="/logo.webp" alt={SITE.name} width="160" height="74" />
 
     <div class="info__about">
-      <h1 class="info__lead">We help brands create and produce merch.</h1>
+      {primary ? (
+        <h1 class="info__lead">We help brands create and produce merch.</h1>
+      ) : (
+        <p class="info__lead">We help brands create and produce merch.</p>
+      )}
       <p>Design, product selection, printing, embroidery, and production management — all under one roof.</p>
       <p>Fast turnaround — 3 business days.</p>
     </div>
 
     <nav class="info__buttons" aria-label="Sections">
-      <button type="button" class="info__btn info__btn--primary" data-info-close>
+      <a class="info__btn info__btn--primary" href="/gallery">
         <span class="info__btn__label">Gallery</span>
         <span class="info__btn__desc">See the merch we've made</span>
-      </button>
+      </a>
       <a class="info__btn" href="/catalog">
         <span class="info__btn__label">Catalog</span>
         <span class="info__btn__desc">Blanks and garments to print on</span>
@@ -272,19 +284,20 @@ import RequestForm from './RequestForm.astro';
     document.addEventListener('ppc:open-contact', openToForm);
     document.addEventListener('ppc:open-info', () => open());
 
-    // The menu is rendered open in the HTML. If the URL deep-links a project,
-    // close it instantly (no animation) so the project overlay takes over.
-    if (location.hash) {
-      info.classList.remove('is-open');
-      info.hidden = true;
-      info.setAttribute('aria-hidden', 'true');
-    } else {
+    const startOpen = info.dataset.defaultOpen !== 'false';
+
+    if (location.hash.startsWith('#project/')) {
+      // Old deep link — ProjectOverlay redirects it to /work/<slug>; do nothing.
+    } else if (location.hash === '#brief' || location.hash === '#contact') {
+      openToForm();
+    } else if (startOpen) {
       document.body.classList.add('overlay-open');
       // The menu is a persistent scroll container now, so the browser may
       // restore a previous scroll position. Always open it from the top.
       info.scrollTop = 0;
       requestAnimationFrame(() => { info.scrollTop = 0; });
     }
+    // startOpen=false (e.g. /gallery): menu stays closed; "Menu" opens it.
   }
 
   // Browsers restore scroll positions (incl. nested containers) on history nav.
