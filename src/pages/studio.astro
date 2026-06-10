@@ -14,10 +14,10 @@ const localBusinessSchema = {
   '@id': `${SITE.url}/#studio`,
   name: SITE.name,
   image: [
-    `${SITE.url}/photos/studio-hero.jpg`,
-    `${SITE.url}/photos/studio-detail-01.jpg`,
-    `${SITE.url}/photos/studio-detail-02.jpg`,
-    `${SITE.url}/photos/studio-detail-03.jpg`,
+    `${SITE.url}/photos/studio/studio-floor.webp`,
+    `${SITE.url}/photos/studio/studio-screenprint.webp`,
+    `${SITE.url}/photos/studio/studio-embroidery.webp`,
+    `${SITE.url}/photos/studio/studio-racks.webp`,
   ],
   description: SITE.description,
   address: {
@@ -69,15 +69,12 @@ const placeSchema = {
   },
 };
 
-// Equipment / areas — photos coming soon, labelled placeholders for now.
+// Studio photos (priority order).
 const studioPhotos = [
-  { label: 'Garment & blank racks' },
-  { label: 'Past prints & projects' },
-  { label: 'Screen printing carousel' },
-  { label: 'Embroidery machine' },
-  { label: 'Design & sample table' },
-  { label: 'Production area' },
-  { label: 'Studio floor' },
+  { src: '/photos/studio/studio-racks.webp', label: 'Garments & blanks on the rack' },
+  { src: '/photos/studio/studio-screenprint.webp', label: 'Screen printing carousel' },
+  { src: '/photos/studio/studio-embroidery.webp', label: 'Embroidery machine' },
+  { src: '/photos/studio/studio-desk.webp', label: 'Design & sample corner' },
 ];
 
 // Directions from the visitor's current location to the studio.
@@ -122,10 +119,10 @@ const mapsDir = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIC
         </div>
       </div>
 
-      <!-- Hero placeholder -->
+      <!-- Hero -->
       <figure class="mb-16">
-        <div class="w-full aspect-[16/8] bg-[var(--color-surface)] border border-[var(--color-rule)] flex items-center justify-center">
-          <span class="section-num">Studio floor — photo coming soon</span>
+        <div class="w-full aspect-[16/8] overflow-hidden bg-[var(--color-surface)]">
+          <img src="/photos/studio/studio-floor.webp" alt="The PPC studio floor in Campolide, Lisbon" width="1448" height="1086" loading="eager" class="w-full h-full object-cover" />
         </div>
         <figcaption class="section-num mt-3">Calçada dos Mestres 34, Campolide, Lisbon</figcaption>
       </figure>
@@ -155,15 +152,16 @@ const mapsDir = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIC
                 make decisions with the actual product in front of you.
               </p>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {studioPhotos.map((photo, i) => (
-                <figure class="aspect-[4/3] bg-[var(--color-surface)] border border-[var(--color-rule)] flex items-center justify-center p-3 relative">
-                  <span class="section-num text-center">{photo.label}</span>
-                  <figcaption class="absolute bottom-2 left-2 section-num text-mute">{String(i + 1).padStart(2, '0')}</figcaption>
+            <div class="grid grid-cols-2 gap-2">
+              {studioPhotos.map((photo) => (
+                <figure>
+                  <div class="aspect-[4/3] overflow-hidden bg-[var(--color-surface)]">
+                    <img src={photo.src} alt={photo.label} loading="lazy" decoding="async" class="w-full h-full object-cover" />
+                  </div>
+                  <figcaption class="section-num mt-2">{photo.label}</figcaption>
                 </figure>
               ))}
             </div>
-            <p class="section-num mt-3">Photos coming soon.</p>
           </div>
         </div>
 
