@@ -1,0 +1,130 @@
+backend:
+  name: github
+  repo: anzorkakashkin-bit/ppc-site
+  branch: main
+  # After deploying the auth worker (see docs/HANDOFF.md), put its URL here:
+  base_url: https://REPLACE-WITH-YOUR-AUTH-WORKER.workers.dev
+
+# CMS-uploaded images/videos land here. Existing photos keep their own paths.
+media_folder: "public/photos/uploads"
+public_folder: "/photos/uploads"
+
+# Editing is committed straight to `main`, which triggers the Cloudflare deploy.
+publish_mode: simple
+
+collections:
+  - name: projects
+    label: Projects
+    icon: photo_library
+    files:
+      - name: cases
+        label: All projects
+        file: src/data/cases.json
+        description: Gallery projects shown on the homepage and at /work/<slug>.
+        fields:
+          - name: cases
+            label: Projects
+            label_singular: Project
+            widget: list
+            summary: "{{fields.client}} — {{fields.item}}"
+            fields:
+              - { label: "Slug (URL)", name: slug, widget: string, hint: "lowercase, dashes — becomes /work/<slug>" }
+              - { label: Client, name: client, widget: string }
+              - { label: Client link, name: clientUrl, widget: string, required: false }
+              - { label: Technique, name: technique, widget: string, hint: 'e.g. "Screen printing & Embroidery"' }
+              - { label: Item, name: item, widget: string, hint: 'e.g. "Caps & tees"' }
+              - { label: Quantity, name: quantity, widget: string, required: false }
+              - { label: Date, name: date, widget: string, required: false, hint: 'e.g. "June 2026"' }
+              - { label: Blank, name: blank, widget: string, required: false }
+              - { label: Hero image, name: garment, widget: image, required: false, hint: "main photo on the tile" }
+              - { label: Hero caption, name: garmentLabel, widget: string, required: false }
+              - label: "Media (extra photos / video)"
+                name: media
+                widget: list
+                required: false
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: "File (image or .mp4)", name: src, widget: file }
+                  - { label: Caption, name: label, widget: string, required: false }
+              - { label: Garment details, name: details, widget: list, required: false, hint: "spec bullets" }
+              - { label: Description, name: body, widget: text, required: false }
+
+  - name: faq
+    label: FAQ
+    icon: help
+    files:
+      - name: faqs
+        label: All FAQ
+        file: src/data/faqs.json
+        fields:
+          - label: Screen printing
+            name: screenPrinting
+            widget: list
+            summary: "{{fields.q}}"
+            fields:
+              - { label: Question, name: q, widget: string }
+              - { label: Answer, name: a, widget: text }
+          - label: Embroidery
+            name: embroidery
+            widget: list
+            summary: "{{fields.q}}"
+            fields:
+              - { label: Question, name: q, widget: string }
+              - { label: Answer, name: a, widget: text }
+          - label: DTF
+            name: dtf
+            widget: list
+            summary: "{{fields.q}}"
+            fields:
+              - { label: Question, name: q, widget: string }
+              - { label: Answer, name: a, widget: text }
+
+  - name: catalog
+    label: Catalog brands
+    icon: sell
+    files:
+      - name: brands
+        label: All brands
+        file: src/data/brands.json
+        fields:
+          - name: brands
+            label: Brands
+            label_singular: Brand
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: "Slug (for logo file)", name: slug, widget: string }
+              - { label: Tier, name: tier, widget: select, options: ["premium", "luxe"] }
+              - { label: Website, name: url, widget: string }
+              - { label: Tagline, name: tagline, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Facts, name: facts, widget: list }
+
+  - name: services
+    label: Services
+    icon: design_services
+    files:
+      - name: services
+        label: All services
+        file: src/data/services.json
+        fields:
+          - name: services
+            label: Services
+            label_singular: Service
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: Id, name: id, widget: string }
+              - { label: Name, name: name, widget: string }
+              - { label: Path, name: path, widget: string }
+              - { label: Section num, name: sectionNum, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Subtitle, name: subtitle, widget: text }
+              - { label: Meta title, name: metaTitle, widget: string }
+              - { label: Meta description, name: metaDescription, widget: text }
+              - { label: OG image, name: ogImage, widget: string }
+              - { label: Min order, name: minOrder, widget: string }
+              - { label: Turnaround, name: turnaround, widget: string }
+              - { label: "Price low (€)", name: priceLow, widget: number, value_type: int }
+              - { label: "Price high (€)", name: priceHigh, widget: number, value_type: int }

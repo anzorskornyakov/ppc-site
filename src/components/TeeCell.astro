@@ -32,7 +32,7 @@ const teeImg = garment.replace(/\.webp$/, '-thumb.webp');
         <span class="tee__ph-name">{item.client}</span>
         <span class="tee__ph-meta">{item.technique}</span>
       </span>
-      <img src={teeImg} alt={`${item.client} — ${item.technique} on ${item.item}`} loading="lazy" decoding="async" class="tee__img" onerror="this.style.display='none'" />
+      <img src={teeImg} data-full={garment} alt={`${item.client} — ${item.technique} on ${item.item}`} loading="lazy" decoding="async" class="tee__img" onerror="if(this.dataset.full&&this.src.indexOf(this.dataset.full)===-1){this.src=this.dataset.full}else{this.style.display='none'}" />
     </span>
     <span class="tee__caption">
       <span class="tee__client">{item.client}</span>
