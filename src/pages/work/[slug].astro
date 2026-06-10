@@ -97,7 +97,7 @@ const breadcrumbSchema = {
             media.map((m) => (
               <figure>
                 {isVideo(m.src) ? (
-                  <video src={m.src} muted loop autoplay playsinline preload="metadata" controls></video>
+                  <video src={m.src} muted loop autoplay playsinline preload="auto"></video>
                 ) : (
                   <img src={m.src} alt={`${c.client} — ${m.label || c.item}`} loading="lazy" decoding="async" />
                 )}

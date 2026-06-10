@@ -377,8 +377,11 @@ const projectData = cases.map((c) => ({
         const m = media[i];
         if (!m) { heroEl.innerHTML = '<div class="ph">Image coming soon</div>'; heroCapEl.hidden = true; return; }
         heroEl.innerHTML = isVideo(m.src)
-          ? `<video src="${esc(m.src)}" controls autoplay muted loop playsinline preload="metadata"></video>`
+          ? `<video src="${esc(m.src)}" autoplay muted loop playsinline preload="auto"></video>`
           : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" />`;
+        // Dynamically inserted videos need an explicit play() to autoplay on iOS.
+        const v = heroEl.querySelector('video');
+        if (v) { v.muted = true; v.play().catch(() => {}); }
         heroCapEl.textContent = m.label || '';
         heroCapEl.hidden = !m.label;
         renderThumbs(i);
