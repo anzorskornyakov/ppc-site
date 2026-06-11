@@ -34,11 +34,13 @@ All services: 3 business days standard. Same-day or 24-hour rush available for s
 
 ## Blank suppliers
 
-PPC works with every brand available through Toptex (Europe's largest blank supplier, 1000+ models including Stanley/Stella, AS Colour, Native Spirit, B&C Collection, Sol's, Kariban, Gildan, Continental Clothing, EarthPositive, Mantis, Russell, Tee Jays, Fruit of the Loom, Just Hoods, SG Originals, Atlantis, Beechfield, Flexfit, Yupoong, Result Headwear, Westford Mill, Bags by Jassz, and others).
+PPC works with a tight, trusted set of blank brands and sources anything else on request:
 
-Premium tier from direct relationships: WATC Studio (Barcelona, heavyweight cut and sew) and Velour Garments (Barcelona, 300–1000 GSM organic cotton).
+- **AS Colour** (New Zealand, since 2005) — dependable premium staples: tees, sweats, hoodies, headwear, bags.
+- **WATC Studio** (made in its own ateliers in Portugal) — organic, heavyweight blanks: tees, hoodies, denim, an Ultra Heavy line.
+- **Velour Garments** (Spain) — heavyweight basics and workwear: hoodies 450–1000 GSM, tees 180–300 GSM, knitwear, trousers.
 
-Clients may also supply their own blanks. Same 3-day turnaround applies.
+Need a specific blank? PPC sources other brands on request. Clients may also supply their own — same 3-day turnaround applies.
 
 Full brand catalog: https://ppc.space/catalog
 
@@ -50,12 +52,27 @@ Full brand catalog: https://ppc.space/catalog
 
 ## Pages
 
-- [Home](https://ppc.space): Overview, services, studio, work samples, contact form
-- [Catalog](https://ppc.space/catalog): Brand catalog grouped by Premium / Standard / Economy / Headwear / Bags
+- [Home](https://ppc.space): Studio statement, work gallery, contact form ("Create New Product")
+- [Gallery](https://ppc.space/gallery): Visual gallery of finished work; each item links to its project page
+- [Services](https://ppc.space/services): Overview of the three production techniques
+- [Catalog](https://ppc.space/catalog): Featured blank brands (AS Colour — Premium; WATC Studio & Velour Garments — Luxe)
 - [Screen printing](https://ppc.space/screen-printing): Service details, pricing, FAQ
 - [Embroidery](https://ppc.space/embroidery): Service details, pricing, FAQ
 - [DTF printing](https://ppc.space/dtf): Service details, pricing, FAQ
 - [Studio](https://ppc.space/studio): Physical location, equipment, visit information
+
+## Selected work
+
+Each project has its own page at https://ppc.space/work/<slug>:
+
+- [Tims](https://ppc.space/work/tims): Staff uniform — screen print + puff on an AS Colour box tee (tims.lisboa).
+- [Lova](https://ppc.space/work/lova): Caps & tees — screen printing and embroidery on boxy WATC blanks.
+- [Katsu](https://ppc.space/work/katsu): Uniform & signage — machine embroidery for an Asian bistro in Lisbon.
+- [Pils](https://ppc.space/work/pils): Merch & uniform — embroidery and DTF (tees, caps, aprons, printed tablecloth).
+- [.ulu](https://ppc.space/work/ulu): Staff uniform — screen printing for a café in Cascais.
+- [Heavy Drone](https://ppc.space/work/heavy-drone): Band tee — single-colour screen print, 20-piece drop on Gildan 2000.
+- [PPC Cap](https://ppc.space/work/ppc-cap): Camo cap — flat embroidery on an AS Colour blank.
+- [Joom](https://ppc.space/work/joom): Boxy tee — screen print + DTF, 80 pieces for Management Week.
 
 ## Client examples
 
@@ -75,7 +92,7 @@ Past and active clients are independent restaurants, cafés, hotels, startups, a
 - 3-business-day turnaround across all services
 - Studio open for client visits — see samples, handle blanks, meet the team
 - In-house design assistance from rough idea to print-ready file
-- Direct access to Toptex (1000+ brands) plus premium WATC and Velour
+- Featured premium blanks (AS Colour, WATC Studio, Velour Garments), with sourcing of any other blank on request
 
 ## Legal & pricing notes
 
