@@ -317,7 +317,26 @@ const projectData = cases.map((c) => ({
     'DTF': '/dtf',
   };
   const isVideo = (src: string) => /\.(mp4|webm|mov)$/i.test(src);
-  const esc = (s: string) => s.replace(/"/g, '&quot;');
+
+  // Build a video that reliably autoplays (muted, inline, with play() retries).
+  function autoVideo(src: string): HTMLVideoElement {
+    const v = document.createElement('video');
+    v.src = src;
+    v.muted = true;
+    v.defaultMuted = true;
+    v.loop = true;
+    v.autoplay = true;
+    v.playsInline = true;
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+    v.preload = 'auto';
+    const tryPlay = () => { const p = v.play(); if (p) p.catch(() => {}); };
+    tryPlay();
+    v.addEventListener('loadeddata', tryPlay, { once: true });
+    v.addEventListener('canplay', tryPlay, { once: true });
+    return v;
+  }
 
   function initOverlay() {
     const overlay = document.getElementById('overlay');
@@ -360,28 +379,41 @@ const projectData = cases.map((c) => ({
       // Media — large hero + 2-up grid of the OTHER images (no duplicate of the
       // hero). Click a thumbnail to swap it into the hero.
       const media = p.media;
+      function thumbMedia(m: Media): HTMLElement {
+        if (isVideo(m.src)) return autoVideo(m.src);
+        const img = document.createElement('img');
+        img.src = m.src;
+        img.alt = `${p.client} — ${m.label || p.item}`;
+        img.loading = 'lazy';
+        return img;
+      }
       function renderThumbs(active: number) {
+        thumbsEl.innerHTML = '';
         const others = media.map((m, i) => ({ m, i })).filter((x) => x.i !== active);
-        thumbsEl.innerHTML = others.map(({ m, i }) => {
-          const inner = isVideo(m.src)
-            ? `<video src="${esc(m.src)}" muted preload="metadata"></video><span class="ov-thumb__play" aria-hidden="true">▶</span>`
-            : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" loading="lazy" />`;
-          return `<button type="button" class="ov-thumb" data-i="${i}" aria-label="${esc('View ' + (m.label || `${p.client} ${i + 1}`))}">${inner}</button>`;
-        }).join('');
+        others.forEach(({ m, i }) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ov-thumb';
+          b.dataset.i = String(i);
+          b.setAttribute('aria-label', 'View ' + (m.label || `${p.client} ${i + 1}`));
+          b.appendChild(thumbMedia(m));
+          b.addEventListener('click', () => setHero(i));
+          thumbsEl.appendChild(b);
+        });
         thumbsEl.hidden = others.length === 0;
-        thumbsEl.querySelectorAll<HTMLElement>('.ov-thumb').forEach((b) =>
-          b.addEventListener('click', () => setHero(Number(b.dataset.i)))
-        );
       }
       function setHero(i: number) {
         const m = media[i];
+        heroEl.innerHTML = '';
         if (!m) { heroEl.innerHTML = '<div class="ph">Image coming soon</div>'; heroCapEl.hidden = true; return; }
-        heroEl.innerHTML = isVideo(m.src)
-          ? `<video src="${esc(m.src)}" autoplay muted loop playsinline preload="auto"></video>`
-          : `<img src="${esc(m.src)}" alt="${esc(p.client + ' — ' + (m.label || p.item))}" />`;
-        // Dynamically inserted videos need an explicit play() to autoplay on iOS.
-        const v = heroEl.querySelector('video');
-        if (v) { v.muted = true; v.play().catch(() => {}); }
+        if (isVideo(m.src)) {
+          heroEl.appendChild(autoVideo(m.src));
+        } else {
+          const img = document.createElement('img');
+          img.src = m.src;
+          img.alt = `${p.client} — ${m.label || p.item}`;
+          heroEl.appendChild(img);
+        }
         heroCapEl.textContent = m.label || '';
         heroCapEl.hidden = !m.label;
         renderThumbs(i);

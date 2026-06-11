@@ -197,3 +197,22 @@ const breadcrumbSchema = {
     .work-details { grid-template-columns: 1fr; }
   }
 </style>
+
+<script>
+  // Make sure case videos autoplay (muted, inline) even if the browser
+  // ignores the attribute for freshly-loaded elements.
+  function playWorkVideos() {
+    document.querySelectorAll<HTMLVideoElement>('.work-media video').forEach((v) => {
+      v.muted = true;
+      const tryPlay = () => { const p = v.play(); if (p) p.catch(() => {}); };
+      tryPlay();
+      v.addEventListener('loadeddata', tryPlay, { once: true });
+      v.addEventListener('canplay', tryPlay, { once: true });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', playWorkVideos);
+  } else {
+    playWorkVideos();
+  }
+</script>
