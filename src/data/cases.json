@@ -1,6 +1,18 @@
 {
   "cases": [
     {
+      "slug": "ulu-drop",
+      "client": ".ulu",
+      "clientUrl": "https://www.instagram.com/ulu.cascais/",
+      "technique": "Screen printing",
+      "item": "Merch collection",
+      "date": "June 2026",
+      "blank": "WATC Studio — Oversized Boxy Tee",
+      "garment": "/photos/cases/ulu-drop/ulu-drop-1.webp",
+      "garmentLabel": "The drop — full collection",
+      "body": "A full merch collection for .ulu, a café and surf spot in Cascais. We designed the line — a surf-inspired set of graphics across colourways (\"The Cascais Life\", \"Cascais Surf Paradise\", \"Ocean Dreamer\") — screen-printed on WATC Studio oversized boxy tees. The whole project was produced in-house at our studio, from design to print."
+    },
+    {
       "slug": "tims",
       "client": "Tims",
       "clientUrl": "https://www.instagram.com/tims.lisboa/",
