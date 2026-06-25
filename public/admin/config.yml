@@ -36,7 +36,8 @@ collections:
               - { label: Quantity, name: quantity, widget: string, required: false }
               - { label: Date, name: date, widget: string, required: false, hint: 'e.g. "June 2026"' }
               - { label: Blank, name: blank, widget: string, required: false }
-              - { label: Hero image, name: garment, widget: image, required: false, hint: "main photo on the tile" }
+              - { label: Hero image, name: garment, widget: image, required: false, hint: "main photo of the project (also used on the gallery tile)" }
+              - { label: Gallery tile image, name: tile, widget: image, required: false, hint: "optional — show a different photo on the gallery tile only" }
               - { label: Hero caption, name: garmentLabel, widget: string, required: false }
               - label: "Media (extra photos / video)"
                 name: media

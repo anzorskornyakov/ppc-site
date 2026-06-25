@@ -22,6 +22,8 @@ export interface Case {
   blank?: string;
   /** Hero flat-lay / product shot shown on the tee and as the first overlay image. */
   garment?: string;
+  /** Optional override for the gallery-tile image only (defaults to garment). */
+  tile?: string;
   /** Caption for the hero image (optional). */
   garmentLabel?: string;
   /** Additional media (images + video) with optional captions. */
