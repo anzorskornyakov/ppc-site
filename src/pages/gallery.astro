@@ -9,7 +9,7 @@ import { SITE } from '../data/site';
 import { cases } from '../data/cases';
 
 const canonicalUrl = `${SITE.url}/gallery`;
-const title = 'Gallery — custom merch & print by PPC, Lisbon';
+const title = 'Recent Works — custom merch & print by PPC, Lisbon';
 const description =
   'Selected work by PPC — custom screen printing, embroidery and DTF on tees, caps, and uniforms for brands, cafés and bands in Lisbon and beyond.';
 
@@ -37,7 +37,7 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'PPC', item: SITE.url },
-    { '@type': 'ListItem', position: 2, name: 'Gallery', item: canonicalUrl },
+    { '@type': 'ListItem', position: 2, name: 'Recent Works', item: canonicalUrl },
   ],
 };
 ---
@@ -51,7 +51,7 @@ const breadcrumbSchema = {
     schemas={[itemListSchema, breadcrumbSchema]}
   />
 
-  <h1 class="sr-only">Gallery — selected custom merch by PPC</h1>
+  <h1 class="sr-only">Recent Works — selected custom merch by PPC</h1>
 
   <InfoOverlay defaultOpen={false} primary={false} />
   <Gallery />

@@ -20,7 +20,7 @@ collections:
       - name: cases
         label: All projects
         file: src/data/cases.json
-        description: Gallery projects shown on the homepage and at /work/<slug>.
+        description: Recent Works projects shown on the homepage and at /work/<slug>.
         fields:
           - name: cases
             label: Projects
@@ -37,7 +37,7 @@ collections:
               - { label: Date, name: date, widget: string, required: false, hint: 'e.g. "June 2026"' }
               - { label: Blank, name: blank, widget: string, required: false }
               - { label: Hero image, name: garment, widget: image, required: false, hint: "main photo of the project (also used on the gallery tile)" }
-              - { label: Gallery tile image, name: tile, widget: image, required: false, hint: "optional — show a different photo on the gallery tile only" }
+              - { label: Tile image, name: tile, widget: image, required: false, hint: "optional — show a different photo on the Recent Works tile only" }
               - { label: Hero caption, name: garmentLabel, widget: string, required: false }
               - label: "Media (extra photos / video)"
                 name: media

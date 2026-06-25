@@ -53,7 +53,7 @@ Full brand catalog: https://ppc.space/catalog
 ## Pages
 
 - [Home](https://ppc.space): Studio statement, work gallery, contact form ("Create New Product")
-- [Gallery](https://ppc.space/gallery): Visual gallery of finished work; each item links to its project page
+- [Recent Works](https://ppc.space/gallery): Visual gallery of finished work; each item links to its project page
 - [Services](https://ppc.space/services): Overview of the three production techniques
 - [Catalog](https://ppc.space/catalog): Featured blank brands (AS Colour — Premium; WATC Studio & Velour Garments — Luxe)
 - [Screen printing](https://ppc.space/screen-printing): Service details, pricing, FAQ
