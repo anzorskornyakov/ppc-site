@@ -1,6 +1,22 @@
 {
   "cases": [
     {
+      "slug": "senzi",
+      "client": "Senzi",
+      "clientUrl": "https://www.instagram.com/senzi.lisboa/",
+      "technique": "Screen printing & Embroidery",
+      "item": "Tees & shirts",
+      "date": "June 2026",
+      "blank": "AS Colour — Staple Tee 5001",
+      "garment": "/photos/cases/senzi/senzi-1-tee.webp",
+      "garmentLabel": "SENZI tee — screen print + puff",
+      "media": [
+        { "src": "/photos/cases/senzi/senzi-2-puff.webp", "label": "Puff print — the SENZI wordmark" },
+        { "src": "/photos/cases/senzi/senzi-3-staff.webp", "label": "On the floor — staff in SENZI" }
+      ],
+      "body": "Ongoing work for Senzi, a Lisbon restaurant — embroidery and print across tees and shirts. The latest piece: a screen-printed tee with a raised puff-effect \"SENZI\" wordmark — minimalist branding, light and comfortable for summer, on an AS Colour Staple Tee at an accessible price."
+    },
+    {
       "slug": "ulu-drop",
       "client": ".ulu",
       "clientUrl": "https://www.instagram.com/ulu.cascais/",
