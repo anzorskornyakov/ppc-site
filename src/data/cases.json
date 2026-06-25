@@ -1,6 +1,20 @@
 {
   "cases": [
     {
+      "slug": "arca",
+      "client": "Arca",
+      "clientUrl": "https://www.instagram.com/arca_lisboa/",
+      "technique": "Embroidery",
+      "item": "Staff aprons",
+      "date": "June 2026",
+      "garment": "/photos/cases/arca/arca-1-mark.webp",
+      "garmentLabel": "ARCA — embroidered mark",
+      "media": [
+        { "src": "/photos/cases/arca/arca-2-apron.webp", "label": "Embroidered apron" }
+      ],
+      "body": "Embroidered aprons for Arca, a great spot in Lisbon worth going out of your way for. We stitched the ARCA wordmark in red onto deep-green workwear aprons for the team — clean, durable, and unmistakably theirs."
+    },
+    {
       "slug": "senzi",
       "client": "Senzi",
       "clientUrl": "https://www.instagram.com/senzi.lisboa/",
@@ -128,9 +142,21 @@
         {
           "src": "/photos/cases/pils/pils-video.mp4",
           "label": "Tablecloth, in motion"
+        },
+        {
+          "src": "/photos/cases/pils/pils-4-tee.webp",
+          "label": "New staff tee — AS Colour Box 5030"
+        },
+        {
+          "src": "/photos/cases/pils/pils-5-stack.webp",
+          "label": "Embroidered run"
+        },
+        {
+          "src": "/photos/cases/pils/pils-6-script.webp",
+          "label": "The Pils script — embroidery"
         }
       ],
-      "body": "A full merch and uniform programme for Pils, a Lisbon spot — t-shirts, caps, hoodies, aprons and even a printed tablecloth. Mostly embroidery and DTF."
+      "body": "A full merch and uniform programme for Pils, a Lisbon spot — t-shirts, caps, hoodies, aprons and even a printed tablecloth. Mostly embroidery and DTF. We've since made new tees for the whole team — the latest on an AS Colour Box Tee 5030."
     },
     {
       "slug": "ulu",
