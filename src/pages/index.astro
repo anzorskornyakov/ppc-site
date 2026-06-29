@@ -23,7 +23,6 @@ const organizationSchema = {
     height: 512,
   },
   email: SITE.email,
-  telephone: SITE.phonePlain,
   vatID: SITE.vatId,
   taxID: SITE.nipc,
   foundingDate: SITE.foundingDate,
@@ -37,7 +36,6 @@ const organizationSchema = {
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: SITE.phonePlain,
     email: SITE.email,
     contactType: 'customer service',
     availableLanguage: ['English', 'Portuguese', 'Russian'],
@@ -68,7 +66,6 @@ const localBusinessSchema = {
     longitude: SITE.geo.lon,
   },
   url: SITE.url,
-  telephone: SITE.phonePlain,
   email: SITE.email,
   priceRange: '€€',
   currenciesAccepted: 'EUR',
@@ -128,7 +125,7 @@ const howToSchema = {
       '@type': 'HowToStep',
       position: 1,
       name: 'Send your logo or brief',
-      text: `Send your logo or project brief via WhatsApp (${SITE.phone}), email (${SITE.email}), or Instagram DM (@ppcspace).`,
+      text: `Send your logo or project brief via WhatsApp, email (${SITE.email}), or Instagram DM (@ppcspace).`,
     },
     {
       '@type': 'HowToStep',

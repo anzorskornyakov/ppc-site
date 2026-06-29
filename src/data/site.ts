@@ -7,8 +7,8 @@ export const SITE = {
   nipc: '519336640',
   vatId: 'PT519336640',
   email: 'anzor@ppc.space',
-  phone: '+351 930 548 775',
-  phonePlain: '+351930548775',
+  // Messaging only — we don't take phone calls. The number lives in the
+  // WhatsApp link below; it is not shown as a dialable number anywhere.
   whatsapp: 'https://wa.me/351930548775',
   telegram: '@Anzors',
   telegramUrl: 'https://t.me/Anzors',

@@ -33,7 +33,6 @@ const localBusinessSchema = {
     longitude: SITE.geo.lon,
   },
   url: SITE.url,
-  telephone: SITE.phonePlain,
   email: SITE.email,
   openingHoursSpecification: [
     {
@@ -236,7 +235,7 @@ const mapsDir = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIC
             </div>
             <div class="spec-row">
               <dt class="spec-key">WhatsApp</dt>
-              <dd class="spec-val"><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">{SITE.phone}</a></dd>
+              <dd class="spec-val"><a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-accent)] transition-colors">Message us</a></dd>
             </div>
             <div class="spec-row">
               <dt class="spec-key">Instagram</dt>
